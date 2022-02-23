@@ -1,0 +1,80 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.nokhyun.samplestructure"
+        minSdk 23
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation project(":data")
+    implementation project(":domain")
+
+    implementation (Ktx.CORE)
+    implementation (AndroidX.APP_COMPAT)
+    implementation (Google.MATERIAL)
+    implementation (AndroidX.CONSTRAINT_LAYOUT)
+    testImplementation (UnitTest.JUNIT)
+    androidTestImplementation (UnitTest.JUNIT_TEST)
+    androidTestImplementation (UnitTest.ESPRESSO)
+
+    // hilt
+    implementation (Hilt.DAGGER_HILT)
+    kapt (Hilt.DAGGER_HILT_COMPILER)
+    implementation(Hilt.DAGGER_HILT_VIEW_MODEL)
+    implementation(Hilt.DAGGER_HILT_ANDROIDX_COMPILER)
+
+    // viewmodel
+    implementation(AndroidX.LIFECYCLE_VIEW_MODEL)
+    // liveData
+    implementation(AndroidX.LIFECYCLE_LIVEDATA)
+
+    // OkHttp
+    implementation(OkHttp.OKHTTP)
+    implementation(OkHttp.LOGGING_INTERCEPTOR)
+
+    // Retrofit
+    implementation(Retrofit.RETROFIT)
+    implementation(Retrofit.CONVERTER_GSON)
+    implementation(Retrofit.CONVERTER_JAXB)
+    implementation(Retrofit.CONVERTER_SCALARS)
+
+    // View
+    implementation(AndroidX.ACTIVITY)
+    implementation(AndroidX.FRAGMENT)
+
+    // LOG
+    implementation(LOG.TIMBER)
+}
