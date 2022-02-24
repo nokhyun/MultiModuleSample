@@ -13,15 +13,39 @@ android {
         minSdk 23
         targetSdk 31
         versionCode 1
-        versionName "1.0"
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "flavors"
+    productFlavors{
+        prod {
+            dimension "flavors"
+            versionName "1.0"
+            setProperty("archivesBaseName", "sampel${versionName}")
+        }
+
+        dev {
+            dimension "flavors"
+            versionName "1.0"
+            setProperty("archivesBaseName", "sample${versionName}")
         }
     }
 

@@ -1,6 +1,5 @@
 package com.nokhyun.samplestructure.ui.activity
 
-import android.util.Log
 import android.view.View
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
@@ -16,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * Created by ChoKwangJun on 2022-02-11
+ * Created by Nokhyun90 on 2022-02-11
  * */
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -59,6 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 }
 
+/** kotlin actor 2022 중에 수정 될 수 있다고 함. */
 @OptIn(ObsoleteCoroutinesApi::class)
 fun View.singleClick(delay: Long = 500, click: (v: View) -> Unit) {
     var clickTime: Long = 0
