@@ -1,8 +1,14 @@
 package com.nokhyun.samplestructure.ui.activity
 
 import android.view.View
+import androidx.activity.viewModels
 import com.nokhyun.samplestructure.R
+import com.nokhyun.samplestructure.common.showToastLong
+import com.nokhyun.samplestructure.common.showToastShort
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
+import com.nokhyun.samplestructure.viewmodel.BaseViewModel
+import com.nokhyun.samplestructure.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -17,7 +23,10 @@ import timber.log.Timber
 /**
  * Created by Nokhyun90 on 2022-02-11
  * */
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+
+    private val _mainViewModel: MainViewModel by viewModels()
 
     override fun init() {
         var count = 0
@@ -30,9 +39,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
         }
-
-        Timber.d("asdasd")
-
 
 //        binding.test.singleClick(2000) {
 //        binding.test.test(CoroutineScope(Dispatchers.Main)) {
@@ -54,6 +60,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override suspend fun coroutineInit() {
 
+    }
+
+    override fun navigator() {
+        _mainViewModel.baseResultNavigator.observe(this){ result ->
+            when(result){
+                is BaseViewModel.BaseResult.ToastMsg -> result.message.showToastShort(this)
+                else -> { }
+            }
+        }
     }
 
 }

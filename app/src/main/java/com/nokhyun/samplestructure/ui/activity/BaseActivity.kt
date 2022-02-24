@@ -20,6 +20,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
 
     abstract fun init()
     abstract fun setView(view: (layoutId: Int) -> Unit)
+    abstract fun navigator()
     abstract suspend fun coroutineInit()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
         }
         setCoroutine()
         init()
+        navigator()
     }
 
     private fun setCoroutine(){
