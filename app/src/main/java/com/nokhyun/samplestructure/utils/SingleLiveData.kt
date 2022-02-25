@@ -1,4 +1,4 @@
-package com.nokhyun.samplestructure.common
+package com.nokhyun.samplestructure.utils
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

@@ -32,6 +32,8 @@ android {
 }
 
 dependencies {
+    implementation project(':domain')
+
     implementation (Ktx.CORE)
     implementation (AndroidX.APP_COMPAT)
     implementation (Google.MATERIAL)

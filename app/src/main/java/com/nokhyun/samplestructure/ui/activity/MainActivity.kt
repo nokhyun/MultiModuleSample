@@ -3,8 +3,7 @@ package com.nokhyun.samplestructure.ui.activity
 import android.view.View
 import androidx.activity.viewModels
 import com.nokhyun.samplestructure.R
-import com.nokhyun.samplestructure.common.showToastLong
-import com.nokhyun.samplestructure.common.showToastShort
+import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel

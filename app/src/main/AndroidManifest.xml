@@ -3,7 +3,7 @@
     package="com.nokhyun.samplestructure">
 
     <application
-        android:name=".common.SampleApplication"
+        android:name=".utils.SampleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

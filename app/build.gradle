@@ -24,6 +24,7 @@ android {
             shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", 'BASE_URL', '"https://api.github.com"'
         }
 
         debug {
@@ -31,6 +32,7 @@ android {
             shrinkResources false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", 'BASE_URL', '"https://api.github.com"'
         }
     }
 

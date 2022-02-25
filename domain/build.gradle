@@ -56,6 +56,9 @@ dependencies {
     implementation(Hilt.DAGGER_HILT_VIEW_MODEL)
     implementation(Hilt.DAGGER_HILT_ANDROIDX_COMPILER)
 
+    // coroutine
+    implementation(Coroutine.COROUTINE)
+
     // LOG
     implementation(LOG.TIMBER)
 }

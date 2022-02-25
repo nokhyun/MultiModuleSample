@@ -1,7 +1,7 @@
 package com.nokhyun.samplestructure.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.nokhyun.samplestructure.common.SingleLiveData
+import com.nokhyun.samplestructure.utils.SingleLiveData
 
 /**
  * Created by ChoKwangJun on 2022-02-24
@@ -18,6 +18,5 @@ abstract class BaseViewModel : ViewModel() {
 
     private val _baseResultNavigator: SingleLiveData<BaseResult> = SingleLiveData()
     val baseResultNavigator: SingleLiveData<BaseResult> = _baseResultNavigator
-
 
 }
