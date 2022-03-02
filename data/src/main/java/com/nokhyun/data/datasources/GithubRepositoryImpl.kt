@@ -1,12 +1,13 @@
 package com.nokhyun.data.datasources
 
 import com.nokhyun.data.common.GithubApi
-import com.nokhyun.data.interfaces.IGithubRepository
 import com.nokhyun.data.network.SampleClient
 import com.nokhyun.data.repository.BaseRepository
-import com.nokhyun.data.response.GithubReposResponse
 import com.nokhyun.domain.common.NetworkError
+import com.nokhyun.domain.model.ReposResponse
+import com.nokhyun.domain.repository.IGithubRepository
 import kotlinx.coroutines.channels.Channel
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -17,8 +18,10 @@ class GithubRepositoryImpl
 //    private val _githubApi: GithubApi
     private val _client: SampleClient
 ) : BaseRepository(), IGithubRepository {
-    override suspend fun getRepos(owner: String, errorHandler: Channel<NetworkError>): List<GithubReposResponse>? =
+    override suspend fun getRepoList(errorHandler: Channel<NetworkError>, owner: String): List<ReposResponse>? =
         safeApiCall(errorHandler) {
-            _client.defaultClient<GithubApi>().getRepos(owner).body()
+            val body = _client.defaultClient<GithubApi>().getRepos(owner).body()
+            Timber.e("result: $body")
+            body
         }
 }

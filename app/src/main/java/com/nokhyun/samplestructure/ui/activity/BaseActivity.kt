@@ -10,6 +10,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+/**
+ * Created by Nokhyun90 on 2022-02
+ * */
 abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
 
     private var _binding: V? = null

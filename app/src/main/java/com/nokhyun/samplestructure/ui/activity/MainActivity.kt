@@ -2,6 +2,7 @@ package com.nokhyun.samplestructure.ui.activity
 
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
@@ -28,6 +29,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val _mainViewModel: MainViewModel by viewModels()
 
     override fun init() {
+        // lifecyclerScope
+
+
+
         var count = 0
 
 //        CoroutineScope(Dispatchers.Main).launch {
@@ -47,6 +52,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 //        }
 //
+
+        _mainViewModel.getRepoList()
     }
 
     override fun setView(view: (layoutId: Int) -> Unit) {
@@ -65,6 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         _mainViewModel.baseResultNavigator.observe(this){ result ->
             when(result){
                 is BaseViewModel.BaseResult.ToastMsg -> result.message.showToastShort(this)
+                is BaseViewModel.BaseResult.ServerError -> result.message.showToastShort(this)
                 else -> { }
             }
         }

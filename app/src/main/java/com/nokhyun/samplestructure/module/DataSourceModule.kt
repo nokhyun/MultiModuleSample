@@ -1,8 +1,8 @@
 package com.nokhyun.samplestructure.module
 
 import com.nokhyun.data.datasources.GithubRepositoryImpl
-import com.nokhyun.data.interfaces.IGithubRepository
 import com.nokhyun.data.network.SampleClient
+import com.nokhyun.domain.repository.IGithubRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -4,6 +4,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Created by Nokhyun90 on 2022.02
+ * */
 class SampleClient(
     val _gson: GsonConverterFactory,
     val _okHttpClient: OkHttpClient
