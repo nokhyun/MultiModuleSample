@@ -1,7 +1,7 @@
 package com.nokhyun.samplestructure.module
 
 import com.nokhyun.samplestructure.BuildConfig
-import com.nokhyun.samplestructure.network.SampleClient
+import com.nokhyun.data.network.SampleClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

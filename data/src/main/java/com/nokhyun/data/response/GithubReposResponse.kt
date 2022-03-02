@@ -1,17 +1,18 @@
 package com.nokhyun.data.response
 
-import com.google.gson.annotations.SerializedName
 
 /**
  * Created by Nokhyun90 on 2022.02.25
  * */
 data class GithubReposResponse(
-    @SerializedName("name")
-    val name: String?,
-    @SerializedName("id")
-    val id: String?,
-    @SerializedName("created_at")
-    val date: String,
-    @SerializedName("html_url")
-    val url: String
-)
+    val result: List<Repos>
+){
+    data class Repos(
+        val id: String,
+        val node_id: String,
+        val name: String,
+        val full_name: String,
+        val private: String,
+        val owner: Any,
+    )
+}

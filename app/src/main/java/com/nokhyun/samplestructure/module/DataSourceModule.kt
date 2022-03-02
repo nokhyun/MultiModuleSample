@@ -1,6 +1,7 @@
 package com.nokhyun.samplestructure.module
 
 import com.nokhyun.data.datasources.GithubRepositoryImpl
+import com.nokhyun.data.interfaces.IGithubRepository
 import com.nokhyun.data.network.SampleClient
 import dagger.Module
 import dagger.Provides
@@ -9,13 +10,15 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Created by Nokhyun90 on 2022.02.25
+ * Created by Nokhyun90 on 2022.03.02
  * */
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideGithubRepo(client: SampleClient) = GithubRepositoryImpl(client)
+    fun provideGithubDataSource(
+        client: SampleClient
+    ): IGithubRepository = GithubRepositoryImpl(client)
 }

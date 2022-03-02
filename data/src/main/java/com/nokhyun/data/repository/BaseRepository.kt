@@ -11,7 +11,7 @@ import java.net.SocketTimeoutException
 /**
  * Created by Nokhyun90 on 2022.02.25
  * */
-class BaseRepository {
+open class BaseRepository {
 
     suspend inline fun <T> safeApiCall(errorHandler: Channel<NetworkError>, crossinline block: suspend () -> T): T? =
         runCatching {
@@ -37,6 +37,4 @@ class BaseRepository {
                     }
                 }
             }.getOrNull()
-}
-
 }

@@ -9,10 +9,9 @@ import kotlinx.coroutines.channels.Channel
  * */
 class GithubUseCase(
     // todo repo
-): IUseCase<Any, Any> {
+//    private val _gitHubRepos:
+){
 
-    override suspend fun invoke(request: Any, errorHandler: Channel<NetworkError>): Any {
-        return "todo"
-    }
+
 }
 
