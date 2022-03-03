@@ -30,7 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun init() {
         // lifecyclerScope
-
+        Timber.e("init")
 
 
         var count = 0
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override suspend fun coroutineInit() {
-
+//        _mainViewModel.test()
     }
 
     override fun navigator() {
@@ -76,6 +76,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 else -> { }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
 }
