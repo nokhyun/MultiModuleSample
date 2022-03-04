@@ -32,7 +32,7 @@ class MainViewModel @Inject constructor(
             launch {
                 val response = _repoListUseCase.getRepoList(errorHandler, owner)
                 response?.forEach {
-                    Timber.e("response: $it")
+//                    Timber.e("response: $it")
                 }
             }
 

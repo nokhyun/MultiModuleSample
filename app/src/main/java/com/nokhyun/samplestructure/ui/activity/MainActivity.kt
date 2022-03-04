@@ -1,11 +1,21 @@
 package com.nokhyun.samplestructure.ui.activity
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
+import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
-import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
+import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
+import com.nokhyun.samplestructure.utils.goActivity
+import com.nokhyun.samplestructure.utils.goAppSetting
+import com.nokhyun.samplestructure.utils.permission
+import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +39,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val _mainViewModel: MainViewModel by viewModels()
 
     override fun init() {
+        binding.setVariable(BR.view, this)
+
+        permission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+            Timber.e("isGranted: $isGranted")
+        }
+
         // lifecyclerScope
         Timber.e("init")
 
@@ -69,17 +85,70 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun navigator() {
-        _mainViewModel.baseResultNavigator.observe(this){ result ->
-            when(result){
+        _mainViewModel.baseResultNavigator.observe(this) { result ->
+            when (result) {
                 is BaseViewModel.BaseResult.ToastMsg -> result.message.showToastShort(this)
                 is BaseViewModel.BaseResult.ServerError -> result.message.showToastShort(this)
-                else -> { }
+                else -> {}
             }
         }
     }
 
     override fun onBackPressed() {
         finish()
+    }
+
+    private val _requestActivity: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            activityResult?.let { result ->
+                if (result.resultCode == RESULT_OK && result.data != null) {
+                    // todo
+                    Timber.e("result: ${result.data}")
+                }
+            }
+        }
+
+    fun gallery() {
+        // todo 권한체크
+        when {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
+                goActivity(GalleryActivity::class.java)
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                // todo 권한 알림 Popup
+                Timber.e("shouldShowRequestPermissionRationale")
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+            }
+            else -> {
+                Timber.e("requestPermissions")
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+            }
+
+//        _requestActivity.launch(Intent().apply {
+//            action = Intent.ACTION_GET_CONTENT
+//            type = "image/*"
+//        })
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            REQUEST_CODE_READ_EXTERNAL_STORAGE -> {
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    // todo 동의
+                    Timber.e("동의")
+                }else{
+                    // todo 거절 토스트 보여줌
+                    Timber.e("거절")
+                    // todo 팝업으로 알려준 후 동의 시 앱 설정으로 이동
+                    goAppSetting()
+                }
+            }
+            else -> { }
+        }
     }
 
 }
