@@ -15,12 +15,6 @@ import timber.log.Timber
  * */
 class GalleryViewHolder(v: ListItemGalleryBinding): BaseViewHolder<GalleryModel, ListItemGalleryBinding>(v) {
     override fun bind(item: GalleryModel, position: Int) {
-        binding.ivListItemGallery.setImageBitmap(getBitmap((binding.root.context as AppCompatActivity).contentResolver, item.contentUri))
-    }
-
-    private fun getBitmap(contentResolver: ContentResolver, contentUri: Uri) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, contentUri))
-    } else {
-        MediaStore.Images.Media.getBitmap(contentResolver, contentUri)
+        binding.ivListItemGallery.setImageURI(item.contentUri)
     }
 }
