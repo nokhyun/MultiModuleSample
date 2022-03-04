@@ -1,7 +1,10 @@
 package com.nokhyun.samplestructure.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.nokhyun.samplestructure.model.GalleryModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -14,4 +17,5 @@ class GalleryViewModel @Inject constructor(
 
     private val _galleryList = arrayListOf<GalleryModel>()
     val galleryList = _galleryList
+
 }

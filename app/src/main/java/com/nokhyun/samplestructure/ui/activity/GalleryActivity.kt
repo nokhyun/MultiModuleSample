@@ -86,13 +86,11 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
 //                }
 //                Timber.e("bitmap: $bitmap")
         }
+
+        // todo
         galleryAdapter.submitList(_galleryViewModel.galleryList)
     }
 
-    private fun getBitmap(contentUri: Uri) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, contentUri))
-    } else {
-        MediaStore.Images.Media.getBitmap(contentResolver, contentUri)
-    }
+
 
 }
