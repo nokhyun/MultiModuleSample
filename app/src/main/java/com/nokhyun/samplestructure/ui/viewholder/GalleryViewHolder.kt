@@ -15,15 +15,18 @@ class GalleryViewHolder(
 
     override fun bind(item: GalleryModel, position: Int) {
 
-        if (item.isSelected) {
-            // todo 이미지 구하면 우측상단에 체크표시로 수정
-            binding.ivListItemGallery.setImageResource(R.drawable.ic_launcher_background)
-        } else {
-            Glide.with(binding.root.context)
-                .load(item.contentUri)
-                .centerCrop()
-                .into(binding.ivListItemGallery)
-        }
+        binding.ivListItemGallerySelect.setImageResource(
+            if (item.isSelected) {
+                R.drawable.outline_done_24
+            } else {
+                R.drawable.outline_check_circle_white_24
+            }
+        )
+
+        Glide.with(binding.root.context)
+            .load(item.contentUri)
+            .centerCrop()
+            .into(binding.ivListItemGallery)
 
         binding.ivListItemGallery.setOnClickListener {
             item.isSelected = !item.isSelected

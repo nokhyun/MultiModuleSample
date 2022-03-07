@@ -4,6 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.2578125" />
+        <entry key="app/src/main/res/drawable/bg_check_selector_24.xml" value="0.189" />
+        <entry key="app/src/main/res/drawable/bg_circle_gray.xml" value="0.189" />
+        <entry key="app/src/main/res/drawable/outline_check_circle_24.xml" value="0.189" />
+        <entry key="app/src/main/res/drawable/outline_check_circle_white_24.xml" value="0.189" />
+        <entry key="app/src/main/res/drawable/outline_done_24.xml" value="0.189" />
+        <entry key="app/src/main/res/drawable/outline_done_white_24.xml" value="0.189" />
         <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/list_item_gallery.xml" value="0.23020833333333332" />
