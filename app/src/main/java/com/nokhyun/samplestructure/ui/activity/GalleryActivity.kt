@@ -93,7 +93,7 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
     /** 완료 */
     fun done() {
         // todo isSelected true 값 만 정리해서 쓰면됨.
-        galleryAdapter.currentList.filter { it.isSelected }.toList().also { list ->
+        galleryAdapter.currentList.filter { it.isSelected }.also { list ->
             "현재 선택된 이미지는 ${list.size}개 입니다.".showToastShort(this)
         }
     }
