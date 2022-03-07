@@ -55,3 +55,8 @@ object Coroutine {
 object LOG {
     const val TIMBER = "com.jakewharton.timber:timber:5.0.1"
 }
+
+object GLIDE{
+    const val GLIDE = "com.github.bumptech.glide:glide:4.13.0"
+    const val GLIDE_ANNOTATION = "com.github.bumptech.glide:compiler:4.13.0"
+}

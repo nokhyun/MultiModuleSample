@@ -9,5 +9,6 @@ import android.net.Uri
 data class GalleryModel(
     val displayName: String,
     val contentUri: Uri,
-    var bitMap: Bitmap? = null
+    var bitMap: Bitmap? = null,
+    var isSelected: Boolean = false
 )

@@ -103,4 +103,8 @@ dependencies {
 
     // LOG
     implementation(LOG.TIMBER)
+
+    // GLIDE
+    implementation(GLIDE.GLIDE)
+//    implementation(GLIDE.GLIDE_ANNOTATION)
 }
