@@ -12,6 +12,7 @@ import com.nokhyun.samplestructure.adapter.GalleryAdapter
 import com.nokhyun.samplestructure.databinding.ActivityGalleryBinding
 import com.nokhyun.samplestructure.model.GalleryModel
 import com.nokhyun.samplestructure.ui.common.GridDecoration
+import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.viewmodel.GalleryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -82,6 +83,7 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
         galleryAdapter.submitList(_galleryViewModel.galleryList)
     }
 
+    // todo 고민좀..
     private fun getRvHeight() {
         binding.rvGallery.post {
             binding.rvGallery.measuredHeight / 5
@@ -91,6 +93,9 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
     /** 완료 */
     fun done() {
         // todo isSelected true 값 만 정리해서 쓰면됨.
+        galleryAdapter.currentList.filter { it.isSelected }.toList().also { list ->
+            "현재 선택된 이미지는 ${list.size}개 입니다.".showToastShort(this)
+        }
     }
 
 }
