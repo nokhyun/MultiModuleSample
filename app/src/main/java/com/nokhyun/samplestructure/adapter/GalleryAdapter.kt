@@ -2,6 +2,7 @@ package com.nokhyun.samplestructure.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.nokhyun.samplestructure.adapter.diffutil.GalleryDiffUtil
 import com.nokhyun.samplestructure.databinding.ListItemGalleryBinding
 import com.nokhyun.samplestructure.model.GalleryModel

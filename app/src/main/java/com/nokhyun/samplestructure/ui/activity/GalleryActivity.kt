@@ -6,6 +6,9 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
+import com.bumptech.glide.MemoryCategory
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.adapter.GalleryAdapter
@@ -34,14 +37,7 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
 
         getRvHeight()
         getGallery()
-        binding.rvGallery.apply {
-            adapter = galleryAdapter
-            addItemDecoration(GridDecoration())
-            layoutManager = GridLayoutManager(this@GalleryActivity, 3)
-            setItemViewCacheSize(20)
-        }
-
-
+        setAdapter()
     }
 
     override fun setView(view: (layoutId: Int) -> Unit) {
@@ -95,6 +91,17 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
         // todo isSelected true 값 만 정리해서 쓰면됨.
         galleryAdapter.currentList.filter { it.isSelected }.also { list ->
             "현재 선택된 이미지는 ${list.size}개 입니다.".showToastShort(this)
+        }
+    }
+
+    private fun setAdapter(){
+        binding.rvGallery.apply {
+            adapter = galleryAdapter
+            addItemDecoration(GridDecoration())
+            layoutManager = GridLayoutManager(this@GalleryActivity, 3)
+            setItemViewCacheSize(100)
+
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
     }
 

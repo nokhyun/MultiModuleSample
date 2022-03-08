@@ -106,5 +106,5 @@ dependencies {
 
     // GLIDE
     implementation(GLIDE.GLIDE)
-//    implementation(GLIDE.GLIDE_ANNOTATION)
+    kapt(GLIDE.GLIDE_ANNOTATION)
 }

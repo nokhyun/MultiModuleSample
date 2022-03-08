@@ -1,6 +1,7 @@
 package com.nokhyun.samplestructure.ui.viewholder
 
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ListItemGalleryBinding
 import com.nokhyun.samplestructure.model.GalleryModel
@@ -25,7 +26,15 @@ class GalleryViewHolder(
 
         Glide.with(binding.root.context)
             .load(item.contentUri)
+            .override(300, 300)
             .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .thumbnail(
+                Glide.with(binding.root.context)
+                    .load(item.contentUri)
+                    .centerCrop()
+                    .sizeMultiplier(0.5f)
+            )
             .into(binding.ivListItemGallery)
 
         binding.ivListItemGallery.setOnClickListener {
