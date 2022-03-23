@@ -27,6 +27,9 @@
             android:name=".ui.activity.GalleryActivity"
             android:screenOrientation="fullSensor" />
 
+        <activity android:name=".ui.activity.LoggedOutActivity"
+            android:screenOrientation="fullSensor"/>
+
     </application>
 
 </manifest>

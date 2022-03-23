@@ -14,7 +14,7 @@ android {
         targetSdk 31
         versionCode 1
 
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -62,6 +62,7 @@ android {
     buildFeatures {
         dataBinding true
     }
+
 }
 
 dependencies {

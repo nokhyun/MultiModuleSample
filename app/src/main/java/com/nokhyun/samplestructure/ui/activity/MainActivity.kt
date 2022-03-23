@@ -72,6 +72,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         _mainViewModel.getRepoList()
     }
 
+    fun figmaSample(){
+        goActivity(LoggedOutActivity::class.java)
+    }
+
     override fun setView(view: (layoutId: Int) -> Unit) {
         view(R.layout.activity_main)
     }
