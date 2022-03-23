@@ -1,9 +1,12 @@
 package com.nokhyun.samplestructure.ui.activity
 
 import android.os.Bundle
+import android.os.Parcelable
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import com.nokhyun.samplestructure.R
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -51,4 +54,34 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
         super.onBackPressed()
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+    }
+
+    protected fun <T> showFragment(@IdRes layoutId: Int, fragment: Fragment, map: HashMap<String, T>? = null) {
+        val fm = supportFragmentManager
+        val ft = fm.beginTransaction()
+        ft.addToBackStack(null)
+        ft.replace(layoutId, fragment.apply {
+            arguments = getBundle(map)
+        })
+        ft.commit()
+    }
+
+    private fun <T> getBundle(map: HashMap<String, T>?): Bundle {
+        val bundle = Bundle()
+
+        map?.entries?.forEach {
+            when (it.value) {
+                is String -> bundle.putString(it.key, it.value.toString())
+                is Parcelable -> bundle.putParcelable(it.key, it.value as Parcelable)
+                else -> {}
+            }
+        }
+        return bundle
+    }
+
+
 }
