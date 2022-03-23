@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "775370776808",
+    "project_id": "samplestructure-a2a86",
+    "storage_bucket": "samplestructure-a2a86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775370776808:android:6c586515a660fce7df295d",
+        "android_client_info": {
+          "package_name": "com.nokhyun.samplestructure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775370776808-rcf7q1fkntt0t5vmaodm6ckqb6ttrs2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkJSpF3B_OxSPKe1MYk-8SLxVxZpgg_v8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775370776808-rcf7q1fkntt0t5vmaodm6ckqb6ttrs2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

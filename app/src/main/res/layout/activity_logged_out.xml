@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="com.nokhyun.samplestructure.ui.activity.LoggedOutActivity"/>
+        <variable
+            name="view"
+            type="LoggedOutActivity" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,6 +69,7 @@
                 android:textSize="16dp"
                 android:textColor="@color/white"
                 android:text="REGISTER"
+                android:onClick="@{() -> view.register()}"
                 android:background="@drawable/bg_outline_black_in_black_radius_2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

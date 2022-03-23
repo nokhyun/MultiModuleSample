@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -108,4 +109,7 @@ dependencies {
     // GLIDE
     implementation(GLIDE.GLIDE)
     kapt(GLIDE.GLIDE_ANNOTATION)
+
+    // FIREBASE
+    implementation(FIREBASE.ANALYTICS)
 }

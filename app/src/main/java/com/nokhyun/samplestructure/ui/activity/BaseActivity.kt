@@ -22,7 +22,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
     abstract fun init()
     abstract fun setView(view: (layoutId: Int) -> Unit)
     abstract fun navigator()
-    abstract suspend fun coroutineInit()
+    abstract suspend fun coroutineInit()            // 이거 필요여부에 대한 생각. 다시 해보자.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

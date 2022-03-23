@@ -30,6 +30,9 @@
         <activity android:name=".ui.activity.LoggedOutActivity"
             android:screenOrientation="fullSensor"/>
 
+        <activity android:name=".ui.activity.RegisterActivity"
+            android:screenOrientation="fullSensor"/>
+
     </application>
 
 </manifest>

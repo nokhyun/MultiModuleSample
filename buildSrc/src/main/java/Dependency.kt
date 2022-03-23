@@ -60,3 +60,7 @@ object GLIDE{
     const val GLIDE = "com.github.bumptech.glide:glide:4.13.0"
     const val GLIDE_ANNOTATION = "com.github.bumptech.glide:compiler:4.13.0"
 }
+
+object FIREBASE{
+    const val ANALYTICS = "com.google.firebase:firebase-analytics-ktx:20.1.1"
+}
