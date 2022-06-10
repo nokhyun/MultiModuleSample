@@ -1,8 +1,7 @@
 package com.nokhyun.samplestructure.module
 
-import com.nokhyun.data.datasources.GithubRepositoryImpl
-import com.nokhyun.domain.repository.IGithubRepository
-import com.nokhyun.domain.usecase.RepoListUseCase
+import com.nokhyun.domain.repository.GithubRepository
+import com.nokhyun.domain.usecase.GetGithubListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +17,6 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideRepoListUseCase(githubRepository: IGithubRepository) = RepoListUseCase(githubRepository)
+    fun provideRepoListUseCase(githubRepository: GithubRepository) = GetGithubListUseCase(githubRepository)
 
 }

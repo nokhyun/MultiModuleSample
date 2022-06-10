@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName
  * */
 data class ReposResponse(
     @SerializedName("id")
-//    val id: String,
-//    val node_id: String,
+    val id: String,
+    val node_id: String,
     val name: String,
     val full_name: String,
     val private: String,
-//    val owner: Any,
+    val owner: Any,
 )

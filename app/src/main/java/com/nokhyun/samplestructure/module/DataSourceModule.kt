@@ -1,8 +1,10 @@
 package com.nokhyun.samplestructure.module
 
-import com.nokhyun.data.datasources.GithubRepositoryImpl
+import com.nokhyun.data.datasources.GitHubRemoteDataSource
+import com.nokhyun.data.datasources.GitHubRemoteDateSourceImpl
 import com.nokhyun.data.network.SampleClient
-import com.nokhyun.domain.repository.IGithubRepository
+import com.nokhyun.data.repository.GithubRepositoryImpl
+import com.nokhyun.domain.repository.GithubRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +21,13 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideGithubDataSource(
+        client: SampleClient,
+        remoteDataSource: GitHubRemoteDataSource
+    ): GithubRepository = GithubRepositoryImpl(client, remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideGithubRemoteDateSource(
         client: SampleClient
-    ): IGithubRepository = GithubRepositoryImpl(client)
+    ): GitHubRemoteDataSource = GitHubRemoteDateSourceImpl(client)
 }

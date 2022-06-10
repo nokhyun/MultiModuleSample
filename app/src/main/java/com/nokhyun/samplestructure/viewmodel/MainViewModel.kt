@@ -1,14 +1,15 @@
 package com.nokhyun.samplestructure.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import com.nokhyun.domain.usecase.RepoListUseCase
+import com.nokhyun.domain.entity.ReposEntity
+import com.nokhyun.domain.usecase.GetGithubListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.io.IOException
-import java.lang.RuntimeException
 import javax.inject.Inject
 
 /**
@@ -17,11 +18,11 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val _savedStateHandle: SavedStateHandle,
-    private val _repoListUseCase: RepoListUseCase
+    private val _getGithubListUseCase: GetGithubListUseCase
 ) : BaseViewModel() {
 
     fun getRepoList(owner: String = "nokhyun") {
-        viewModelScope.launch(Dispatchers.IO + coroutineErrorHandler) {
+        viewModelScope.launch(coroutineErrorHandler) {
 //        viewModelScope.launch(Dispatchers.IO + coroutineErrorHandler + supervisorJob) {
             launch(supervisorJob) {
 //            launch {
@@ -30,9 +31,9 @@ class MainViewModel @Inject constructor(
             }
 
             launch {
-                val response = _repoListUseCase.getRepoList(errorHandler, owner)
+                val response = _getGithubListUseCase.getRepoList(errorHandler, owner)
                 response?.forEach {
-//                    Timber.e("response: $it")
+                    Timber.e("response: $it")
                 }
             }
 
