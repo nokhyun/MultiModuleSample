@@ -1,8 +1,13 @@
 package com.nokhyun.samplestructure.viewmodel
 
+import android.os.Build
+import android.util.Log
+import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.textfield.TextInputLayout
 import com.nokhyun.domain.entity.ReposEntity
 import com.nokhyun.domain.usecase.GetGithubListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +48,23 @@ class MainViewModel @Inject constructor(
     val gitHubRepoLast10: Flow<List<ReposEntity>> = _gitHubRepos.map { it.reversed().take(10) }
     /* ShardFlow End*/
 
+    val holyMoly = listOf<String>("1")
+    val holyMolyGwaka = holyMoly.asFlow().transform { it ->
+        emit(it.toInt())
+    }.map {
+        it.toFloat()
+    }.flatMapConcat {
+        flow {
+            emit(it)
+        }
+    }
+
+    val holMolyArray = holyMoly.flatMap {
+        listOf("hi" + it)
+    }.map {
+
+    }
+
     fun getRepoList(owner: String = "nokhyun") {
         viewModelScope.launch(coroutineErrorHandler) {
 //        viewModelScope.launch(Dispatchers.IO + coroutineErrorHandler + supervisorJob) {
@@ -56,9 +78,9 @@ class MainViewModel @Inject constructor(
                 val response = _getGithubListUseCase.getRepoList(errorHandler, owner)
                 Timber.e("result")
 //                _savedStateHandle.set(KEY_GITHUB_REPOS, response)
-                _githubRepos.value = response?: emptyList()
+                _githubRepos.value = response ?: emptyList()
 
-                _gitHubRepos.emit(response?: emptyList())
+                _gitHubRepos.emit(response ?: emptyList())
 //                    response?.forEach {
 //                    Timber.e("response: $it")
 
@@ -111,6 +133,36 @@ class MainViewModel @Inject constructor(
 
             Timber.e("Job2 Complete")
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun removeValue() {
+        val array = arrayOf(
+            Foo(1),
+            Foo(2),
+            Foo(3),
+            Foo(4),
+            Foo(5),
+            Foo(6, name = "what"),
+            Foo(7),
+            Foo(8),
+            Foo(9),
+            Foo(10)
+        )
+        log("before array.size: ${array.size}")
+        val list = array.toMutableList().also {
+            it.removeIf { it.num == 5 || it.name?: "" == "what"}
+        }
+        log("after array: $list :: size: ${list.size}")
+    }
+
+    data class Foo(
+        val num: Int,
+        val name: String? = null
+    )
+
+    private fun log(msg: String) {
+        Log.e(javaClass.simpleName, msg)
     }
 
     companion object {

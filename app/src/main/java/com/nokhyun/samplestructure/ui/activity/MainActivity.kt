@@ -3,6 +3,7 @@ package com.nokhyun.samplestructure.ui.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
+import com.nokhyun.samplestructure.observe.ConnectivityObserver
+import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.nokhyun.samplestructure.utils.goActivity
 import com.nokhyun.samplestructure.utils.goAppSetting
@@ -24,9 +27,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ActorScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.actor
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,9 +38,23 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
+    private lateinit var connectivityObserver: ConnectivityObserver
+
+
     private val _mainViewModel: MainViewModel by viewModels()
 
     override fun init() {
+        connectivityObserver = NetworkConnectivityObserver(applicationContext)
+        lifecycleScope.launch {
+
+            connectivityObserver.observe().onEach {
+                binding.btnTest.text = "Network Status: $it"
+            }.launchIn(lifecycleScope)
+//            connectivityObserver.observe().collect {
+//                binding.btnTest.text = "Network Status: $it"
+//            }
+        }
+
         binding.setVariable(BR.view, this)
 
         permission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
@@ -119,7 +134,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
         lifecycleScope.launch {
-            val delayTest = listOf<Int>(0,1,2,3,4,5,6,7,8,9)
+            val delayTest = listOf<Int>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
             delayTest.map {
                 Timber.e("it: $it ${SimpleDateFormat("mm:ss").format(Date(System.currentTimeMillis()))}")
@@ -128,6 +143,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }.map {
                 Timber.e("after delay result Time: ${SimpleDateFormat("mm:ss").format(Date(System.currentTimeMillis()))}")
             }
+        }
+
+
+        lifecycleScope.launch {
+            delay(3000)
+            binding.tilTest.error = "error"
+        }
+        binding.tilTest2.setEndIconOnClickListener {
+            log("setEndIconOnClickListener")
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            _mainViewModel.removeValue()
         }
     }
 
