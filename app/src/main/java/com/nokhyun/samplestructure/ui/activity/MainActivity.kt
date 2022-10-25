@@ -15,6 +15,7 @@ import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
+import com.nokhyun.samplestructure.ui.dialog.PopupDialogFragment
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.nokhyun.samplestructure.utils.goActivity
 import com.nokhyun.samplestructure.utils.goAppSetting
@@ -89,6 +90,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             _mainViewModel.getRepoList()
         }
 
+        showDialog()
+
 //        lifecycleScope.launchWhenResumed {
 //
 //            _mainViewModel.githubReposStateSaved.collect {
@@ -156,6 +159,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             _mainViewModel.removeValue()
+        }
+    }
+
+    private fun showDialog() {
+        binding.btnDialog.setOnClickListener {
+            PopupDialogFragment().show(supportFragmentManager, "popup")
         }
     }
 

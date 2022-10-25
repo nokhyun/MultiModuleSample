@@ -80,14 +80,14 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             app:boxStrokeColor="@color/black"
+            app:boxStrokeErrorColor="?colorError"
             app:boxStrokeWidth="1dp"
             app:endIconDrawable="@drawable/bg_circle_gray"
             app:endIconMode="clear_text"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
-            app:boxStrokeErrorColor="?colorError"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnFigmaSample">
@@ -96,20 +96,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
-                android:text="TextInputEditText Sample"
-                android:hint="TextInputEditText Sample" />
+                android:hint="TextInputEditText Sample"
+                android:text="TextInputEditText Sample" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintTop_toBottomOf="@id/tilTest2"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilTest2"
             app:strokeColor="@color/black"
             app:strokeWidth="2dp">
 
@@ -136,6 +137,16 @@
                 android:autofillHints="name"
                 android:hint="TextInputEditText Sample2" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilTest2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
