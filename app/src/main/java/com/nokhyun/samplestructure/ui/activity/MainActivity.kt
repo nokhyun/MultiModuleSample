@@ -41,7 +41,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private lateinit var connectivityObserver: ConnectivityObserver
 
-
     private val _mainViewModel: MainViewModel by viewModels()
 
     override fun init() {
