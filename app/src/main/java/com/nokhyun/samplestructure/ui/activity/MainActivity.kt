@@ -9,6 +9,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnAttach
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
@@ -16,11 +18,8 @@ import com.nokhyun.samplestructure.databinding.ActivityMainBinding
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
 import com.nokhyun.samplestructure.ui.dialog.PopupDialogFragment
+import com.nokhyun.samplestructure.utils.*
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
-import com.nokhyun.samplestructure.utils.goActivity
-import com.nokhyun.samplestructure.utils.goAppSetting
-import com.nokhyun.samplestructure.utils.permission
-import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +43,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val _mainViewModel: MainViewModel by viewModels()
 
     override fun init() {
+        binding.setVariable(BR.view, this)
+        binding.setVariable(BR.viewModel, _mainViewModel)
+        binding.lifecycleOwner = this
+
+        //
+        changeTextColor()
+
+        // Device NetworkConnectivityObserver
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         lifecycleScope.launch {
 
@@ -55,7 +62,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //            }
         }
 
-        binding.setVariable(BR.view, this)
 
         permission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
             Timber.e("isGranted: $isGranted")
@@ -159,6 +165,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             _mainViewModel.removeValue()
         }
+    }
+
+    private fun changeTextColor() {
+//        binding.tvChangeColor.changeKeywordColor("스트")
     }
 
     private fun showDialog() {

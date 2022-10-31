@@ -5,9 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.nokhyun.samplestructure.R
 import timber.log.Timber
 
@@ -71,3 +76,17 @@ fun AppCompatActivity?.goAppSetting() {
     }
 }
 
+fun TextView.changeKeywordColor(keyword: String?) {
+    if (!keyword.isNullOrEmpty()) {
+        val start = this.text.indexOf(keyword)
+        val end = start + keyword.length
+
+        if (start != -1) {
+            SpannableStringBuilder(this.text).apply {
+                this@apply.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.purple_700)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }.run {
+                this@changeKeywordColor.text = this@run
+            }
+        }
+    }
+}

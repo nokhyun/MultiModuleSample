@@ -27,6 +27,14 @@ class MainViewModel @Inject constructor(
     private val _getGithubListUseCase: GetGithubListUseCase
 ) : BaseViewModel() {
 
+    // test
+    private val _keyword: MutableStateFlow<String?> = MutableStateFlow(null)
+    val keyword: StateFlow<String?> = _keyword
+
+    init {
+        _keyword.value = "스트"
+    }
+
     /* StateFlow */
     val githubReposStateSaved: StateFlow<List<ReposEntity>?> =
         _savedStateHandle.getLiveData<List<ReposEntity>>(KEY_GITHUB_REPOS).asFlow()
@@ -76,7 +84,7 @@ class MainViewModel @Inject constructor(
 
             launch {
                 val response = _getGithubListUseCase.getRepoList(errorHandler, owner)
-                Timber.e("result")
+//                Timber.e("result")
 //                _savedStateHandle.set(KEY_GITHUB_REPOS, response)
                 _githubRepos.value = response ?: emptyList()
 
