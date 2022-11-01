@@ -15,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
+import com.nokhyun.samplestructure.module.Money
+import com.nokhyun.samplestructure.module.SampleEntryPoint
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
 import com.nokhyun.samplestructure.ui.dialog.PopupDialogFragment
@@ -22,7 +24,9 @@ import com.nokhyun.samplestructure.utils.*
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel
+import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ActorScope
 import kotlinx.coroutines.channels.Channel
@@ -46,6 +50,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.setVariable(BR.view, this)
         binding.setVariable(BR.viewModel, _mainViewModel)
         binding.lifecycleOwner = this
+
+        // EntryPoint Test
+        val money = EntryPoints.get(this, SampleEntryPoint::class.java).getMoney()
+        Timber.e("money result: ${money.money}")
 
         //
         changeTextColor()

@@ -29,6 +29,9 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
     @Inject
     lateinit var galleryAdapter: GalleryAdapter
 
+    @Inject
+    lateinit var galleryAdapter1: GalleryAdapter
+
     private val _galleryViewModel: GalleryViewModel by viewModels()
 
     override fun init() {
@@ -38,6 +41,10 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
         getRvHeight()
         getGallery()
         setAdapter()
+
+        // test
+        Timber.e("galleryAdapter: ${galleryAdapter.hashCode()}")
+        Timber.e("galleryAdapter1: ${galleryAdapter1.hashCode()}")
     }
 
     override fun setView(view: (layoutId: Int) -> Unit) {

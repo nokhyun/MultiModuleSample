@@ -24,5 +24,4 @@ object ActivityModule {
     @Provides
     @ActivityScoped
     fun provideGalleyAdapter(galleryDiffUtil: GalleryDiffUtil) = GalleryAdapter(galleryDiffUtil)
-
 }

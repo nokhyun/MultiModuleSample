@@ -29,6 +29,10 @@ class PopupDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroy()
