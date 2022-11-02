@@ -144,6 +144,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Dialog"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilTest2" />
