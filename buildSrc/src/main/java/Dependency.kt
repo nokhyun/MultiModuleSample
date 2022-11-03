@@ -17,6 +17,7 @@ object AndroidX{
 
 object Google{
     const val MATERIAL = "com.google.android.material:material:1.5.0"
+    const val LOCATION = "com.google.android.gms:play-services-location:20.0.0"
 }
 
 object UnitTest{

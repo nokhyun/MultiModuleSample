@@ -8,17 +8,16 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.doOnAttach
-import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
-import com.nokhyun.samplestructure.module.Money
 import com.nokhyun.samplestructure.module.SampleEntryPoint
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
+import com.nokhyun.samplestructure.service.LocationService
 import com.nokhyun.samplestructure.ui.dialog.PopupDialogFragment
 import com.nokhyun.samplestructure.utils.*
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
@@ -26,7 +25,6 @@ import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ActorScope
 import kotlinx.coroutines.channels.Channel
@@ -50,6 +48,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.setVariable(BR.view, this)
         binding.setVariable(BR.viewModel, _mainViewModel)
         binding.lifecycleOwner = this
+
+        // location
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            0
+        )
 
         // EntryPoint Test
         val money = EntryPoints.get(this, SampleEntryPoint::class.java).getMoney()
@@ -173,6 +180,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             _mainViewModel.removeValue()
         }
+
+        binding.tvChangeColor.setOnClickListener {
+            startService(Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+            })
+        }
     }
 
     private fun changeTextColor() {
@@ -181,7 +194,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun showDialog() {
         binding.btnDialog.setOnClickListener {
-            PopupDialogFragment().show(supportFragmentManager, "popup")
+//            PopupDialogFragment().show(supportFragmentManager, "popup")
+            startService(Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+            })
         }
     }
 
