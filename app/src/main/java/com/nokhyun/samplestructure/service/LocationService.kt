@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class LocationService : Service() {
@@ -55,13 +56,13 @@ class LocationService : Service() {
                 println(e.printStackTrace())
             }.onEach { location ->
                 println("location: $location")
-                val lat = location.latitude.toString().takeLast(3)
-                val lng = location.longitude.toString().takeLast(3)
+                val lat = location.latitude.toString()
+                val lng = location.longitude.toString()
                 val updatedNotification = notification.setContentText(
-                    "Location: $$lat, lng"
+                    "Location: $lat, lng:$lng"
                 )
                 notificationManager.notify(1, updatedNotification.build())
-            }
+            }.launchIn(serviceScope)
 
         startForeground(1, notification.build())
     }
