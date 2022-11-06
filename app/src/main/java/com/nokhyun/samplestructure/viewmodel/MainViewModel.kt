@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputLayout
 import com.nokhyun.domain.entity.ReposEntity
 import com.nokhyun.domain.usecase.GetGithubListUseCase
+import com.nokhyun.samplestructure.delegate.FoodDelegate
+import com.nokhyun.samplestructure.delegate.FoodDelegateImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -24,8 +26,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val _savedStateHandle: SavedStateHandle,
-    private val _getGithubListUseCase: GetGithubListUseCase
-) : BaseViewModel() {
+    private val _getGithubListUseCase: GetGithubListUseCase,
+    private val _foodDelegate: FoodDelegateImpl
+) : BaseViewModel(), FoodDelegate by _foodDelegate {
 
     // test
     private val _keyword: MutableStateFlow<String?> = MutableStateFlow(null)
@@ -33,6 +36,8 @@ class MainViewModel @Inject constructor(
 
     init {
         _keyword.value = "스트"
+
+        Timber.e("food: ${_foodDelegate.getFood()}")
     }
 
     /* StateFlow */

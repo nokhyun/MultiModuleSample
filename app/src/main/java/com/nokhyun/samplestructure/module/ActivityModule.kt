@@ -2,6 +2,8 @@ package com.nokhyun.samplestructure.module
 
 import com.nokhyun.samplestructure.adapter.GalleryAdapter
 import com.nokhyun.samplestructure.adapter.diffutil.GalleryDiffUtil
+import com.nokhyun.samplestructure.delegate.FoodDelegate
+import com.nokhyun.samplestructure.delegate.FoodDelegateImpl
 import com.nokhyun.samplestructure.model.GalleryModel
 import dagger.Module
 import dagger.Provides

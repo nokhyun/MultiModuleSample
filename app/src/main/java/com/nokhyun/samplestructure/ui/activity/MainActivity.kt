@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -209,12 +208,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         val testLiveData: TestLiveData<String> = TestLiveData()
         testLiveData.value = "asd"
 
-        testLiveData.observe(this){
+        testLiveData.observe(this) {
             Timber.e("observe Call")
         }
     }
 
-    class TestLiveData<String>: MutableLiveData<String>(){
+    class TestLiveData<String> : MutableLiveData<String>() {
         override fun onActive() {
             // 활성화 되었을 때 동작
             super.onActive()
@@ -228,7 +227,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private class ForeverObserver: androidx.lifecycle.Observer<String> {
+    private class ForeverObserver : androidx.lifecycle.Observer<String> {
         override fun onChanged(t: String?) {
             Timber.e("value changed")
         }
