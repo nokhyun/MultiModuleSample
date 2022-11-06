@@ -10,6 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
@@ -18,7 +21,6 @@ import com.nokhyun.samplestructure.module.SampleEntryPoint
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
 import com.nokhyun.samplestructure.service.LocationService
-import com.nokhyun.samplestructure.ui.dialog.PopupDialogFragment
 import com.nokhyun.samplestructure.utils.*
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
@@ -65,6 +67,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         //
         changeTextColor()
 
+        // liveData
+        liveDataTest()
+
         // Device NetworkConnectivityObserver
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         lifecycleScope.launch {
@@ -89,7 +94,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         var count = 0
 
 //        CoroutineScope(Dispatchers.Main).launch {
-        binding.btnTest.singleClick() {
+        binding.btnTest.singleClick {
 //                log("${System.currentTimeMillis()}:: 눌러!!!: $count")
             log("${System.currentTimeMillis()}:: 눌러!!!")
 //                count++
@@ -185,6 +190,47 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             startService(Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_STOP
             })
+        }
+    }
+
+    private fun liveDataTest() {
+        val liveData: LiveData<String> = MutableLiveData<String>()
+
+        /*
+       * https://developer.android.com/reference/androidx/lifecycle/LiveData#observeForever(androidx.lifecycle.Observer%3C?%20super%20T%3E)
+       * 지정된 관찰자를 관찰자 목록에 추가합니다. 이 호출은 observe항상 활성 상태인 LifecycleOwner와 유사합니다.
+       *  이는 주어진 관찰자가 모든 이벤트를 수신하고 자동으로 제거되지 않음을 의미합니다. removeObserver이 LiveData 관찰을 중지 하려면 수동으로 호출해야 합니다 .
+       *  LiveData에는 이러한 관찰자 중 하나가 있지만 활성 상태로 간주됩니다.
+       * 관찰자가 이 LiveData의 소유자와 함께 이미 추가된 경우 LiveData는 IllegalArgumentException.
+       * */
+        liveData.observeForever(ForeverObserver())
+        liveData.removeObservers(this)
+
+        val testLiveData: TestLiveData<String> = TestLiveData()
+        testLiveData.value = "asd"
+
+        testLiveData.observe(this){
+            Timber.e("observe Call")
+        }
+    }
+
+    class TestLiveData<String>: MutableLiveData<String>(){
+        override fun onActive() {
+            // 활성화 되었을 때 동작
+            super.onActive()
+            Timber.e("onActive")
+        }
+
+        override fun onInactive() {
+            // 백그라운드 또는 재 시작 되었을 때 동작
+            super.onInactive()
+            Timber.e("onInactive")
+        }
+    }
+
+    private class ForeverObserver: androidx.lifecycle.Observer<String> {
+        override fun onChanged(t: String?) {
+            Timber.e("value changed")
         }
     }
 
