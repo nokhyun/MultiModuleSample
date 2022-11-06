@@ -203,8 +203,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
        *  LiveData에는 이러한 관찰자 중 하나가 있지만 활성 상태로 간주됩니다.
        * 관찰자가 이 LiveData의 소유자와 함께 이미 추가된 경우 LiveData는 IllegalArgumentException.
        * */
-        liveData.observeForever(ForeverObserver())
-        liveData.removeObservers(this)
+//        liveData.observeForever(ForeverObserver())
+//        liveData.removeObservers(this)
 
         val testLiveData: TestLiveData<String> = TestLiveData()
         testLiveData.value = "asd"
@@ -218,13 +218,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         override fun onActive() {
             // 활성화 되었을 때 동작
             super.onActive()
-            Timber.e("onActive")
+            Timber.e("onActive hasObserver: ${hasObservers()}")
         }
 
         override fun onInactive() {
-            // 백그라운드 또는 재 시작 되었을 때 동작
+            // 백그라운드 또는 재 시작 되었을 때 동작하긴하는데... 문서에 따르면 start, resume, 옵저버의 유무를 의미하지 않음.
             super.onInactive()
-            Timber.e("onInactive")
+            Timber.e("onInactive hasObserver: ${hasObservers()}")
         }
     }
 
