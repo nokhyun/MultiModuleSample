@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
@@ -51,13 +52,40 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.lifecycleOwner = this
 
         // location
-        ActivityCompat.requestPermissions(
-            this, arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            0
-        )
+        binding.btnPermission.setOnClickListener {
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                Timber.e("권한 있음")
+//            } else {
+//                Timber.e("권한 요청")
+//                ActivityCompat.requestPermissions(
+//                    this, arrayOf(
+//                        Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+//                    ), 1001
+//                )
+//            }
+
+            when {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
+                    Timber.e("체크 권한 있음")
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
+                    Timber.e("왜 취소함")
+                    MaterialAlertDialogBuilder(this).setTitle("왜 취소했어?")
+                        .setMessage("왜??")
+                        .setPositiveButton("확인") { dialog, _ ->
+                            dialog.dismiss()
+                        }.create().show()
+                }
+                else -> {
+                    Timber.e("권한 요청")
+                    ActivityCompat.requestPermissions(
+                        this, arrayOf(
+                            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+                        ), 1001
+                    )
+                }
+            }
+        }
 
         // EntryPoint Test
         val money = EntryPoints.get(this, SampleEntryPoint::class.java).getMoney()
@@ -276,38 +304,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         finish()
     }
 
-    private val _requestActivity: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-            activityResult?.let { result ->
-                if (result.resultCode == RESULT_OK && result.data != null) {
-                    // todo
-                    Timber.e("result: ${result.data}")
-                }
+    private val _requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+        activityResult?.let { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                // todo
+                Timber.e("result: ${result.data}")
             }
         }
+    }
 
     fun gallery() {
         // todo 권한체크
         when {
             ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                this, Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED -> {
                 goActivity(GalleryActivity::class.java)
             }
             shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
                 // todo 권한 알림 Popup
                 Timber.e("shouldShowRequestPermissionRationale")
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE
-                )
+
             }
             else -> {
                 Timber.e("requestPermissions")
                 requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_READ_EXTERNAL_STORAGE
                 )
             }
 
@@ -320,9 +342,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -338,7 +358,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     goAppSetting()
                 }
             }
-            else -> {}
+            1001 -> {
+                Timber.e("위치권한")
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    Timber.e("동의")
+                } else {
+                    Timber.e("거절")
+                }
+            }
+            else -> {
+                Timber.e("누구냐")
+            }
         }
     }
 
