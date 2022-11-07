@@ -17,12 +17,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 //    }
 
     private val permissionLaunchMulti = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGrantedMap ->
-        isGrantedMap.filter { !it.value }
-            .map {
-                it.value
-            }.also {
-                Timber.e("result: $it")
-            }
+        val isPermission = isGrantedMap.values.all { it }
+        // shouldShowRequestPermissionRationale 거절 후 에 호출.
+        Timber.e("isPermission: $isPermission")
     }
 
     override fun init() {
@@ -33,10 +30,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                 }
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) ||
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                    // 시스템팝업내 에서 호출해야 동작. 다이얼로그 없이 호출 시 미 동작.
                     Timber.e("왜 취소함")
                     MaterialAlertDialogBuilder(requireContext()).setTitle("왜 취소했어?")
                         .setMessage("왜??")
                         .setPositiveButton("확인") { dialog, _ ->
+                            permissionLaunchMulti.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
                             dialog.dismiss()
                         }.create().show()
 

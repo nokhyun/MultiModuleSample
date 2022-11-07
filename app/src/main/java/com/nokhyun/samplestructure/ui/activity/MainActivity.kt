@@ -52,6 +52,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.lifecycleOwner = this
 
         // location
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+            ), 1001
+        )
         binding.btnPermission.setOnClickListener {
 //            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 //                Timber.e("권한 있음")
