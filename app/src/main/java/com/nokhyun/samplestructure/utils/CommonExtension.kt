@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.Uri
 import android.provider.Settings
 import android.text.Spannable
@@ -17,6 +18,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.nokhyun.samplestructure.R
 import timber.log.Timber
+
+val Int.dp: Int
+get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+
+val Float.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
 /** short toast */
 fun String?.showToastShort(context: Context?) {

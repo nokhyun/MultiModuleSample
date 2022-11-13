@@ -1,15 +1,18 @@
 package com.nokhyun.samplestructure.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -101,6 +104,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         // liveData
         liveDataTest()
+
+        // TOUCH EVENT
+        setTouchEvent()
 
         // Device NetworkConnectivityObserver
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
@@ -377,6 +383,46 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setTouchEvent() {
+        binding.btnStroke.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+                    binding.flStroke.background = ContextCompat.getDrawable(this, R.drawable.stroke_double)
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.background = ContextCompat.getDrawable(this, R.drawable.stroke_single)
+                    binding.flStroke.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+                }
+            }
+
+            false
+        }
+
+        binding.btnPermission.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.updateLayoutParams {
+                        width = 92.dp
+                        height = 48.dp
+                    }
+
+                    v.background = ContextCompat.getDrawable(this, R.drawable.stroke_double)
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.updateLayoutParams {
+                        width = 80.dp
+                        height = 36.dp
+                    }
+
+                    v.background = ContextCompat.getDrawable(this, R.drawable.stroke_single)
+                }
+            }
+
+            false
+        }
+    }
 }
 
 /** kotlin actor 2022 중에 수정 될 수 있다고 함. */

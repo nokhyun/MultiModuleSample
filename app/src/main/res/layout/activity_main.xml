@@ -148,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/bg_shadow"
+                android:background="@drawable/stroke_double"
                 android:text="Dialog"
                 android:textColor="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -166,20 +166,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnDialog" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPermission"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="36dp"
                 android:layout_marginTop="20dp"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
+                android:background="@drawable/stroke_single"
+                android:padding="8dp"
                 android:text="권한체크"
                 android:textColor="@android:color/black"
-                app:backgroundTint="@android:color/white"
-                app:elevation="8dp"
+                app:layout_constraintBottom_toTopOf="@id/fl_stroke"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvChangeColor" />
+
+            <FrameLayout
+                android:id="@+id/fl_stroke"
+                android:layout_width="86dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/transparent"
+                android:outlineProvider="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnPermission">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnStroke"
+                    android:layout_width="80dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/stroke_single"
+                    android:padding="8dp"
+                    android:text="STOKE"
+                    android:textColor="@android:color/black" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
