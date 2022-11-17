@@ -16,9 +16,13 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
+import com.nokhyun.samplestructure.adapter.BodyValue
+import com.nokhyun.samplestructure.adapter.SelectAdapter
+import com.nokhyun.samplestructure.adapter.SelectedUiState
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
 import com.nokhyun.samplestructure.module.SampleEntryPoint
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
@@ -49,10 +53,60 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val _mainViewModel: MainViewModel by viewModels()
 
+    private val selectedAdapter by lazy {
+        SelectAdapter(this)
+    }
+
+    private val list = mutableListOf<SelectedUiState>().apply {
+        add(SelectedUiState.Header("header"))
+
+        for (i in 0 until 30) {
+            add(SelectedUiState.Body(BodyValue("Text # $i")))
+        }
+    }
+
+    // 기존 데이터 저장
+    private var tempList: List<SelectedUiState> = emptyList()
+
+    fun selected(body: SelectedUiState.Body) {
+        Timber.e("selected")
+
+        // copy 로 생성하거나 아예 새로 생성하여 처리(코틀린 만든사람이 내부 객체의 내부값만 변경하여 사용 시 copy 사용하라함.)
+        val copyValue = SelectedUiState.Body(body.bodyValue.copy(isSelected = !body.bodyValue.isSelected))
+        // 물론 이것도 가능함.
+//        val copyValue = SelectedUiState.Body(BodyValue(text = body.bodyValue.text, isSelected = !body.bodyValue.isSelected))
+//        val temp = tempList.toMutableList()
+//
+//        // 기존데이터는 전부 false 고 선택한 데이터는 이름이 같으면 true로 변경됨. 그로 인해 나머지는 자동으로 선택해제된다.
+        tempList.toMutableList().apply {
+            replaceAll {
+                when (it) {
+                    is SelectedUiState.Header -> it
+                    is SelectedUiState.Body -> if (it.bodyValue.text == copyValue.bodyValue.text) copyValue else it
+                }
+            }
+        }.also {
+            selectedAdapter.submitList(it.toList())
+        }
+    }
+
     override fun init() {
         binding.setVariable(BR.view, this)
         binding.setVariable(BR.viewModel, _mainViewModel)
         binding.lifecycleOwner = this
+
+        // adapter
+        binding.rvSelected.apply {
+            adapter = selectedAdapter
+            setHasFixedSize(true)
+
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            itemAnimator = null
+        }
+        tempList = list
+
+        selectedAdapter.submitList(list)
+        // end
 
         // location
         ActivityCompat.requestPermissions(
