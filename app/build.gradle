@@ -84,6 +84,8 @@ dependencies {
     androidTestImplementation (UnitTest.JUNIT_TEST)
     androidTestImplementation (UnitTest.ESPRESSO)
 
+    implementation(Coroutine.COROUTINE)
+
     // hilt
     implementation (Hilt.DAGGER_HILT)
     kapt (Hilt.DAGGER_HILT_COMPILER)

@@ -13,9 +13,11 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nokhyun.samplestructure.BR
@@ -65,28 +67,36 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private val _selectedStateFlow: MutableStateFlow<List<SelectedUiState>?> = MutableStateFlow(null)
+    val selectedStateFlow: StateFlow<List<SelectedUiState>?> = _selectedStateFlow.asStateFlow()
+
     // 기존 데이터 저장
     private var tempList: List<SelectedUiState> = emptyList()
 
     fun selected(body: SelectedUiState.Body) {
-        Timber.e("selected")
+        lifecycleScope.launch {
+            Timber.e("selected: $body")
 
-        // copy 로 생성하거나 아예 새로 생성하여 처리(코틀린 만든사람이 내부 객체의 내부값만 변경하여 사용 시 copy 사용하라함.)
-        val copyValue = SelectedUiState.Body(body.bodyValue.copy(isSelected = !body.bodyValue.isSelected))
-        // 물론 이것도 가능함.
+            // copy 로 생성하거나 아예 새로 생성하여 처리 (deep copy)
+            val copyValue = SelectedUiState.Body(body.bodyValue.copy(isSelected = !body.bodyValue.isSelected))
+            // 물론 이것도 가능함.
 //        val copyValue = SelectedUiState.Body(BodyValue(text = body.bodyValue.text, isSelected = !body.bodyValue.isSelected))
 //        val temp = tempList.toMutableList()
 //
 //        // 기존데이터는 전부 false 고 선택한 데이터는 이름이 같으면 true로 변경됨. 그로 인해 나머지는 자동으로 선택해제된다.
-        tempList.toMutableList().apply {
-            replaceAll {
-                when (it) {
-                    is SelectedUiState.Header -> it
-                    is SelectedUiState.Body -> if (it.bodyValue.text == copyValue.bodyValue.text) copyValue else it
+            tempList.toMutableList().apply {
+                replaceAll {
+                    when (it) {
+                        is SelectedUiState.Header -> it
+                        is SelectedUiState.Body -> if (it.bodyValue.text == copyValue.bodyValue.text) copyValue else it
+                    }
                 }
+            }.also {
+//                _selectedStateFlow.update { it?.toList() }
+//                _selectedStateFlow.emit(it.toList())
+                _selectedStateFlow.value = it.toList()
+//                selectedAdapter.submitList(it.toList())
             }
-        }.also {
-            selectedAdapter.submitList(it.toList())
         }
     }
 
@@ -103,9 +113,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             itemAnimator = null
         }
+        // 실제사용시엔 savedStateHandle 저장
         tempList = list
 
         selectedAdapter.submitList(list)
+
+        lifecycleScope.launchWhenCreated {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedStateFlow.filterNotNull().collectLatest {
+                    selectedAdapter.submitList(it)
+                }
+            }
+        }
         // end
 
         // location

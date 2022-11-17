@@ -50,7 +50,7 @@ object OkHttp{
 }
 
 object Coroutine {
-    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
 }
 
 object LOG {
