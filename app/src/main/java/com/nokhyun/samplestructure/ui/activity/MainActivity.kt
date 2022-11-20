@@ -74,6 +74,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private var tempList: List<SelectedUiState> = emptyList()
 
     fun selected(body: SelectedUiState.Body) {
+        highOrderFunction1 { b: Boolean ->
+            Timber.e("highOrderFunction result: $b")
+        }
+
         lifecycleScope.launch {
             Timber.e("selected: $body")
 
@@ -556,4 +560,17 @@ suspend fun test() {
     val sharedFlow = MutableSharedFlow<Any>()
     sharedFlow.emit("asd")
 
+}
+
+private fun highOrderFunction1(block1: (Boolean) -> Unit) {
+    Timber.e("highOrderFunction1: $block1")
+//    highOrderFunction2 {
+//        Timber.e("highOrderFunction1 inner: $it")
+//    }
+    highOrderFunction2(block2 = block1)
+}
+
+private fun highOrderFunction2(block2: (Boolean) -> Unit) {
+    Timber.e("highOrderFunction2: $block2")
+    block2(true)
 }
