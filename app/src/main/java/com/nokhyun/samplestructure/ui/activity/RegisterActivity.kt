@@ -22,6 +22,7 @@ class RegisterActivity: BaseActivity<ActivityRegisterBinding>() {
     override suspend fun coroutineInit() {
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         when{
             supportFragmentManager.backStackEntryCount > 1 -> {

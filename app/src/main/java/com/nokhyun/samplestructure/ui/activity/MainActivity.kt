@@ -388,6 +388,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         finish()
     }
@@ -499,6 +500,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             false
         }
+    }
+
+    fun calendar(){
+        goActivity(CalendarActivity::class.java)
     }
 }
 

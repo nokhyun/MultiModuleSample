@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.nokhyun.samplestructure"
         minSdk 23
-        targetSdk 31
+        targetSdk 33
         versionCode 1
 
         vectorDrawables.useSupportLibrary = true
@@ -39,7 +39,7 @@ android {
     }
 
     flavorDimensions "flavors"
-    productFlavors{
+    productFlavors {
         prod {
             dimension "flavors"
             versionName "1.0"
@@ -70,26 +70,30 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    kapt {
+        correctErrorTypes true
+    }
 }
 
 dependencies {
+    implementation project("path": ":calendar")
     implementation project(":data")
     implementation project(":domain")
 
-    implementation (Ktx.CORE)
-    implementation (AndroidX.APP_COMPAT)
-    implementation (Google.MATERIAL)
-    implementation (AndroidX.CONSTRAINT_LAYOUT)
-    testImplementation (UnitTest.JUNIT)
-    androidTestImplementation (UnitTest.JUNIT_TEST)
-    androidTestImplementation (UnitTest.ESPRESSO)
+    implementation(Ktx.CORE)
+    implementation(AndroidX.APP_COMPAT)
+    implementation(Google.MATERIAL)
+    implementation(AndroidX.CONSTRAINT_LAYOUT)
+    testImplementation(UnitTest.JUNIT)
+    androidTestImplementation(UnitTest.JUNIT_TEST)
+    androidTestImplementation(UnitTest.ESPRESSO)
 
     implementation(Coroutine.COROUTINE)
 
     // hilt
-    implementation (Hilt.DAGGER_HILT)
-    kapt (Hilt.DAGGER_HILT_COMPILER)
-    implementation(Hilt.DAGGER_HILT_VIEW_MODEL)
+    implementation(Hilt.DAGGER_HILT)
+//    implementation(Hilt.DAGGER_HILT_VIEW_MODEL)
+    kapt(Hilt.DAGGER_HILT_COMPILER)
     implementation(Hilt.DAGGER_HILT_ANDROIDX_COMPILER)
 
     // viewmodel

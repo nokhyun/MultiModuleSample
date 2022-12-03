@@ -23,11 +23,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    kapt {
+        correctErrorTypes true
     }
 }
 
@@ -54,7 +57,6 @@ dependencies {
     // hilt
     implementation (Hilt.DAGGER_HILT)
     kapt (Hilt.DAGGER_HILT_COMPILER)
-    implementation(Hilt.DAGGER_HILT_VIEW_MODEL)
     implementation(Hilt.DAGGER_HILT_ANDROIDX_COMPILER)
 
     // coroutine

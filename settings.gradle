@@ -16,3 +16,4 @@ rootProject.name = "SampleStructure"
 include ':app'
 include ':domain'
 include ':data'
+include ':calendar'

@@ -50,6 +50,7 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
         super.onDestroy()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
