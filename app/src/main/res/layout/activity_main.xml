@@ -86,6 +86,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnFigmaSample" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnUi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ui"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnCalendar" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTest"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -105,7 +114,7 @@
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnCalendar">
+                app:layout_constraintTop_toBottomOf="@id/btnUi">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -159,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/stroke_double"
-                android:text="Dialog"
+                android:text="위치트래킹 시작"
                 android:textColor="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="테스트 중"
+                android:text="위치트래킹 정지"
                 app:keyword="@{viewModel.keyword}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

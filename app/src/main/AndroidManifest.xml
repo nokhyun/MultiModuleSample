@@ -4,11 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".utils.SampleApplication"
@@ -19,7 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SampleStructure">
 
-        <service android:name=".service.LocationService" android:foregroundServiceType="location"/>
+        <service
+            android:name=".service.LocationService"
+            android:foregroundServiceType="location" />
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true">
@@ -34,14 +37,21 @@
             android:name=".ui.activity.GalleryActivity"
             android:screenOrientation="fullSensor" />
 
-        <activity android:name=".ui.activity.LoggedOutActivity"
-            android:screenOrientation="fullSensor"/>
+        <activity
+            android:name=".ui.activity.LoggedOutActivity"
+            android:screenOrientation="fullSensor" />
 
-        <activity android:name=".ui.activity.RegisterActivity"
-            android:screenOrientation="fullSensor"/>
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:screenOrientation="fullSensor" />
 
-        <activity android:name=".ui.activity.CalendarActivity"
-            android:screenOrientation="fullSensor"/>
+        <activity
+            android:name=".ui.activity.CalendarActivity"
+            android:screenOrientation="fullSensor" />
+
+        <activity
+            android:name=".ui.activity.UiActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

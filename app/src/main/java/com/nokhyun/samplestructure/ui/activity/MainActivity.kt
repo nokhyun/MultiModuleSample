@@ -213,8 +213,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //                log("${System.currentTimeMillis()}:: 눌러!!!: $count")
             log("${System.currentTimeMillis()}:: 눌러!!!")
 //                count++
+        }
 
-
+        binding.btnUi.singleClick {
+            startActivity(Intent(this@MainActivity, UiActivity::class.java))
         }
 
 //        binding.test.singleClick(2000) {
@@ -502,7 +504,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    fun calendar(){
+    fun calendar() {
         goActivity(CalendarActivity::class.java)
     }
 }
