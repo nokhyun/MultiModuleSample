@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/layout_custom_radio"/>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/layout_custom_radio"
+            layout="@layout/layout_custom_radio" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_btn"
+            android:button="@null"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="CheckBox A1"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_custom_radio" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/selector_radio_btn"
+            android:button="@null"
+            android:forceDarkAllowed="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="CheckBox A2"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/checkbox1"
+            app:layout_constraintTop_toBottomOf="@id/layout_custom_radio" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
