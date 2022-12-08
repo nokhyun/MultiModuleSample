@@ -14,7 +14,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @InstallIn(ViewModelComponent::class)
 object ViewModelModule {
 
-    @Provides
-    @ViewModelScoped
-    fun provideFoodDelegate(@ApplicationContext context: Context): FoodDelegate = FoodDelegateImpl(context)
+//    @Provides
+//    @ViewModelScoped
+//    fun provideFoodDelegate(@ApplicationContext context: Context): FoodDelegate = FoodDelegateImpl()
 }

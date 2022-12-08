@@ -2,14 +2,20 @@ package com.nokhyun.samplestructure.ui.activity
 
 import android.os.Bundle
 import android.widget.RadioButton
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityUiBinding
+import com.nokhyun.samplestructure.viewmodel.UIViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class UiActivity : AppCompatActivity() {
+
+    private val uiViewModel: UIViewModel by viewModels()
 
     private lateinit var binding: ActivityUiBinding
 
@@ -33,5 +39,7 @@ class UiActivity : AppCompatActivity() {
         binding.layoutCustomRadio.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             Timber.e("text: ${findViewById<RadioButton>(checkedId).text} :: checkedId: $checkedId")
         }
+
+        Timber.e("uiViewModel.getFood: ${uiViewModel.getFood}")
     }
 }

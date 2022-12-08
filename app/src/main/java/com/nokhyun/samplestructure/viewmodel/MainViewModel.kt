@@ -2,22 +2,20 @@ package com.nokhyun.samplestructure.viewmodel
 
 import android.os.Build
 import android.util.Log
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.textfield.TextInputLayout
 import com.nokhyun.domain.entity.ReposEntity
 import com.nokhyun.domain.usecase.GetGithubListUseCase
 import com.nokhyun.samplestructure.delegate.FoodDelegate
 import com.nokhyun.samplestructure.delegate.FoodDelegateImpl
+import com.nokhyun.samplestructure.model.FoodModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.io.IOException
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 /**
@@ -35,9 +33,12 @@ class MainViewModel @Inject constructor(
     val keyword: StateFlow<String?> = _keyword
 
     init {
+//        _foodDelegate.foodModel = FoodModel(name = "apple")
+        _foodDelegate.setFoodModel(FoodModel(name = "apple"))
+
         _keyword.value = "스트"
 
-        Timber.e("food: ${_foodDelegate.getFood()}")
+        Timber.e("food: ${_foodDelegate.getFood()} :: ${_foodDelegate.foodModel} :: ${_foodDelegate.foodModel.hashCode()}")
     }
 
     /* StateFlow */
@@ -164,7 +165,7 @@ class MainViewModel @Inject constructor(
         )
         log("before array.size: ${array.size}")
         val list = array.toMutableList().also {
-            it.removeIf { it.num == 5 || it.name?: "" == "what"}
+            it.removeIf { it.num == 5 || it.name ?: "" == "what" }
         }
         log("after array: $list :: size: ${list.size}")
     }
