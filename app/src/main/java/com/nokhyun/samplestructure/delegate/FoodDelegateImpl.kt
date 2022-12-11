@@ -1,20 +1,31 @@
 package com.nokhyun.samplestructure.delegate
 
 import com.nokhyun.samplestructure.model.FoodModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FoodDelegateImpl @Inject constructor() : FoodDelegate {
-    override fun getFood(): String = "지코바 줘"
-    private var _foodModel: FoodModel? = null
-    override val foodModel: FoodModel?
-        get() = _foodModel
+
+    private val delegateScope = CoroutineScope(Dispatchers.IO)
+
+    private val _foodModelFlow: MutableSharedFlow<FoodModel> = MutableSharedFlow(1)
+    override val foodModelFlow: SharedFlow<FoodModel> = _foodModelFlow.asSharedFlow()
+
+    override val nameFlow: SharedFlow<String?> = _foodModelFlow.map {
+        it.name
+    }.shareIn(delegateScope, SharingStarted.Lazily, 1)
 
     fun setFoodModel(foodModel: FoodModel) {
-        _foodModel = foodModel
+        Timber.e("delegateScope: ${delegateScope.hashCode()}")
 
-        Timber.e("set Complete: $_foodModel :: ${_foodModel.hashCode()}")
+        delegateScope.launch {
+            _foodModelFlow.emit(foodModel)
+        }
     }
 }

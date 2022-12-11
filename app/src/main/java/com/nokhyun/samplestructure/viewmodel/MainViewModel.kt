@@ -25,7 +25,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val _savedStateHandle: SavedStateHandle,
     private val _getGithubListUseCase: GetGithubListUseCase,
-    private val _foodDelegate: FoodDelegateImpl
+    _foodDelegate: FoodDelegateImpl
 ) : BaseViewModel(), FoodDelegate by _foodDelegate {
 
     // test
@@ -37,8 +37,6 @@ class MainViewModel @Inject constructor(
         _foodDelegate.setFoodModel(FoodModel(name = "apple"))
 
         _keyword.value = "스트"
-
-        Timber.e("food: ${_foodDelegate.getFood()} :: ${_foodDelegate.foodModel} :: ${_foodDelegate.foodModel.hashCode()}")
     }
 
     /* StateFlow */

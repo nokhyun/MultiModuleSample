@@ -286,7 +286,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }.onEach {
                 delay(1000)
             }.map {
-                Timber.e("after delay result Time: ${SimpleDateFormat("mm:ss").format(Date(System.currentTimeMillis()))}")
+//                Timber.e("after delay result Time: ${SimpleDateFormat("mm:ss").format(Date(System.currentTimeMillis()))}")
             }
         }
 
