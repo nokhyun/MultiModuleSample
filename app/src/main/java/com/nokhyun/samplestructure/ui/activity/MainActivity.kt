@@ -7,12 +7,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -44,6 +46,7 @@ import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 /**
  * Created by Nokhyun90 on 2022-02-11
@@ -169,6 +172,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         ), 1001
                     )
                 }
+            }
+        }
+
+        // TextWatcher
+        findViewById<EditText>(R.id.etNumber).apply {
+            addTextChangedListener {
+                val isMatcher = Pattern.compile("^[0-9]{2,3}(\\.[0-9])?\$").matcher(it.toString()).find()
+                log("isMatcher: $isMatcher")
             }
         }
 

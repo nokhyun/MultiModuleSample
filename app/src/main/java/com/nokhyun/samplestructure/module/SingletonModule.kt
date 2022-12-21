@@ -12,4 +12,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object SingletonModule {
 
+    @Provides
+    @Singleton
+    fun provideFoodDelegate(): FoodDelegate = FoodDelegateImpl()
 }

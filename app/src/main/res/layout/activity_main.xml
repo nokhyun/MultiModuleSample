@@ -156,9 +156,12 @@
                 app:layout_constraintTop_toBottomOf="@id/tilTest">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="name"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
                     android:hint="TextInputEditText Sample2" />
             </com.google.android.material.textfield.TextInputLayout>
 

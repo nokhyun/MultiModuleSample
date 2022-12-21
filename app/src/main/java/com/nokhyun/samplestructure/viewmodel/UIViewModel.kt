@@ -3,6 +3,7 @@ package com.nokhyun.samplestructure.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.nokhyun.samplestructure.delegate.FoodDelegate
 import com.nokhyun.samplestructure.delegate.FoodDelegateImpl
+import com.nokhyun.samplestructure.model.FoodModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
