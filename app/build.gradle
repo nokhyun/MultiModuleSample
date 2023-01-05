@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.nokhyun.samplestructure"
-        minSdk 23
+        minSdk 26
         targetSdk 33
         versionCode 1
 

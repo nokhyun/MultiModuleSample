@@ -45,6 +45,8 @@ import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 import java.util.regex.Pattern
 
@@ -196,6 +198,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // TOUCH EVENT
         setTouchEvent()
 
+        // CompareTime
+        compareTime()
+
         // Device NetworkConnectivityObserver
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         lifecycleScope.launch {
@@ -301,7 +306,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
 
-
         lifecycleScope.launch {
             delay(3000)
             binding.tilTest.error = "error"
@@ -385,6 +389,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     fun log(msg: String) {
         Timber.e(msg)
+    }
+
+    private fun compareTime() {
+        LocalDateTime.now().let { currentDate ->
+            log("localDateTime: $currentDate")
+//            log("localDateTime result: ${LocalDateTime.of(currentDate.year, currentDate.month, currentDate.dayOfMonth, 10, 0).isBefore(currentDate)}")
+            log("localDateTime result: ${currentDate.isBefore(LocalDateTime.of(currentDate.year, currentDate.month, currentDate.dayOfMonth, 23, 35))}")
+        }
     }
 
     override suspend fun coroutineInit() {
