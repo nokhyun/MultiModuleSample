@@ -85,10 +85,12 @@ dependencies {
     implementation(Google.MATERIAL)
     implementation(AndroidX.CONSTRAINT_LAYOUT)
     testImplementation(UnitTest.JUNIT)
+    testImplementation(UnitTest.JUNIT5_KTX)
     androidTestImplementation(UnitTest.JUNIT_TEST)
     androidTestImplementation(UnitTest.ESPRESSO)
 
     implementation(Coroutine.COROUTINE)
+    testImplementation(UnitTest.COROUTINE)
 
     // hilt
     implementation(Hilt.DAGGER_HILT)

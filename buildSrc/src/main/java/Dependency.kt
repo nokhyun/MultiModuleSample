@@ -23,7 +23,9 @@ object Google{
 object UnitTest{
     const val JUNIT_TEST = "androidx.test.ext:junit:1.1.3"
     const val JUNIT = "junit:junit:4.13.2"
+    const val JUNIT5_KTX = "androidx.test.ext:junit-ktx:1.1.5"
     const val ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
+    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
 }
 
 object Ktx{
