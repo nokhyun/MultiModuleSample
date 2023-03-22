@@ -1,6 +1,10 @@
 package com.nokhyun.samplestructure
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.Test
@@ -16,6 +20,7 @@ class ExampleUnitTest {
 //        assertEquals(4, 2 + 2)
 //    }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test() = runTest {
 //        println({ a ->
@@ -31,6 +36,11 @@ class ExampleUnitTest {
 //        println("sorting: $sorting")
 
         exam1()
+        /*
+        * 대기열에 아무것도 남지 않을 때까지 스케줄러의 다른 모든 코루틴을 실행합니다.
+        * 보류 중인 모든 코루틴을 실행할 수 있는 좋은 기본 선택이며 대부분의 테스트 시나리오에서 작동합니다.
+        * */
+        advanceUntilIdle()
         exam2()
     }
 
