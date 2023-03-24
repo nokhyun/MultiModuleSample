@@ -1,16 +1,16 @@
 package com.nokhyun.samplestructure
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
-import timber.log.Timber
 
 class MainDispatcherRule(
     val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
@@ -31,12 +31,12 @@ class CoroutineTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun settingMainDisaptcher() = runTest {// Main  scheduler
-//        val viewModel = HomeViewModel()
+        val viewModel = HomeViewModel()
 //        viewModel.loadMessage()
 //        assertEquals("Greetings!", viewModel.message.value)
 
-        launch { test2() }
-        test1()
+//        launch { test2(viewModel) }
+//        test1(viewModel)
         /* result
           test2: 0
           test2: 1
@@ -54,27 +54,34 @@ class CoroutineTest {
           test1: 3
           */
 
-//        test2()
-//        test1()
+
+        test2(viewModel)
+        test1(viewModel)
         /* 절차 */
     }
 
     //        private fun test1() {
-    private suspend fun test1() {
-        withContext(Dispatchers.IO) {
-            (0..100).forEach {
-                println("test1: $it")
-            }
+    private suspend fun test1(viewModel: HomeViewModel) {
+//        withContext(Dispatchers.IO) {
+//            (0..100).forEach {
+//                println("test1: $it")
+//            }
+//        }
+        viewModel.testFlow1.collect {
+            println("testFlow1 Result: $it")
         }
     }
 
-        private fun test2() {
+    private suspend fun test2(viewModel: HomeViewModel) {
 //    private suspend fun test2() {
 //        withContext(Dispatchers.IO) {
-            (0..100).forEach {
-                println("test2: $it")
-            }
+//            (0..100).forEach {
+//                println("test2: $it")
+//            }
 //        }
+        viewModel.testFlow2.collect {
+            println("testFlow2 Result: $it")
+        }
     }
 }
 
@@ -85,4 +92,8 @@ class HomeViewModel : ViewModel() {
     fun loadMessage() {
         _message.value = "Greetings!"
     }
+
+    val testFlow1: Flow<Int> = flowOf(1, 2, 3, 4, 5, 6)
+    val testFlow2: Flow<Int> = flowOf(1, 2, 3, 4, 5, 6)
+
 }

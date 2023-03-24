@@ -1,12 +1,9 @@
 package com.nokhyun.samplestructure
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.withContext
 import org.junit.Test
 
 /**
@@ -20,9 +17,9 @@ class ExampleUnitTest {
 //        assertEquals(4, 2 + 2)
 //    }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun test() = runTest {
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    @Test
+//    fun test() = runTest {
 //        println({ a ->
 //            "a: $a"
 //        }, { b ->
@@ -35,14 +32,14 @@ class ExampleUnitTest {
 //        println("list: $list")
 //        println("sorting: $sorting")
 
-        exam1()
-        /*
-        * 대기열에 아무것도 남지 않을 때까지 스케줄러의 다른 모든 코루틴을 실행합니다.
-        * 보류 중인 모든 코루틴을 실행할 수 있는 좋은 기본 선택이며 대부분의 테스트 시나리오에서 작동합니다.
-        * */
-        advanceUntilIdle()
-        exam2()
-    }
+//        exam1()
+    /*
+    * 대기열에 아무것도 남지 않을 때까지 스케줄러의 다른 모든 코루틴을 실행합니다.
+    * 보류 중인 모든 코루틴을 실행할 수 있는 좋은 기본 선택이며 대부분의 테스트 시나리오에서 작동합니다.
+    * */
+//        advanceUntilIdle()
+//        exam2()
+//    }
 
     private fun println(body: (String) -> String, body2: (String) -> String) {
         println(body("first body"))
@@ -65,5 +62,34 @@ class ExampleUnitTest {
         println("result2: $result")
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun testCoroutine() {
+        val viewModel = HomeViewModel()
 
+        runTest(UnconfinedTestDispatcher()) {
+            println("start")
+            test1(viewModel)
+            test2(viewModel)
+            println("end")
+        }
+    }
+
+    private suspend fun test1(viewModel: HomeViewModel) {
+        delay(1000)
+        viewModel.testFlow1.onCompletion {
+            if (it == null) println("testFlow1 End")
+        }.collect {
+            println("testFlow1 Result: $it")
+        }
+    }
+
+    private suspend fun test2(viewModel: HomeViewModel) {
+        delay(1000)
+        viewModel.testFlow2.onCompletion {
+            if (it == null) println("testFlow2 End")
+        }.collect {
+            println("testFlow2 Result: $it")
+        }
+    }
 }
