@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,7 +47,6 @@ import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.ZonedDateTime
 import java.util.*
 import java.util.regex.Pattern
 
@@ -175,6 +175,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     )
                 }
             }
+        }
+
+        findViewById<Button>(R.id.btnNavigation).setOnClickListener {
+            goActivity(NavigateActivity::class.java)
         }
 
         // TextWatcher

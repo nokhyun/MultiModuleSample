@@ -12,6 +12,7 @@ class NavigateActivity : BaseActivity<ActivityNavigateBinding>() {
     }
 
     override fun navigator() {
+
     }
 
     override suspend fun coroutineInit() {
