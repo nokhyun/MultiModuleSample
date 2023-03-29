@@ -8,5 +8,19 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.nokhyun.samplestructure.ui.fragment.MainFragment"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_mainFragment_to_exoPlayerFragment"
+            app:destination="@id/exoPlayerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/exoPlayerFragment"
+        android:name="com.nokhyun.samplestructure.ui.fragment.ExoPlayerFragment"
+        tools:layout="@layout/fragment_exoplayer" />
 </navigation>

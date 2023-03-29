@@ -9,14 +9,14 @@ import timber.log.Timber
 
 @HiltAndroidApp
 class SampleApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(object : Timber.DebugTree() {
-            override fun createStackElementTag(element: StackTraceElement): String {
-                return "${element.fileName}:${element.methodName}:${element.lineNumber}"
-            }
-        })
+        Timber.plant(Timber.DebugTree())
+//        Timber.plant(object : Timber.DebugTree() {
+//            override fun createStackElementTag(element: StackTraceElement): String {
+//                return "${element.fileName}:${element.methodName}:${element.lineNumber}"
+//            }
+//        })
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("location", "Location", NotificationManager.IMPORTANCE_HIGH)

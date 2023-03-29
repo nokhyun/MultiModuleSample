@@ -1,34 +1,44 @@
 package com.nokhyun.samplestructure.ui.fragment
 
-import android.util.TypedValue
 import android.view.View
-import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentMainBinding
-import kotlinx.coroutines.delay
+import com.nokhyun.samplestructure.ui.fragment.viewmodel.MainViewModel
+import com.nokhyun.samplestructure.utils.launchStarted
+import com.nokhyun.samplestructure.utils.safeNavigate
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
+/**
+ * Navigation MainFragment
+ * */
 class MainFragment : BaseFragment<FragmentMainBinding>() {
+
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun init() {
-        lifecycleScope.launch {
-            launch {
-                delay(3000)
-                binding.clMain.addView(TextView(requireContext()).apply {
-                    text = "아니 무슨!!!!"
-                    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28f)
-                })
-            }
-
-            launch {
-                delay(2000)
-                binding.clMain.addView(TextView(requireContext()).apply {
-                    text = "아니 무슨일이람"
-                    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 36f)
-                })
-            }
-        }
-
+        binding.setVariable(BR.viewModel, mainViewModel)
+//        lifecycleScope.launch {
+//            launch {
+//                delay(3000)
+//                binding.clMain.addView(TextView(requireContext()).apply {
+//                    text = "아니 무슨!!!!"
+//                    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28f)
+//                })
+//            }
+//
+//            launch {
+//                delay(2000)
+//                binding.clMain.addView(TextView(requireContext()).apply {
+//                    text = "아니 무슨일이람"
+//                    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 36f)
+//                })
+//            }
+//        }
 
 //        binding.clMain.doOnNextLayout {
 //            TransitionManager.beginDelayedTransition(binding.clMain, Fade(Fade.MODE_OUT))
@@ -36,6 +46,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     }
 
     override fun navigator() {
+        launchStarted {
+            launch {
+                mainViewModel.navigateToExoPlayer.collectLatest {
+                    Timber.e("navigateToExoPlayer")
+                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToExoPlayerFragment())
+                }
+            }
+        }
     }
 
     override fun setView(view: (layoutId: Int) -> View): View = view(R.layout.fragment_main)

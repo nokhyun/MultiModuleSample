@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Bundle
 import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -14,13 +15,22 @@ import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.nokhyun.samplestructure.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 val Int.dp: Int
-get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
 val Float.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
@@ -103,3 +113,25 @@ fun TextView.changeKeywordColor(keyword: String?) {
 fun Context.hasLocationPermission(): Boolean =
     ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+fun NavController.safeNavigate(direction: NavDirections) {
+    currentDestination?.getAction(direction.actionId)?.run { navigate(direction) }
+}
+
+fun NavController.safeNavigate(
+    @IdRes currentDestinationId: Int,
+    @IdRes id: Int,
+    args: Bundle? = null
+) {
+    if (currentDestinationId == currentDestination?.id) {
+        navigate(id, args)
+    }
+}
+
+fun Fragment.launchStarted(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            block()
+        }
+    }
+}

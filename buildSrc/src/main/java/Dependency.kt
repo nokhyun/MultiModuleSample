@@ -20,6 +20,9 @@ object AndroidX{
 object Google{
     const val MATERIAL = "com.google.android.material:material:1.5.0"
     const val LOCATION = "com.google.android.gms:play-services-location:20.0.0"
+    const val EXOPLAYER_CORE = "com.google.android.exoplayer:exoplayer-core:2.18.4"
+    const val EXOPLAYER_DASH = "com.google.android.exoplayer:exoplayer-dash:2.18.4"
+    const val EXOPLAYER_UI = "com.google.android.exoplayer:exoplayer-ui:2.18.4"
 }
 
 object UnitTest{

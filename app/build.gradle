@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -131,4 +132,9 @@ dependencies {
 
     // Location
     implementation(Google.LOCATION)
+
+    // ExoPlayer
+    implementation(Google.EXOPLAYER_CORE)
+    implementation(Google.EXOPLAYER_DASH)
+    implementation(Google.EXOPLAYER_UI)
 }
