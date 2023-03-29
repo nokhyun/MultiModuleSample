@@ -178,7 +178,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         findViewById<Button>(R.id.btnNavigation).setOnClickListener {
-            goActivity(NavigateActivity::class.java)
+            Intent(this@MainActivity, NavigateActivity::class.java).also {
+                startActivity(it)
+            }
         }
 
         // TextWatcher
