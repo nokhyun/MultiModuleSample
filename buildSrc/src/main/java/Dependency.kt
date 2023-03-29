@@ -13,6 +13,8 @@ object AndroidX{
     const val LIFECYCLE_LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
     const val ACTIVITY = "androidx.activity:activity-ktx:1.6.1"
     const val FRAGMENT = "androidx.fragment:fragment-ktx:1.5.4"
+    const val NAVIGATION = "androidx.navigation:navigation-ui-ktx:2.5.3"
+    const val NAVIGATION_FRAGMENT = "androidx.navigation:navigation-fragment-ktx:2.5.3"
 }
 
 object Google{

@@ -84,6 +84,8 @@ dependencies {
     implementation(AndroidX.APP_COMPAT)
     implementation(Google.MATERIAL)
     implementation(AndroidX.CONSTRAINT_LAYOUT)
+    implementation(AndroidX.NAVIGATION)
+    implementation(AndroidX.NAVIGATION_FRAGMENT)
     testImplementation(UnitTest.JUNIT)
     testImplementation(UnitTest.JUNIT5_KTX)
     androidTestImplementation(UnitTest.JUNIT_TEST)
