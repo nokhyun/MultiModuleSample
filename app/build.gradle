@@ -74,6 +74,7 @@ android {
     kapt {
         correctErrorTypes true
     }
+    namespace 'com.nokhyun.samplestructure'
 }
 
 dependencies {
