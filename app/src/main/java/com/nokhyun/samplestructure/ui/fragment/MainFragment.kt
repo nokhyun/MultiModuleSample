@@ -49,8 +49,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         launchStarted {
             launch {
                 mainViewModel.navigateToExoPlayer.collectLatest {
-                    Timber.e("navigateToExoPlayer")
                     findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToExoPlayerFragment())
+                }
+            }
+
+            launch {
+                mainViewModel.navigateToSkeleton.collectLatest {
+                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToSkeletonFragment())
                 }
             }
         }

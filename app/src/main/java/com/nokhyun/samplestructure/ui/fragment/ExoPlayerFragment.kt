@@ -64,7 +64,7 @@ class ExoPlayerFragment : BaseFragment<FragmentExoplayerBinding>() {
 
     override fun onResume() {
         super.onResume()
-        hideSystemUi()
+//        hideSystemUi()
         initializePlayer()
     }
 

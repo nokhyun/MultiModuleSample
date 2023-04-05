@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.nokhyun.samplestructure.ui.fragment.viewmodel.NavigationPoint" />
+
         <variable
             name="viewModel"
             type="com.nokhyun.samplestructure.ui.fragment.viewmodel.MainViewModel" />
@@ -23,25 +25,24 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnExoPlayer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.navigateToExoPlayer()}"
+                android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.EXO_PLAYER)}"
                 android:text="ExoPlayer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvHello"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSkeleton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello World!"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.SKELETON)}"
+                android:text="Skeleton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/btnExoPlayer" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
