@@ -88,6 +88,8 @@ dependencies {
     implementation(AndroidX.CONSTRAINT_LAYOUT)
     implementation(AndroidX.NAVIGATION)
     implementation(AndroidX.NAVIGATION_FRAGMENT)
+    implementation(AndroidX.STARTUP)
+    implementation(AndroidX.WORK_MANAGER)
     testImplementation(UnitTest.JUNIT)
     testImplementation(UnitTest.JUNIT5_KTX)
     androidTestImplementation(UnitTest.JUNIT_TEST)
