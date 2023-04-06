@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- api 25 이상부터 사용가능 -->
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:shortcutDisabledMessage="@string/shortcut_disabled_message1"
+        android:shortcutId="navigate"
+        android:shortcutLongLabel="@string/shortcut_long_label1"
+        android:shortcutShortLabel="@string/shortcut_short_label1"
+        tools:targetApi="n_mr1">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.nokhyun.samplestructure.ui.activity.NavigateActivity"
+            android:targetPackage="com.nokhyun.samplestructure" />
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:shortcutDisabledMessage="@string/shortcut_disabled_message2"
+        android:shortcutId="gallery"
+        android:shortcutLongLabel="@string/shortcut_long_label2"
+        android:shortcutShortLabel="@string/shortcut_short_label2"
+        tools:targetApi="n_mr1">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.nokhyun.samplestructure.ui.activity.GalleryActivity"
+            android:targetPackage="com.nokhyun.samplestructure" />
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+</shortcuts>
