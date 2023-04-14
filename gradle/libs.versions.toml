@@ -1,0 +1,40 @@
+[versions]  # 라이브러리 버전
+# Plugin
+kotlin = "1.8.10"
+
+# Android
+androidx-core = "1.10.0"
+androidx-appCompat = "1.6.1"
+androidx-constraintLayout = "1.8.0"
+androidx-splashScreen = "1.0.0"
+androidx-security = "1.1.0-alpha05"
+
+#android-compose
+androidx-composeBom = "2022.10.00"
+androidx-compose = "1.7.0"
+androidx-viewModel = "2.6.1"
+
+# google
+google-material = "1.8.0"
+
+[libraries] # 라이브러리
+#plugin
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# AndroidX
+androdix-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androdix-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appCompat" }
+androdix-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintLayout" }
+androdix-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashScreen" }
+androdix-security = { module = "androidx.security:security-crypto-ktx", version.ref = "androidx-security" }
+
+# Compose
+androdix-composeActivity = { module = "androidx.activity:activity-compose", version.ref = "androidx-compose" }
+androidx-composeBom = { module = "androidx.compose:compose-bom", version.ref = "androidx-composeBom" }
+androidx-composeUI = { module = "androidx.compose.ui:ui" }
+androidx-composeGraphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-composeToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-composeMaterial3 = { module = "androidx.compose.material3:material3" }
+androidx-composeMaterial = { module = "androidx.compose.material:material" }
+
+[bundles] # 라이브러리 묶어서 한번에 선언
