@@ -1,11 +1,13 @@
 package com.nokhyun.samplestructure.ui.fragment
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.transition.ChangeBounds
 import androidx.transition.Fade
+import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentTransitionBinding
@@ -37,22 +39,55 @@ class TransitionFragment : BaseFragment<FragmentTransitionBinding>() {
         }
 
         binding.btnTransitionGone.setOnClickListener {
-            TransitionManager.beginDelayedTransition(binding.clTransition, ChangeBounds())
-            val root: ConstraintLayout = binding.clTransition
-            val set = ConstraintSet()
-            set.clone(root)
-            set.connect(
-                binding.tvTransitionText.id,
-                ConstraintSet.BOTTOM,
-                root.id,
-                ConstraintSet.TOP
-            )
-            set.applyTo(root)
+//            TransitionManager.beginDelayedTransition(binding.clTransition, ChangeBounds())
+//            val root: ConstraintLayout = binding.clTransition
+//            val set = ConstraintSet()
+//            set.clone(root)
+//            set.connect(
+//                binding.tvTransitionText.id,
+//                ConstraintSet.BOTTOM,
+//                root.id,
+//                ConstraintSet.TOP
+//            )
+//            set.applyTo(root)
+
+            binding.clTransition.beginDelayedTransition(ChangeBounds()) { viewGroup ->
+                if (viewGroup is ConstraintLayout) {
+                    val root: ConstraintLayout = viewGroup
+                    val set = ConstraintSet()
+                    set.clone(root)
+                    set.connect(
+                        binding.tvTransitionText.id,
+                        ConstraintSet.BOTTOM,
+                        root.id,
+                        ConstraintSet.TOP
+                    )
+                    set.applyTo(root)
+
+//                    ConstraintSet().also {
+//                        it.clone(viewGroup)
+//                        it.connect(
+//                            binding.tvText.id,
+//                            ConstraintSet.BOTTOM,
+//                            viewGroup.id,
+//                            ConstraintSet.TOP
+//                        )
+//                        it.applyTo(viewGroup)
+//                    }
+                }
+            }
         }
+
     }
 
     override fun navigator() {
     }
 
     override fun setView(view: (layoutId: Int) -> View): View = view(R.layout.fragment_transition)
+
+    // test
+    private fun ViewGroup.beginDelayedTransition(transition: Transition, block: (ViewGroup) -> Unit) {
+        TransitionManager.beginDelayedTransition(this, transition)
+        block(this)
+    }
 }

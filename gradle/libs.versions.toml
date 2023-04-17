@@ -23,9 +23,9 @@ androidx-composeBom = "2022.10.00"
 androidx-compose = "1.7.0"
 androidx-comsposeViewModel = "2.6.1"
 
-# google
+# Google
 google-material = "1.8.0"
-google-location = "20.0.0"          ######## 틈틈히 마이그레이션 ########
+google-location = "20.0.0"
 google-exoplayerCore = "2.18.4"
 google-exoplayerDash = "2.18.4"
 google-exoplayerUI = "2.18.4"
@@ -38,7 +38,7 @@ test-espresso = "3.4.0"
 test-coroutine = "1.6.0"
 
 # Hilt
-hilt = "2.44.2"
+hilt = "2.44.2" ######## 틈틈히 마이그레이션 ########
 hilt-compiler = "2.44.2"
 hilt-viewmodel = "1.0.0-alpha03"
 hilt-androidCompiler = "1.0.0"
@@ -85,6 +85,19 @@ androidx-navigation = { module = "androidx.navigation:navigation-ui-ktx", versio
 androidx-navigationFragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigationFragment" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
 androidx-workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-workmanager" }
+
+# Google
+google-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-location" }
+google-exoplayerCore = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "google-exoplayerCore" }
+google-exoplayerDash = { module = "com.google.android.exoplayer:exoplayer-dash", version.ref = "google-exoplayerDash" }
+google-exoplayerUI = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "google-exoplayerUI" }
+
+# Test
+test-junitAndroid = { module = "androidx.test.ext:junit", version.ref = "test-junitAndroid" }
+test-junit = { module = "junit:junit", version.ref = "test-junit" }
+test-junit5KTtx = { module = "androidx.test.ext:junit-ktx", version.ref = "test-junit5KTtx" }
+test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso" }
+test-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "test-coroutine" }
 
 # Compose
 androdix-composeActivity = { module = "androidx.activity:activity-compose", version.ref = "androidx-compose" }
