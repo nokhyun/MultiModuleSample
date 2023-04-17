@@ -43,6 +43,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnExoPlayer" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnTransition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transition"
+                android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.TRANSITION)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnSkeleton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

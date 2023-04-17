@@ -25,6 +25,14 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_transitionFragment"
+            app:destination="@id/transitionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -36,4 +44,9 @@
         android:id="@+id/skeletonFragment"
         android:name="com.nokhyun.samplestructure.ui.fragment.SkeletonFragment"
         tools:layout="@layout/fragment_skeleton" />
+
+    <fragment
+        android:id="@+id/transitionFragment"
+        android:name="com.nokhyun.samplestructure.ui.fragment.TransitionFragment"
+        tools:layout="@layout/fragment_transition" />
 </navigation>

@@ -11,7 +11,6 @@ import com.nokhyun.samplestructure.utils.launchStarted
 import com.nokhyun.samplestructure.utils.safeNavigate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * Navigation MainFragment
@@ -56,6 +55,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             launch {
                 mainViewModel.navigateToSkeleton.collectLatest {
                     findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToSkeletonFragment())
+                }
+            }
+
+            launch {
+                mainViewModel.navigateToTransition.collectLatest {
+                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToTransitionFragment())
                 }
             }
         }
