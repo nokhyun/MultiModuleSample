@@ -63,6 +63,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToTransitionFragment())
                 }
             }
+
+            launch {
+                mainViewModel.navigateToFlow.collectLatest {
+                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToFlowFragment())
+                }
+            }
         }
     }
 

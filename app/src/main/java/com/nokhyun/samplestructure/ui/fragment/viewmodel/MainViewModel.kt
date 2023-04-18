@@ -21,6 +21,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private val _navigateToTransition: MutableSharedFlow<Unit> = MutableSharedFlow(0)
     val navigateToTransition: SharedFlow<Unit> = _navigateToTransition.asSharedFlow()
 
+    private val _navigateToFlow: MutableSharedFlow<Unit> = MutableSharedFlow(0)
+    val navigateToFlow: SharedFlow<Unit> = _navigateToFlow.asSharedFlow()
+
     fun navigateToExoPlayer() {
         viewModelScope.launch {
             _navigateToExoPlayer.emit(Unit)
@@ -33,11 +36,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 NavigationPoint.EXO_PLAYER -> _navigateToExoPlayer.emit(Unit)
                 NavigationPoint.SKELETON -> _navigateToSkeleton.emit(Unit)
                 NavigationPoint.TRANSITION -> _navigateToTransition.emit(Unit)
+                NavigationPoint.FLOW -> _navigateToFlow.emit(Unit)
             }
         }
     }
 }
 
 enum class NavigationPoint {
-    EXO_PLAYER, SKELETON, TRANSITION
+    EXO_PLAYER, SKELETON, TRANSITION, FLOW
 }
