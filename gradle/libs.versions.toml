@@ -38,7 +38,7 @@ test-espresso = "3.4.0"
 test-coroutine = "1.6.0"
 
 # Hilt
-hilt = "2.44.2" ######## 틈틈히 마이그레이션 ########
+hilt = "2.44.2"
 hilt-compiler = "2.44.2"
 hilt-viewmodel = "1.0.0-alpha03"
 hilt-androidCompiler = "1.0.0"
@@ -48,7 +48,7 @@ retrofit = "2.9.0"
 retrofit-gson = "2.9.0"
 retrofit-jaxb = "2.9.0"
 retrofit-scalars = "2.5.0"
-## moshi 필요함.
+retrofit-moshi = "1.14.0"
 
 # okHttp
 okhttp = "4.9.1"
@@ -72,11 +72,11 @@ firebase-analytics = "20.1.1"
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 # AndroidX
-androdix-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androdix-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appCompat" }
-androdix-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintLayout" }
-androdix-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashScreen" }
-androdix-security = { module = "androidx.security:security-crypto-ktx", version.ref = "androidx-security" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appCompat" }
+androidx-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintLayout" }
+androidx-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashScreen" }
+androidx-security = { module = "androidx.security:security-crypto-ktx", version.ref = "androidx-security" }
 androidx-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-viewModel" }
 androidx-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidx.livedata" }
 androidx-activitiy = { module = "androidx.activity:activity-ktx", version.ref = "androidx.activity" }
@@ -100,12 +100,42 @@ test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref =
 test-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "test-coroutine" }
 
 # Compose
-androdix-composeActivity = { module = "androidx.activity:activity-compose", version.ref = "androidx-compose" }
+androidx-composeActivity = { module = "androidx.activity:activity-compose", version.ref = "androidx-compose" }
 androidx-composeBom = { module = "androidx.compose:compose-bom", version.ref = "androidx-composeBom" }
 androidx-composeUI = { module = "androidx.compose.ui:ui" }
 androidx-composeGraphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-composeToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-composeMaterial3 = { module = "androidx.compose.material3:material3" }
 androidx-composeMaterial = { module = "androidx.compose.material:material" }
+
+# Hilt
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-compiler" }
+hilt-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hilt-viewmodel" }
+hilt-androidCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-androidCompiler" }
+
+# Retrofit
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit-gson" }
+retrofit-jaxb = { module = "com.squareup.retrofit2:converter-jaxb", version.ref = "retrofit-jaxb" }
+retrofit-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit-scalars" }
+retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit-moshi" }
+
+# okHttp
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp-logging" }
+
+#Coroutine
+coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine" }
+
+# log
+log-timber = { module = "com.jakewharton.timber:timber", version.ref = "log-timber" }
+
+# glide
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-annotation = { module = "com.github.bumptech.glide:compiler", version.ref = "glide-annotation" }
+
+# firebase
+firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebase-analytics" }
 
 [bundles] # 라이브러리 묶어서 한번에 선언
