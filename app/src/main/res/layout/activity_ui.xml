@@ -7,9 +7,11 @@
             name="viewModel"
             type="com.nokhyun.samplestructure.viewmodel.UIViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="20dp">
 
         <include
             android:id="@+id/layout_custom_radio"
@@ -41,5 +43,15 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/checkbox1"
             app:layout_constraintTop_toBottomOf="@id/layout_custom_radio" />
+
+        <TextView
+            android:id="@+id/tvMargin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkbox2" />
+<!--            app:indentText="@{@string/activity_ui_text}"-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

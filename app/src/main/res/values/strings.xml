@@ -6,6 +6,25 @@
     <string name="activity_register_account_hint">Please enter your account</string>
     <string name="activity_register_password_hint">Please enter your password</string>
 
+    <!-- activity_ui -->
+    <string name="activity_ui_text">[0]
+    \n· 하이1.
+    \n· 하이2.
+    \n· 하이3.
+    \n\n[1]
+    \n· 하이4.
+    \n· 하이5.
+    \n· 하이6.
+    \n· 하이7.
+    \n\n\n[2]
+    \n- 하이8.
+    \n- 하이9.
+    \n- 하이10.
+    \n- 하이11.
+    \n- 하이12.
+    \n- 하이13.
+    \n- 하이14.</string>
+
     <!-- exoPlayer -->
     <string name="media_url_dash"><![CDATA[https://www.youtube.com/api/manifest/dash/id/bf5bb2419360daf1/source/youtube?as=fmp4_audio_clear,fmp4_sd_hd_clear&sparams=ip,ipbits,expire,source,id,as&ip=0.0.0.0&ipbits=0&expire=19000000000&signature=51AF5F39AB0CEC3E5497CD9C900EBFEAECCCB5C7.8506521BFC350652163895D4C26DEE124209AA9E&key=ik0]]></string>
 
