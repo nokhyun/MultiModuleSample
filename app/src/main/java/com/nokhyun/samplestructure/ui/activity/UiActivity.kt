@@ -15,7 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityUiBinding
-import com.nokhyun.samplestructure.ui.common.IndentLeadingMarginSpan
+//import com.nokhyun.samplestructure.ui.common.IndentLeadingMarginSpan
 import com.nokhyun.samplestructure.viewmodel.UIViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -53,7 +53,7 @@ class UiActivity : AppCompatActivity() {
         }
 
         binding.tvMargin.text = SpannableStringBuilder(resources.getString(R.string.activity_ui_text)).apply {
-            setSpan(IndentLeadingMarginSpan(), 0, length, 0)
+//            setSpan(IndentLeadingMarginSpan(), 0, length, 0)
         }
 
 //        Timber.e("uiViewModel.getFood: ${uiViewModel.getFood}")
@@ -65,6 +65,6 @@ fun TextView.setIndentLeadingMarginSpan(indentText: CharSequence?) {
     indentText ?: return
 
     this.text = SpannableStringBuilder(indentText).apply {
-        setSpan(IndentLeadingMarginSpan(), 0, length, 0)
+//        setSpan(IndentLeadingMarginSpan(), 0, length, 0)
     }
 }
