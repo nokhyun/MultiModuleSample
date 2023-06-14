@@ -9,10 +9,10 @@ import javax.inject.Inject
  * */
 class GalleryDiffUtil: DiffUtil.ItemCallback<GalleryModel>() {
     override fun areItemsTheSame(oldItem: GalleryModel, newItem: GalleryModel): Boolean {
-        return oldItem.displayName == newItem.displayName
+        return oldItem.contentUri == newItem.contentUri
     }
 
     override fun areContentsTheSame(oldItem: GalleryModel, newItem: GalleryModel): Boolean {
-        return oldItem.contentUri == newItem.contentUri
+        return oldItem == newItem
     }
 }
