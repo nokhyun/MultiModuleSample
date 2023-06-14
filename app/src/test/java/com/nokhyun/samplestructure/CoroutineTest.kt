@@ -1,19 +1,20 @@
 package com.nokhyun.samplestructure
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
+import kotlinx.coroutines.withContext
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 class MainDispatcherRule(
-    val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 ) : TestWatcher() {
     override fun starting(description: Description) {
         Dispatchers.setMain(testDispatcher)
@@ -25,6 +26,7 @@ class MainDispatcherRule(
 }
 
 class CoroutineTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -55,8 +57,20 @@ class CoroutineTest {
           */
 
 
-        test2(viewModel)
-        test1(viewModel)
+//        test2(viewModel)
+//        test1(viewModel)
+//        test3(viewModel)
+//            .catch {
+//                println("catch: ${it.message}")
+//            }
+//            .collectLatest {
+//                println("result: $it")
+//            }
+        test5(viewModel)
+            .collectLatest {
+            println("result: $it")
+        }
+
         /* 절차 */
     }
 
@@ -83,6 +97,37 @@ class CoroutineTest {
             println("testFlow2 Result: $it")
         }
     }
+
+        // bad case
+    private suspend fun test3(viewModel: HomeViewModel): Flow<Int> = channelFlow {
+        withContext(Dispatchers.IO) {
+            viewModel.testFlow
+            test4(viewModel)
+        }.collectLatest {
+            send(it)
+        }
+
+        awaitClose()
+    }
+
+    private fun test4(viewModel: HomeViewModel): Flow<Int> = channelFlow {
+        withContext(Dispatchers.IO){
+            viewModel.testFlow2
+        }.collectLatest {
+            send(it)
+        }
+
+        awaitClose()
+    }
+
+    private suspend fun test5(viewModel: HomeViewModel): Flow<Int>  {
+        return withContext(Dispatchers.IO){
+            viewModel.testFlow1
+//                .flatMapConcat { viewModel.testFlow2 }
+//                .flatMapMerge { viewModel.testFlow2 }
+                .flatMapLatest { viewModel.testFlow2 }
+        }
+    }
 }
 
 class HomeViewModel : ViewModel() {
@@ -93,7 +138,22 @@ class HomeViewModel : ViewModel() {
         _message.value = "Greetings!"
     }
 
-    val testFlow1: Flow<Int> = flowOf(1, 2, 3, 4, 5, 6)
-    val testFlow2: Flow<Int> = flowOf(1, 2, 3, 4, 5, 6)
+    val testFlow: Flow<Int> = flowOf(0)
+        .map {
+            println("testFlow: $it")
+            it
+        }
+    val testFlow1: Flow<Int> = flowOf(1, 2, 3, 4, 5, 6).map {
+        delay(100L)
+        println("testFlow1: $it")
+        it
+    }
+    val testFlow2: Flow<Int> = flowOf(7, 8, 9, 10, 11, 12)
+        .map {
+            println("testFlow2: $it")
+            delay(300L)
+            it
+        }
+
 
 }
