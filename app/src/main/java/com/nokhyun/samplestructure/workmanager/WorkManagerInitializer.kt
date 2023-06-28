@@ -28,6 +28,7 @@ class ExampleLoggerInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>>> {
         Log.e(this.javaClass.simpleName, "Exam dependencies")
         // WorkManager 가 초기화 된 후 초기화 됨.
-        return listOf(WorkManagerInitializer::class.java)
+//        return listOf(WorkManagerInitializer::class.java)
+        return emptyList()
     }
 }

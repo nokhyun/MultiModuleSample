@@ -43,7 +43,7 @@ abstract class BaseViewModel : ViewModel() {
     protected val coroutineErrorHandler = _coroutineErrorHandler
 
     init {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             _errorHandler.receiveCatching()
                 .onSuccess {
                     when (it) {

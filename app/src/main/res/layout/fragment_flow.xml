@@ -33,5 +33,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvBuffer"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.click()}"
+            android:text="CLICK"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBufferValue" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.changeFlowState()}"
+            android:text="CHANGE_CLICK"
+            app:layout_constraintStart_toEndOf="@id/btnClick"
+            app:layout_constraintTop_toTopOf="@id/btnClick" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
