@@ -1,9 +1,11 @@
 package com.nokhyun.samplestructure
 
+import com.nokhyun.samplestructure.utils.Day.Companion.days
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Test
 
 /**
@@ -73,6 +75,11 @@ class ExampleUnitTest {
             test2(viewModel)
             println("end")
         }
+    }
+
+    @Test
+    fun testDay(){
+        Assert.assertEquals(false, 1.days.isEqual(2.days))
     }
 
     private suspend fun test1(viewModel: HomeViewModel) {

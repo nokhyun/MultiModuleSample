@@ -1,6 +1,7 @@
 package com.nokhyun.samplestructure
 
 import androidx.lifecycle.ViewModel
+import com.nokhyun.samplestructure.utils.Day.Companion.days
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -68,8 +69,8 @@ class CoroutineTest {
 //            }
         test5(viewModel)
             .collectLatest {
-            println("result: $it")
-        }
+                println("result: $it")
+            }
 
         /* 절차 */
     }
@@ -98,7 +99,7 @@ class CoroutineTest {
         }
     }
 
-        // bad case
+    // bad case
     private suspend fun test3(viewModel: HomeViewModel): Flow<Int> = channelFlow {
         withContext(Dispatchers.IO) {
             viewModel.testFlow
@@ -111,7 +112,7 @@ class CoroutineTest {
     }
 
     private fun test4(viewModel: HomeViewModel): Flow<Int> = channelFlow {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             viewModel.testFlow2
         }.collectLatest {
             send(it)
@@ -120,8 +121,8 @@ class CoroutineTest {
         awaitClose()
     }
 
-    private suspend fun test5(viewModel: HomeViewModel): Flow<Int>  {
-        return withContext(Dispatchers.IO){
+    private suspend fun test5(viewModel: HomeViewModel): Flow<Int> {
+        return withContext(Dispatchers.IO) {
             viewModel.testFlow1
 //                .flatMapConcat { viewModel.testFlow2 }
 //                .flatMapMerge { viewModel.testFlow2 }
