@@ -29,6 +29,7 @@ import com.nokhyun.samplestructure.adapter.BodyValue
 import com.nokhyun.samplestructure.adapter.SelectAdapter
 import com.nokhyun.samplestructure.adapter.SelectedUiState
 import com.nokhyun.samplestructure.databinding.ActivityMainBinding
+import com.nokhyun.samplestructure.delegate.FoodDelegateImpl
 import com.nokhyun.samplestructure.module.SampleEntryPoint
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
@@ -55,6 +56,8 @@ import java.util.regex.Pattern
  * */
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+
+    private val foodDelegate by FoodDelegateImpl()
 
     private lateinit var connectivityObserver: ConnectivityObserver
 
@@ -110,6 +113,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun init() {
+        Timber.e("foodDelegate: $foodDelegate")
+
         binding.setVariable(BR.view, this)
         binding.setVariable(BR.viewModel, _mainViewModel)
         binding.lifecycleOwner = this

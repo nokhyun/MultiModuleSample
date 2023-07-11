@@ -8,9 +8,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 @Singleton
-class FoodDelegateImpl @Inject constructor() : FoodDelegate {
+class FoodDelegateImpl @Inject constructor() : FoodDelegate, ReadOnlyProperty<Any?, Int> {
+
+    private var currentValue: Int = 1001
 
     private val delegateScope = CoroutineScope(Dispatchers.IO)
 
@@ -27,5 +31,11 @@ class FoodDelegateImpl @Inject constructor() : FoodDelegate {
         delegateScope.launch {
             _foodModelFlow.emit(foodModel)
         }
+    }
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): Int {
+        // getValue thisRef: com.nokhyun.samplestructure.ui.activity.MainActivity@969009 :: property: property foodDelegate (Kotlin reflection is not available)
+        Timber.e("getValue thisRef: $thisRef :: property: $property")
+        return currentValue
     }
 }
