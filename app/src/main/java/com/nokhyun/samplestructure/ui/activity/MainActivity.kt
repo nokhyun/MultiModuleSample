@@ -57,7 +57,7 @@ import java.util.regex.Pattern
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    private val foodDelegate by FoodDelegateImpl()
+    private var foodDelegate by FoodDelegateImpl()
 
     private lateinit var connectivityObserver: ConnectivityObserver
 
@@ -114,6 +114,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun init() {
         Timber.e("foodDelegate: $foodDelegate")
+        foodDelegate = 1
 
         binding.setVariable(BR.view, this)
         binding.setVariable(BR.viewModel, _mainViewModel)

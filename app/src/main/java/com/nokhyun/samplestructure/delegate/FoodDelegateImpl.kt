@@ -9,10 +9,12 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.properties.ReadOnlyProperty
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 @Singleton
-class FoodDelegateImpl @Inject constructor() : FoodDelegate, ReadOnlyProperty<Any?, Int> {
+class FoodDelegateImpl @Inject constructor() : FoodDelegate, ReadWriteProperty<Any?, Int> {
+//class FoodDelegateImpl @Inject constructor() : FoodDelegate, ReadOnlyProperty<Any?, Int> {
 
     private var currentValue: Int = 1001
 
@@ -37,5 +39,9 @@ class FoodDelegateImpl @Inject constructor() : FoodDelegate, ReadOnlyProperty<An
         // getValue thisRef: com.nokhyun.samplestructure.ui.activity.MainActivity@969009 :: property: property foodDelegate (Kotlin reflection is not available)
         Timber.e("getValue thisRef: $thisRef :: property: $property")
         return currentValue
+    }
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) {
+        Timber.e("setValue thisRef: $thisRef :: property: $property :: value: $value")
     }
 }
