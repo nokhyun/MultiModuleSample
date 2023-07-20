@@ -7,6 +7,8 @@ import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentFlowBinding
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -102,6 +104,32 @@ class FlowViewModel : BaseViewModel() {
     private fun getSharedFlowValue(value: (FlowState?) -> Unit) {
         viewModelScope.launch {
             value(sharedFlowValue.firstOrNull())
+        }
+    }
+}
+
+/**
+ * collect, collectLatest 체크용
+ * */
+class FlowExam {
+    private val _sharedFlow: MutableSharedFlow<Int> = MutableSharedFlow(1)
+    val sharedFlow = _sharedFlow.asSharedFlow()
+
+    private suspend fun valueEmit(value: Int) {
+        _sharedFlow.emit(value)
+    }
+
+    suspend fun start() {
+        repeat(100) {
+            valueEmit(it)
+        }
+    }
+
+    fun notSuspendFunctionStart() {
+        CoroutineScope(Dispatchers.Default).launch {
+            repeat(100) {
+                _sharedFlow.emit(it)
+            }
         }
     }
 }
