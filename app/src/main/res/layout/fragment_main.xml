@@ -48,8 +48,8 @@
                 android:id="@+id/btnTransition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transition"
                 android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.TRANSITION)}"
+                android:text="Transition"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnSkeleton" />
@@ -58,8 +58,8 @@
                 android:id="@+id/btnFlow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Flow"
                 android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.FLOW)}"
+                android:text="Flow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnTransition" />
@@ -68,11 +68,45 @@
                 android:id="@+id/btnNotification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notification"
                 android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.NOTIFICATION)}"
+                android:text="Notification"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnFlow" />
+
+            <!-- marquee test -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivMarquee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_2k"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnNotification" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMarquee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="abcdefghi1123145124lasdkjalskdjaslkdjaklsdjlkasjdklajsdklasjdlkjadskl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivMarquee"
+                app:layout_constraintTop_toTopOf="@id/ivMarquee" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMarqueeSub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvMarquee"
+                app:layout_constraintTop_toBottomOf="@id/tvMarquee" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

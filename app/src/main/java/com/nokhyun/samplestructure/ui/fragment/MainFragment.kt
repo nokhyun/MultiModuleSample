@@ -42,6 +42,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 //        binding.clMain.doOnNextLayout {
 //            TransitionManager.beginDelayedTransition(binding.clMain, Fade(Fade.MODE_OUT))
 //        }
+
+        // marquee
+        binding.tvMarquee.isSelected = true
+        binding.tvMarquee.setHorizontallyScrolling(true)
+        binding.tvMarqueeSub.isSelected = true
+        binding.tvMarqueeSub.setHorizontallyScrolling(true)
     }
 
     override fun navigator() {

@@ -80,8 +80,8 @@
                 android:id="@+id/btnCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calendar"
                 android:onClick="@{() -> view.calendar()}"
+                android:text="Calendar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnFigmaSample" />
@@ -100,9 +100,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Navigation"
-                app:layout_constraintTop_toBottomOf="@id/btnUi"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/btnUi" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTest"
@@ -169,9 +169,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="name"
+                    android:hint="TextInputEditText Sample2"
                     android:inputType="numberDecimal"
-                    android:maxLength="5"
-                    android:hint="TextInputEditText Sample2" />
+                    android:maxLength="5" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
