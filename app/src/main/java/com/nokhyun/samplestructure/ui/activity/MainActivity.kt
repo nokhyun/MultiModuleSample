@@ -373,7 +373,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private class ForeverObserver : androidx.lifecycle.Observer<String> {
-        override fun onChanged(t: String?) {
+        override fun onChanged(t: String) {
             Timber.e("value changed")
         }
     }
