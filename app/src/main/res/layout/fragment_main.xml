@@ -74,6 +74,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnFlow" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnVp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.navigateToFragment(NavigationPoint.VP)}"
+                android:text="Vp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnNotification" />
+
             <!-- marquee test -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivMarquee"
@@ -81,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_2k"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnNotification" />
+                app:layout_constraintTop_toBottomOf="@id/btnVp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvMarquee"

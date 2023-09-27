@@ -7,9 +7,11 @@ import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentMainBinding
 import com.nokhyun.samplestructure.ui.fragment.viewmodel.MainViewModel
+import com.nokhyun.samplestructure.ui.fragment.viewmodel.NavigationPoint
 import com.nokhyun.samplestructure.utils.launchStarted
 import com.nokhyun.samplestructure.utils.safeNavigate
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
@@ -53,33 +55,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     override fun navigator() {
         launchStarted {
             launch {
-                mainViewModel.navigateToExoPlayer.collectLatest {
-                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToExoPlayerFragment())
-                }
-            }
-
-            launch {
-                mainViewModel.navigateToSkeleton.collectLatest {
-                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToSkeletonFragment())
-                }
-            }
-
-            launch {
-                mainViewModel.navigateToTransition.collectLatest {
-                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToTransitionFragment())
-                }
-            }
-
-            launch {
-                mainViewModel.navigateToFlow.collectLatest {
-                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToFlowFragment())
-                }
-            }
-
-            launch {
-                mainViewModel.navigateToNotification.collectLatest {
-                    findNavController().safeNavigate(MainFragmentDirections.actionMainFragmentToNotificationFragment())
-                }
+                mainViewModel.navigateToFragment
+                    .map { navigationPoint ->
+                        when (navigationPoint) {
+                            NavigationPoint.EXO_PLAYER -> MainFragmentDirections.actionMainFragmentToExoPlayerFragment()
+                            NavigationPoint.SKELETON -> MainFragmentDirections.actionMainFragmentToSkeletonFragment()
+                            NavigationPoint.TRANSITION -> MainFragmentDirections.actionMainFragmentToTransitionFragment()
+                            NavigationPoint.FLOW -> MainFragmentDirections.actionMainFragmentToFlowFragment()
+                            NavigationPoint.NOTIFICATION -> MainFragmentDirections.actionMainFragmentToNotificationFragment()
+                            NavigationPoint.VP -> MainFragmentDirections.actionMainFragmentToVpFragment()
+                        }
+                    }
+                    .collectLatest { id ->
+                        findNavController().safeNavigate(id)
+                    }
             }
         }
     }
