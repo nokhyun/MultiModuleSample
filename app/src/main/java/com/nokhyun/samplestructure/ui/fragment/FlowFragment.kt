@@ -11,21 +11,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -46,14 +51,37 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
 
 class FlowViewModel : BaseViewModel() {
 
-    private val _flowBufferValue: MutableStateFlow<String?> = MutableStateFlow(null)
-    val flowBufferValue: StateFlow<String?> = _flowBufferValue.asStateFlow()
+    private val _flowBufferValue: MutableStateFlow<Int> = MutableStateFlow(0)
+    val flowBufferValue: StateFlow<Int> = _flowBufferValue.asStateFlow()
 
     private val _sharedFlowValue: MutableSharedFlow<FlowState> = MutableSharedFlow(1, 1, BufferOverflow.DROP_OLDEST)
     val sharedFlowValue: SharedFlow<FlowState> = _sharedFlowValue.asSharedFlow()
         .onSubscription {
             Timber.e("onSubscription")
         }
+
+    private val p1Flow: Flow<Boolean> = flowOf(true)
+    private val p2Flow: Flow<Boolean> = flowOf(true)
+    private val p3Flow: Flow<Boolean> = flowOf(true)
+    private val p4Flow: Flow<Boolean> = flowOf(true)
+    private val p5Flow: Flow<Boolean> = flowOf(true)
+    private val p6Flow: Flow<Boolean> = flowOf(true)
+    private val p7Flow: Flow<Boolean> = flowOf(true)
+    private val p8Flow: Flow<Boolean> = flowOf(true)
+    private val p123Flow = combine(p1Flow, p2Flow, p3Flow) { p1, p2, p3 ->
+        p1 && p2 && p3
+    }
+
+    private val flowArray = arrayOf(p1Flow, p2Flow, p3Flow, p4Flow, p5Flow, p6Flow, p7Flow)
+
+    val result1Flow: StateFlow<String> = combine(*flowArray) {
+        it.all { it }.toString()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
+
+
+    val resultFlow: StateFlow<String> = combine(p123Flow, p4Flow){ p123, p4 ->
+        (p123 && p4).toString()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
 
     init {
         viewModelScope.launch {
@@ -63,10 +91,10 @@ class FlowViewModel : BaseViewModel() {
                         delay(50)
                         it
                     }.buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-                    .onStart { _flowBufferValue.value = "0" }
+                    .onStart { _flowBufferValue.value = 0 }
                     .onEach {
                         delay(1500)
-                        _flowBufferValue.value = it.toString()
+                        _flowBufferValue.value = it
                     }.launchIn(this)
             }
 

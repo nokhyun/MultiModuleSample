@@ -28,20 +28,34 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="start"
-            android:text="@{viewModel.flowBufferValue}"
+            android:text="@{String.valueOf(viewModel.flowBufferValue)}"
             android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvBuffer"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/pbBufferValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:max="1000"
+            android:progress="@{viewModel.flowBufferValue}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBufferValue"
+            app:trackCornerRadius="8dp" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:onClick="@{() -> viewModel.click()}"
             android:text="CLICK"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvBufferValue" />
+            app:layout_constraintTop_toBottomOf="@id/pbBufferValue" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
@@ -50,5 +64,13 @@
             android:text="CHANGE_CLICK"
             app:layout_constraintStart_toEndOf="@id/btnClick"
             app:layout_constraintTop_toTopOf="@id/btnClick" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.result1Flow}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnClick" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
