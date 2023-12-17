@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -164,6 +166,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
                     Timber.e("체크 권한 있음")
                 }
+
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
                     Timber.e("왜 취소함")
                     MaterialAlertDialogBuilder(this).setTitle("왜 취소했어?")
@@ -172,6 +175,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                             dialog.dismiss()
                         }.create().show()
                 }
+
                 else -> {
                     Timber.e("권한 요청")
                     ActivityCompat.requestPermissions(
@@ -318,10 +322,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
 
-        lifecycleScope.launch {
-            delay(3000)
-            binding.tilTest.error = "error"
-        }
+//        lifecycleScope.launch {
+//            delay(3000)
+//            binding.tilTest.error = "error"
+//        }
+
+        var prevText = ""
+        binding.etTest.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Timber.e("onTextChanged: ${s.toString()}")
+                if(s.toString().contains("[!@#${'$'}%^&*(),.?\":{}|<>]".toRegex())) {
+                    binding.etTest.setText(prevText)
+                    binding.etTest.setSelection(binding.etTest.length())
+                }else{
+                    prevText = s.toString()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         binding.tilTest2.setEndIconOnClickListener {
             log("setEndIconOnClickListener")
         }
@@ -447,11 +470,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 goActivity(GalleryActivity::class.java)
             }
+
             shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
                 // todo 권한 알림 Popup
                 Timber.e("shouldShowRequestPermissionRationale")
 
             }
+
             else -> {
                 Timber.e("requestPermissions")
                 requestPermissions(
@@ -468,7 +493,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -484,6 +509,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     goAppSetting()
                 }
             }
+
             1001 -> {
                 Timber.e("위치권한")
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
@@ -492,6 +518,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     Timber.e("거절")
                 }
             }
+
             else -> {
                 Timber.e("누구냐")
             }
@@ -506,6 +533,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     v.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
                     binding.flStroke.background = ContextCompat.getDrawable(this, R.drawable.stroke_double)
                 }
+
                 MotionEvent.ACTION_UP -> {
                     v.background = ContextCompat.getDrawable(this, R.drawable.stroke_single)
                     binding.flStroke.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
@@ -525,6 +553,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
                     v.background = ContextCompat.getDrawable(this, R.drawable.stroke_double)
                 }
+
                 MotionEvent.ACTION_UP -> {
                     v.updateLayoutParams {
                         width = 80.dp
