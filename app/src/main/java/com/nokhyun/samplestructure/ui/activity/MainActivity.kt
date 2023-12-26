@@ -9,6 +9,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
@@ -16,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -25,6 +28,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.adapter.BodyValue
@@ -112,6 +116,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //                selectedAdapter.submitList(it.toList())
             }
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        (binding.clMain as ViewGroup).children
+            .filterIsInstance<TextInputLayout>()
+            .map { it.editText }
+            .filterNotNull()
+            .filter { it.isFocused }
+            .take(1)
+            .toList()
+            .let {
+                if (it.isEmpty()) return@let
+
+                getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(binding.root.windowToken, 0)
+                binding.root.clearFocus()
+            }
+
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun init() {
@@ -334,10 +356,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Timber.e("onTextChanged: ${s.toString()}")
-                if(s.toString().contains("[!@#${'$'}%^&*(),.?\":{}|<>]".toRegex())) {
+                if (s.toString().contains("[!@#${'$'}%^&*(),.?\":{}|<>]".toRegex())) {
                     binding.etTest.setText(prevText)
                     binding.etTest.setSelection(binding.etTest.length())
-                }else{
+                } else {
                     prevText = s.toString()
                 }
             }
