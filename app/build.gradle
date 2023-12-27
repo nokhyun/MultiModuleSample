@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.nokhyun.samplestructure"
         minSdk 26
-        targetSdk 33
+        targetSdk 34
         versionCode 1
 
         vectorDrawables.useSupportLibrary = true
@@ -70,6 +70,9 @@ android {
     kapt {
         correctErrorTypes true
     }
+    
+    configurations { implementation.exclude group: 'org.jetbrains', module: 'annotations' }
+
     namespace 'com.nokhyun.samplestructure'
 }
 

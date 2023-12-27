@@ -40,10 +40,10 @@ object Ktx {
 }
 
 object Hilt {
-    const val DAGGER_HILT = "com.google.dagger:hilt-android:2.44.2"
-    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:2.44.2"
+    const val DAGGER_HILT = "com.google.dagger:hilt-android:2.48.1"
+    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:2.48.1"
     const val DAGGER_HILT_VIEW_MODEL = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
-    const val DAGGER_HILT_ANDROIDX_COMPILER = "androidx.hilt:hilt-compiler:1.0.0"
+    const val DAGGER_HILT_ANDROIDX_COMPILER = "androidx.hilt:hilt-compiler:1.1.0"
 }
 
 object Retrofit {

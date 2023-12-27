@@ -23,5 +23,5 @@ class MainViewModel @Inject constructor() : ViewModel() {
 }
 
 enum class NavigationPoint {
-    EXO_PLAYER, SKELETON, TRANSITION, FLOW, NOTIFICATION, VP
+    EXO_PLAYER, SKELETON, TRANSITION, FLOW, NOTIFICATION, VP, COROUTINE
 }
