@@ -14,7 +14,9 @@ import timber.log.Timber
 
 class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
     override fun init() {
-        val ceh = CoroutineExceptionHandler { coroutineContext, throwable -> }
+        val ceh = CoroutineExceptionHandler { coroutineContext, throwable ->
+            Timber.e("throwable: $throwable")
+        }
         val supervisorJob = SupervisorJob()
         CoroutineScope(Dispatchers.Default + ceh).launch {
             launch(supervisorJob) {
