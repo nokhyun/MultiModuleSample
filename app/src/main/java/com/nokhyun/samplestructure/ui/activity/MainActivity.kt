@@ -4,9 +4,15 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.text.Editable
+import android.text.Spannable
 import android.text.TextWatcher
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +24,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.text.toSpannable
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
@@ -239,6 +248,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // CompareTime
         compareTime()
 
+        // Spannable
+        spannable()
+
         // Device NetworkConnectivityObserver
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
         lifecycleScope.launch {
@@ -379,6 +391,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             startService(Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_STOP
             })
+        }
+    }
+
+    private fun spannable() {
+        binding.tvChangeColor.text = binding.tvChangeColor.text.run {
+            buildSpannedString {
+                val text = this@run.toString()
+                bold { append(text) }
+                setSpan(AbsoluteSizeSpan(20, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(UnderlineSpan(), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(AbsoluteSizeSpan(20, true), 2, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(BackgroundColorSpan(Color.BLUE), 2, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(ForegroundColorSpan(Color.GREEN), 2, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
         }
     }
 
