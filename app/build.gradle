@@ -89,6 +89,8 @@ dependencies {
     implementation(AndroidX.NAVIGATION_FRAGMENT)
     implementation(AndroidX.STARTUP)
     implementation(AndroidX.WORK_MANAGER)
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
     testImplementation(UnitTest.JUNIT)
     testImplementation(UnitTest.JUNIT5_KTX)
     androidTestImplementation(UnitTest.JUNIT_TEST)

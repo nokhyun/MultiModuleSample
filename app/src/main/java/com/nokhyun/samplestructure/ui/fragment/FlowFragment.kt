@@ -2,6 +2,7 @@ package com.nokhyun.samplestructure.ui.fragment
 
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
@@ -23,11 +24,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.delayFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
@@ -40,6 +43,30 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
 
     override fun init() {
         binding.setVariable(BR.viewModel, flowViewModel)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            launch {
+                flowViewModel.defaultFlow
+                    .map {
+                        delay(1000L)
+                        it
+                    }
+                    .collect {
+                        Timber.e("defaultFlow1: $it")
+                    }
+            }
+
+            launch {
+                flowViewModel.defaultFlow
+                    .map {
+                        delay(1000L)
+                        it
+                    }
+                    .collect {
+                        Timber.e("defaultFlow2: $it")
+                    }
+            }
+        }
     }
 
     override fun navigator() {
@@ -50,6 +77,13 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
 }
 
 class FlowViewModel : BaseViewModel() {
+
+    val defaultFlow = mutableListOf<Int>().apply {
+        for (i in 1 until 100) {
+            add(i)
+        }
+    }.asFlow()
+        .onStart { delay(1000L) }
 
     private val _flowBufferValue: MutableStateFlow<Int> = MutableStateFlow(0)
     val flowBufferValue: StateFlow<Int> = _flowBufferValue.asStateFlow()
@@ -79,7 +113,7 @@ class FlowViewModel : BaseViewModel() {
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
 
 
-    val resultFlow: StateFlow<String> = combine(p123Flow, p4Flow){ p123, p4 ->
+    val resultFlow: StateFlow<String> = combine(p123Flow, p4Flow) { p123, p4 ->
         (p123 && p4).toString()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
 
@@ -103,7 +137,7 @@ class FlowViewModel : BaseViewModel() {
                     .collectLatest {
                         Timber.e("collectLatest11: $it")
 
-                        if(it is FlowState.Success){
+                        if (it is FlowState.Success) {
                             it.onSuccess()
                         }
                     }
@@ -163,10 +197,10 @@ class FlowExam {
 }
 
 sealed interface FlowState {
-    object None : FlowState
+    data object None : FlowState
 
     data class Success(
         val message: String,
-        val onSuccess: () -> Unit
+        val onSuccess: () -> Unit,
     ) : FlowState
 }

@@ -66,6 +66,8 @@ glide-annotation = "4.13.0"
 
 # firebase
 firebase-analytics = "20.1.1"
+navigationFragmentKtx = "2.7.6"
+navigationUiKtx = "2.7.6"
 
 [libraries] # 라이브러리
 #plugin
@@ -137,5 +139,7 @@ glide-annotation = { module = "com.github.bumptech.glide:compiler", version.ref 
 
 # firebase
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebase-analytics" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
 [bundles] # 라이브러리 묶어서 한번에 선언
