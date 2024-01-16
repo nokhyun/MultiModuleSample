@@ -11,6 +11,9 @@ import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,15 +25,15 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.delayFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
@@ -52,7 +55,7 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
                         it
                     }
                     .collect {
-                        Timber.e("defaultFlow1: $it")
+//                        Timber.e("defaultFlow1: $it")
                     }
             }
 
@@ -63,8 +66,20 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
                         it
                     }
                     .collect {
-                        Timber.e("defaultFlow2: $it")
+//                        Timber.e("defaultFlow2: $it")
                     }
+            }
+
+            launch {
+                flowViewModel.callbackFlowFrom().collect {
+                    Timber.e(it)
+                }
+            }
+
+            launch {
+                flowViewModel.channelFlowFrom().collect {
+                    Timber.e(it)
+                }
             }
         }
     }
@@ -79,7 +94,7 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
 class FlowViewModel : BaseViewModel() {
 
     val defaultFlow = mutableListOf<Int>().apply {
-        for (i in 1 until 100) {
+        for (i in 1 until 10) {
             add(i)
         }
     }.asFlow()
@@ -142,6 +157,49 @@ class FlowViewModel : BaseViewModel() {
                         }
                     }
             }
+        }
+    }
+
+    fun callbackFlowFrom() = callbackFlow<String> {
+        launch(Dispatchers.Default) {
+            defaultFlow.collect {
+                trySendBlocking(it.toString().plus(":: ONE"))
+            }
+        }
+
+        launch(Dispatchers.IO) {
+            defaultFlow.collect {
+                trySendBlocking(it.toString().plus(":: TWO"))
+                    .onFailure { exception ->
+                        throw exception!!
+                    }
+            }
+        }
+
+
+        /*
+        * callbackFlow 필수
+        *  java.lang.IllegalStateException: 'awaitClose { yourCallbackOrListener.cancel() }' should be used in the end of callbackFlow block.
+        * */
+        awaitClose{
+            Timber.e("awaitClose callbackFlow")
+        }
+    }
+
+
+    /*
+    * flow 사용 시 ThreadSafe 가 아니라 런타임 시 오류 발생
+    * */
+    fun channelFlowFrom() = channelFlow<String> {
+        launch(Dispatchers.Default) {
+            trySendBlocking("Channel Hello")
+        }
+
+        trySendBlocking("Channel Hi")
+
+        // 필수 아님
+        awaitClose {
+            Timber.e("awaitClose channelFlowFrom")
         }
     }
 
