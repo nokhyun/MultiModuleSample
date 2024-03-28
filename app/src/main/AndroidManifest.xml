@@ -65,6 +65,8 @@
             android:name=".ui.activity.NavigateActivity"
             android:screenOrientation="fullSensor" />
 
+<!--        <activity android:name=".ui.activity.InstagramCloneActivity" />-->
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
