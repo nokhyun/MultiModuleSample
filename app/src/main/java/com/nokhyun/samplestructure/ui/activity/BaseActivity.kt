@@ -1,5 +1,7 @@
 package com.nokhyun.samplestructure.ui.activity
 
+import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.IdRes
@@ -8,7 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.nokhyun.samplestructure.R
-import kotlinx.coroutines.*
+import com.nokhyun.samplestructure.utils.isOverDeviceVersion
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -50,15 +57,23 @@ abstract class BaseActivity<V : ViewDataBinding> : AppCompatActivity() {
         super.onDestroy()
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-    }
+//    @Deprecated("Deprecated in Java")
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        if(isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU)){
+//            overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, R.anim.anim_slide_in_left, R.anim.anim_slide_out_right)
+//        }else{
+//            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+//        }
+//    }
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+        if (isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU)) {
+            overrideActivityTransition(Activity.OVERRIDE_TRANSITION_CLOSE, R.anim.anim_slide_in_left, R.anim.anim_slide_out_right)
+        } else {
+            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+        }
     }
 
     protected fun <T> showFragment(@IdRes layoutId: Int, fragment: Fragment, map: HashMap<String, T>? = null) {

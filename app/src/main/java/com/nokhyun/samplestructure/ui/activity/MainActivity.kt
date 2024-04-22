@@ -1,6 +1,10 @@
 package com.nokhyun.samplestructure.ui.activity
 
 import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.Manifest.permission.READ_MEDIA_VIDEO
+import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,6 +23,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -26,15 +31,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
-import androidx.core.text.toSpannable
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -49,21 +51,42 @@ import com.nokhyun.samplestructure.module.SampleEntryPoint
 import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
 import com.nokhyun.samplestructure.service.LocationService
-import com.nokhyun.samplestructure.utils.*
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
+import com.nokhyun.samplestructure.utils.dp
+import com.nokhyun.samplestructure.utils.goActivity
+import com.nokhyun.samplestructure.utils.goAppSetting
+import com.nokhyun.samplestructure.utils.isCheckSelfPermissions
+import com.nokhyun.samplestructure.utils.isLowerDeviceVersion
+import com.nokhyun.samplestructure.utils.isOverDeviceVersion
+import com.nokhyun.samplestructure.utils.launchCreated
+import com.nokhyun.samplestructure.utils.launchResumed
+import com.nokhyun.samplestructure.utils.launchStarted
+import com.nokhyun.samplestructure.utils.permission
+import com.nokhyun.samplestructure.utils.showToastShort
 import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ActorScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.actor
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Date
 import java.util.regex.Pattern
 
 /**
@@ -146,6 +169,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun init() {
+        onBackPressedDispatcher.addCallback(owner = this@MainActivity) { finish() }
+
         Timber.e("foodDelegate: $foodDelegate")
         foodDelegate = 1
 
@@ -166,11 +191,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         selectedAdapter.submitList(list)
 
-        lifecycleScope.launchWhenCreated {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectedStateFlow.filterNotNull().collectLatest {
-                    selectedAdapter.submitList(it)
-                }
+        launchStarted {
+            selectedStateFlow.filterNotNull().collectLatest {
+                selectedAdapter.submitList(it)
             }
         }
         // end
@@ -264,7 +287,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
 
-        permission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+        permission(READ_EXTERNAL_STORAGE) { isGranted ->
             Timber.e("isGranted: $isGranted")
         }
 
@@ -307,42 +330,45 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //            }
 //        }
 
-        lifecycleScope.launchWhenCreated {
-            _mainViewModel.githubRepos.collect {
-                Timber.e("githubRepos1: $it")
+        launchCreated {
+            launch {
+                _mainViewModel.githubRepos.collect {
+                    Timber.e("githubRepos1: $it")
+                }
+            }
+
+            launch {
+                _mainViewModel.githubRepos.collect {
+                    Timber.e("githubRepos2: $it")
+                }
             }
         }
 
-        lifecycleScope.launchWhenCreated {
-            _mainViewModel.githubRepos.collect {
-                Timber.e("githubRepos2: $it")
+        launchResumed {
+            launch {
+                _mainViewModel.githubRepoFirst10.collect {
+                    Timber.e("githubRepoFirst10: $it")
+                }
+            }
+
+            launch {
+                _mainViewModel.gitHubRepoLast10.collect {
+                    Timber.e("gitHubRepoLast10: $it")
+                }
+            }
+
+            launch {
+                _mainViewModel.gitHubRepos.collect {
+                    Timber.e("gitHubRepos1: $it")
+                }
+            }
+
+            launch {
+                _mainViewModel.gitHubRepos.collect {
+                    Timber.e("gitHubRepos2: $it")
+                }
             }
         }
-
-        lifecycleScope.launchWhenResumed {
-            _mainViewModel.githubRepoFirst10.collect {
-                Timber.e("githubRepoFirst10: $it")
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            _mainViewModel.gitHubRepoLast10.collect {
-                Timber.e("gitHubRepoLast10: $it")
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            _mainViewModel.gitHubRepos.collect {
-                Timber.e("gitHubRepos1: $it")
-            }
-        }
-
-        lifecycleScope.launchWhenResumed {
-            _mainViewModel.gitHubRepos.collect {
-                Timber.e("gitHubRepos2: $it")
-            }
-        }
-
 
         lifecycleScope.launch {
             val delayTest = listOf<Int>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -496,11 +522,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        finish()
-    }
-
     private val _requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
         activityResult?.let { result ->
             if (result.resultCode == RESULT_OK && result.data != null) {
@@ -511,25 +532,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     fun gallery() {
-        // todo 권한체크
         when {
-            ContextCompat.checkSelfPermission(
-                this, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
+            isCheckSelfPermissions(arrayOf(READ_EXTERNAL_STORAGE)) -> {
                 goActivity(GalleryActivity::class.java)
             }
 
-            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
-                // todo 권한 알림 Popup
-                Timber.e("shouldShowRequestPermissionRationale")
+            (isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU) && isCheckSelfPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_VISUAL_USER_SELECTED))) ||
+                    (isOverDeviceVersion(Build.VERSION_CODES.S_V2) && isCheckSelfPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))) ||
+                    isCheckSelfPermissions(arrayOf(READ_EXTERNAL_STORAGE)) -> goActivity(GalleryActivity::class.java)
 
+            shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) -> {
+                // todo 권한 알림 Popup
             }
 
             else -> {
                 Timber.e("requestPermissions")
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_READ_EXTERNAL_STORAGE
-                )
+                when {
+                    isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU) -> {
+                        requestPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_VISUAL_USER_SELECTED), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+                    }
+
+                    isOverDeviceVersion(Build.VERSION_CODES.S_V2) -> {
+                        requestPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+                    }
+
+                    else -> {
+                        requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+                    }
+                }
             }
 
 //        _requestActivity.launch(Intent().apply {
@@ -545,11 +575,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        when (requestCode) {
-            REQUEST_CODE_READ_EXTERNAL_STORAGE -> {
+        when {
+            requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE && isLowerDeviceVersion(35) -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // todo 동의
                     Timber.e("동의")
+                    goActivity(GalleryActivity::class.java)
                 } else {
                     // todo 거절 토스트 보여줌
                     Timber.e("거절")
@@ -558,7 +588,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 }
             }
 
-            1001 -> {
+            requestCode == 1001 -> {
                 Timber.e("위치권한")
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Timber.e("동의")

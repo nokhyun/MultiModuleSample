@@ -79,7 +79,7 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>() {
                 val displayName = it.getString(displayIdx)
                 val contentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
 
-                _galleryViewModel.galleryList.add(GalleryModel(displayName = displayName, contentUri = contentUri))
+                _galleryViewModel.addGalleryList(GalleryModel(displayName = displayName, contentUri = contentUri))
             }
             _cursor?.close()
         }

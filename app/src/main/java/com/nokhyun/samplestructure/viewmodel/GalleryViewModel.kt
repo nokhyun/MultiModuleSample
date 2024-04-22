@@ -10,9 +10,11 @@ import javax.inject.Inject
  * Created by Nokhyun90 on 2022.03.04
  * */
 @HiltViewModel
-class GalleryViewModel @Inject constructor(
-
-) : BaseViewModel() {
+class GalleryViewModel @Inject constructor() : BaseViewModel() {
     private val _galleryList = mutableListOf<GalleryModel>()
-    val galleryList = _galleryList
+    val galleryList: List<GalleryModel> = _galleryList
+
+    fun addGalleryList(galleryModel: GalleryModel) {
+        _galleryList.add(galleryModel)
+    }
 }

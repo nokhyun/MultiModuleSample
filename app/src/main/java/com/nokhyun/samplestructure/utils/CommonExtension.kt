@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Spannable
@@ -74,6 +75,7 @@ fun AppCompatActivity?.permission(permission: String, callback: (isGranted: Bool
                     Timber.e("동의했음.")
                     callback(true)
                 }
+
                 else -> {
                     callback(false)
                 }
@@ -135,3 +137,30 @@ fun Fragment.launchStarted(block: suspend CoroutineScope.() -> Unit) {
         }
     }
 }
+
+fun AppCompatActivity.launchCreated(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.CREATED, block)
+    }
+}
+
+fun AppCompatActivity.launchStarted(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED, block)
+    }
+}
+
+fun AppCompatActivity.launchResumed(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.RESUMED, block)
+    }
+}
+
+fun isOverDeviceVersion(versionCodes: Int): Boolean = Build.VERSION.SDK_INT > versionCodes
+fun isLowerDeviceVersion(versionCodes: Int): Boolean = Build.VERSION.SDK_INT < versionCodes
+
+private fun Context.isCheckSelfPermission(permission: String): Boolean = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+fun Context.isCheckSelfPermissions(permissions: Array<String>): Boolean = permissions
+    .map { isCheckSelfPermission(it) }
+    .toList()
+    .all { it }
