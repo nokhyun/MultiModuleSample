@@ -11,12 +11,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEmpty
-import kotlinx.coroutines.flow.onErrorReturn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -29,6 +32,16 @@ import kotlin.coroutines.suspendCoroutine
 
 class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
     private var job: Job? = null
+
+    private val galaxy = Galaxy()
+    private val apple = Apple()
+    private val phones: Flow<PhoneModel> = listOf(
+        galaxy,
+        apple
+    ).asFlow()
+
+    val firstGalaxy: () -> PhoneModel = { galaxy }
+    val firstApple: () -> PhoneModel = { apple }
 
     override fun init() {
         val ceh = CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -61,6 +74,13 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
 
         // suspendCoroutine
         viewLifecycleOwner.lifecycleScope.launch {
+            launch {
+                initGetGalaxy()
+                    .collect {
+                        Timber.e("first phoneModel: ${it.phoneName() + it.numbering()}")
+                    }
+            }
+
             launch {
                 withTimeoutOrNull(3000) {
                     suspendCoroutine<String> { continuation ->    // 3초 이후에 취소 안됨
@@ -118,13 +138,13 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
             startOngoingMessage(this)
         }
 
-        binding.btnCancel.setOnClickListener{
+        binding.btnCancel.setOnClickListener {
             job?.cancel()
         }
     }
 
-    private fun startOngoingMessage(scope: CoroutineScope){
-        job = scope.launch{
+    private fun startOngoingMessage(scope: CoroutineScope) {
+        job = scope.launch {
             val ongoingMessageCollect = FlowCollector<String> { Timber.e("ongoingMessage receive: $it") }
             ongoingMessage()
                 .onStart { Timber.e("ongoingMessage onStart") }
@@ -162,7 +182,62 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
         return view(R.layout.fragment_coroutine)
     }
 
+    suspend fun initGetGalaxy() = suspendCoroutine { continuation ->
+        continuation.resume(firstGalaxy
+            .asFlow()
+            .flatMapLatest { flowOf(firstApple(), it) }
+            .filterIsInstance<Galaxy>()
+            .map { it.phoneType }
+        )
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
     }
+}
+
+interface PhoneModel {
+    val phoneType: PhoneType
+}
+
+class Galaxy : PhoneModel {
+    override val phoneType: PhoneType = PhoneType.SAMSUNG
+}
+
+class Apple : PhoneModel {
+    override val phoneType: PhoneType = PhoneType.APPLE
+}
+
+
+/*
+* 기존은 inline 키워드를 사용했으나, deprecated 가 되면서 @JvmInline annotation을 사용하도록 변경되었다.
+* 기본 생성자 프로퍼티가 하나인 클래스 앞에 inline 을 추가하면 해당 객체를 사용하는 위치가 모두 해당 프로퍼티로 변경된다.
+* inline 클래스의 메소드는 모두 정적 메소드로 만들어진다.
+* value class 는 새로운 자료형을 만들떄 사용된다.
+* decompile 시 value class -> public final class
+* 아래 예시.
+* */
+@JvmInline
+value class Id(val id: Int)
+
+@JvmInline
+value class PhoneName(val phoneName: String)
+
+@JvmInline
+value class Numbering(val numbering: String)
+
+data class Object(val id: Id)
+
+enum class PhoneType(
+    private val id: Id,
+    private val phoneName: PhoneName,
+    private val numbering: Numbering
+) {
+    SAMSUNG(Id(0), PhoneName("Galaxy"), Numbering(" s24 Ultra")),
+    APPLE(Id(1), PhoneName("iPhone"), Numbering(" 15 pro"));
+
+    fun id() = this.id.id
+    fun phoneName() = this.phoneName.phoneName
+    fun numbering() = this.numbering.numbering
 }
