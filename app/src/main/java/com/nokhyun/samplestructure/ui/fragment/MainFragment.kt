@@ -65,6 +65,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                             NavigationPoint.NOTIFICATION -> MainFragmentDirections.actionMainFragmentToNotificationFragment()
                             NavigationPoint.VP -> MainFragmentDirections.actionMainFragmentToVpFragment()
                             NavigationPoint.COROUTINE -> MainFragmentDirections.actionMainFragmentToCoroutineFragment()
+                            NavigationPoint.SHARE -> MainFragmentDirections.actionMainFragmentToShareFragment()
                         }
                     }
                     .collectLatest { id ->
