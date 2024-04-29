@@ -1,7 +1,9 @@
 package com.nokhyun.samplestructure.ui.fragment
 
 import android.content.Intent
+import android.os.Build
 import android.view.View
+import androidx.core.view.WindowInsetsCompat.Type
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentShareBinding
@@ -11,7 +13,15 @@ import timber.log.Timber
 import kotlin.coroutines.resume
 
 class ShareFragment : BaseFragment<FragmentShareBinding>() {
-    override fun init() {}
+
+    private val controller get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) requireActivity().window?.insetsController else null
+    override fun init() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            controller?.hide(Type.statusBars())
+        } else {
+            requireActivity().window?.decorView?.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+        }
+    }
 
     override fun navigator() {
         binding.btnKakaoShare.setOnClickListener {
@@ -45,4 +55,16 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
     }
 
     override fun setView(view: (layoutId: Int) -> View): View = view(R.layout.fragment_share)
+
+    override fun onDestroyView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            controller?.show(Type.statusBars())
+        } else {
+            requireActivity().window?.apply {
+                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+            }
+        }
+
+        super.onDestroyView()
+    }
 }

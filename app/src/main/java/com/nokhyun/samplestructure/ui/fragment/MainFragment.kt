@@ -1,6 +1,7 @@
 package com.nokhyun.samplestructure.ui.fragment
 
 import android.view.View
+import android.view.WindowManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nokhyun.samplestructure.BR
@@ -23,6 +24,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     override fun init() {
         binding.setVariable(BR.viewModel, mainViewModel)
+
 //        lifecycleScope.launch {
 //            launch {
 //                delay(3000)
