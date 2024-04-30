@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentCoroutineBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+@AndroidEntryPoint
 class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
     private var job: Job? = null
 
@@ -75,6 +77,13 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
         // suspendCoroutine
         viewLifecycleOwner.lifecycleScope.launch {
             launch {
+                val s1 = suspend { Timber.e("suspend 1") }
+                val s2 = suspend { Timber.e("suspend 2") }
+                val s3 = suspend {
+                    delay(3000L)
+                    s1.invoke()
+                }
+                Timber.e("s3: ${s3()}")
                 initGetGalaxy()
                     .collect {
                         Timber.e("first phoneModel: ${it.phoneName() + it.numbering()}")

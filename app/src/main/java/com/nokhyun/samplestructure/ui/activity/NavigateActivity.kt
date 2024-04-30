@@ -2,7 +2,9 @@ package com.nokhyun.samplestructure.ui.activity
 
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityNavigateBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NavigateActivity : BaseActivity<ActivityNavigateBinding>() {
     override fun init() {
     }
