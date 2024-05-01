@@ -16,12 +16,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.reduce
+import kotlinx.coroutines.flow.retryWhen
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -141,10 +146,42 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
             launch {
                 Timber.e("click result: ${click()}")
             }
-        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            startOngoingMessage(this)
+            launch {
+                startOngoingMessage(this)
+            }
+
+            launch {
+                val collect = FlowCollector<Int> {
+                    Timber.e("collect: $it")
+                }
+
+                val numbers = listOf(1, 2, 3, 4, 5, 6).asFlow()
+                val foldResult = numbers.fold(100) { acc: Int, value: Int -> acc + value }
+                Timber.e("foldResult: $foldResult")
+                val reduceResult = numbers.reduce { acc, i -> acc + i }
+                Timber.e("reduceResult: $reduceResult")
+
+                numbers
+                    .scan(1) { accumulator: Int, value: Int ->  // 리스트의 누적 합을 계산하며, 리스트의 사이즈가 5일 경우 사이즈 만큼 collect를 함.
+                        Timber.e("accumulator: $accumulator")
+                        if (accumulator == 2) throw Throwable("retryWhenTest Exception!!!")
+                        value + accumulator
+                    }
+                    .retryWhen { cause, attempt ->
+                        Timber.e("retryWhen attempt: $attempt")
+                        delay(1000)
+                        if (attempt == 3L) {
+                            false
+                        } else {
+                            true
+                        }
+                    }
+                    .catch {
+                        Timber.e("")
+                    }
+                    .collect(collect)
+            }
         }
 
         binding.btnCancel.setOnClickListener {
