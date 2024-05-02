@@ -2,7 +2,9 @@ package com.nokhyun.samplestructure.ui.fragment
 
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
@@ -29,6 +31,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -48,37 +51,52 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
         binding.setVariable(BR.viewModel, flowViewModel)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            launch {
-                flowViewModel.defaultFlow
-                    .map {
-                        delay(1000L)
-                        it
-                    }
-                    .collect {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    flowViewModel.defaultFlow
+                        .map {
+                            delay(1000L)
+                            it
+                        }
+                        .collect {
 //                        Timber.e("defaultFlow1: $it")
-                    }
-            }
-
-            launch {
-                flowViewModel.defaultFlow
-                    .map {
-                        delay(1000L)
-                        it
-                    }
-                    .collect {
-//                        Timber.e("defaultFlow2: $it")
-                    }
-            }
-
-            launch {
-                flowViewModel.callbackFlowFrom().collect {
-                    Timber.e(it)
+                        }
                 }
-            }
 
-            launch {
-                flowViewModel.channelFlowFrom().collect {
-                    Timber.e(it)
+                launch {
+                    flowViewModel.defaultFlow
+                        .map {
+                            delay(1000L)
+                            it
+                        }
+                        .collect {
+//                        Timber.e("defaultFlow2: $it")
+                        }
+                }
+
+                launch {
+                    flowViewModel.callbackFlowFrom().collect {
+                        Timber.e(it)
+                    }
+                }
+
+                launch {
+                    flowViewModel.channelFlowFrom().collect {
+                        Timber.e(it)
+                    }
+                }
+
+                launch {
+                    with(binding.tvSample) {
+                        flowViewModel.textViewState
+                            .filterNotNull()
+                            .collect { state ->
+                                when (val value = state) {
+                                    is TextViewState.TextView -> text = value.text
+                                    is TextViewState.Visible -> visibility = value.visibilityType.visibility
+                                }
+                            }
+                    }
                 }
             }
         }
@@ -92,6 +110,16 @@ class FlowFragment : BaseFragment<FragmentFlowBinding>() {
 }
 
 class FlowViewModel : BaseViewModel() {
+    private val _textViewState: MutableStateFlow<TextViewState?> = MutableStateFlow(null)
+    val textViewState: StateFlow<TextViewState?> = _textViewState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            _textViewState.value = TextViewState.TextView("Hello World")
+            delay(1500L)
+            _textViewState.value = TextViewState.Visible(VisibilityType.VISIBLE)
+        }
+    }
 
     val defaultFlow = mutableListOf<Int>().apply {
         for (i in 1 until 10) {
@@ -181,7 +209,7 @@ class FlowViewModel : BaseViewModel() {
         * callbackFlow 필수
         *  java.lang.IllegalStateException: 'awaitClose { yourCallbackOrListener.cancel() }' should be used in the end of callbackFlow block.
         * */
-        awaitClose{
+        awaitClose {
             Timber.e("awaitClose callbackFlow")
         }
     }
@@ -203,13 +231,14 @@ class FlowViewModel : BaseViewModel() {
         }
     }
 
+    /** CHANGE_CLICK Button */
     fun click() {
-        viewModelScope.launch {
-            getSharedFlowValue { state ->
+        getSharedFlowValue { state ->
+            if (state != null && state is FlowState.Success)
                 Timber.e("result: $state")
-                if (state != null && state is FlowState.Success)
-                    _sharedFlowValue.tryEmit(FlowState.None)
-            }
+            _sharedFlowValue.tryEmit(FlowState.None)
+
+            _textViewState.value = textViewState.value?.state<TextViewState.Visible>()?.copy(visibilityType = VisibilityType.GONE)
         }
     }
 
@@ -252,6 +281,28 @@ class FlowExam {
             }
         }
     }
+}
+
+/**
+ * sealed interface 를 이용한 State 관리 샘플.
+ * */
+sealed interface TextViewState {
+    data class TextView(val text: String) : TextViewState
+    data class Visible(val visibilityType: VisibilityType) : TextViewState
+}
+
+inline fun <reified R> TextViewState.state(): R? =
+    if (this is R) this else null
+
+enum class VisibilityType {
+    VISIBLE, INVISIBLE, GONE;
+
+    val visibility: Int
+        get() = when (this) {
+            VISIBLE -> 0x00000000
+            INVISIBLE -> 0x00000004
+            GONE -> 0x00000008
+        }
 }
 
 sealed interface FlowState {
