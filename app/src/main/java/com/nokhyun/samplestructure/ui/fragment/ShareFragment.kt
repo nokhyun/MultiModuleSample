@@ -3,6 +3,7 @@ package com.nokhyun.samplestructure.ui.fragment
 import android.content.Intent
 import android.os.Build
 import android.view.View
+import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.R
@@ -27,12 +28,11 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
         binding.btnKakaoShare.setOnClickListener {
             val intent = Intent().run {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TITLE, "공유")
-                putExtra(Intent.EXTRA_TEXT, "Hello World!")
+                putExtra(Intent.EXTRA_TEXT, "https://i.pinimg.com/564x/37/e6/49/37e649b2f2ef52318ae6d8e731ed9369.jpg")
                 setType("text/plain")
-                setPackage("com.google.android.apps.messaging")
+//                setPackage("com.google.android.apps.messaging")
 //                setPackage("com.kakao.talk")
-//                setPackage("com.instagram.android")
+                setPackage("com.instagram.android")
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
