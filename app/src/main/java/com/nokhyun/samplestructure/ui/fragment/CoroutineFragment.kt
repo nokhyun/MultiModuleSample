@@ -1,9 +1,11 @@
 package com.nokhyun.samplestructure.ui.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.FragmentCoroutineBinding
+import com.nokhyun.samplestructure.ui.fragment.viewmodel.CoroutineViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -38,6 +40,8 @@ import kotlin.coroutines.suspendCoroutine
 
 @AndroidEntryPoint
 class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
+    private val coroutineView by viewModels<CoroutineViewModel>()
+
     private var job: Job? = null
 
     private val galaxy = Galaxy()
@@ -187,6 +191,8 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
         binding.btnCancel.setOnClickListener {
             job?.cancel()
         }
+
+        coroutineView.fetchAllData()
     }
 
     private fun startOngoingMessage(scope: CoroutineScope) {
