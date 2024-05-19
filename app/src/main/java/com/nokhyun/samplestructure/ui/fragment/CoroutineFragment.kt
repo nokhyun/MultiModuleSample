@@ -30,10 +30,12 @@ import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
+import kotlin.concurrent.thread
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -234,7 +236,7 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
         return view(R.layout.fragment_coroutine)
     }
 
-    suspend fun initGetGalaxy() = suspendCoroutine { continuation ->
+    private suspend fun initGetGalaxy() = suspendCoroutine { continuation ->
         continuation.resume(firstGalaxy
             .asFlow()
             .flatMapLatest { flowOf(firstApple(), it) }
@@ -242,6 +244,22 @@ class CoroutineFragment : BaseFragment<FragmentCoroutineBinding>() {
             .map { it.phoneType }
         )
 
+    }
+
+    private fun threadExample(){
+        repeat(100_000){
+            thread {
+                Thread.sleep(1000L)
+                println(".")
+            }
+        }
+    }
+
+    private fun coroutineExample(){
+        runBlocking {
+            delay(1000L)
+            println(".")
+        }
     }
 
     override fun onDestroyView() {
