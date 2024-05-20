@@ -43,6 +43,9 @@ hilt-compiler = "2.44.2"
 hilt-viewmodel = "1.0.0-alpha03"
 hilt-androidCompiler = "1.0.0"
 
+# Koin
+koin = "3.5.4"
+
 # Retrofit
 retrofit = "2.9.0"
 retrofit-gson = "2.9.0"
@@ -115,6 +118,9 @@ hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-compiler" }
 hilt-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hilt-viewmodel" }
 hilt-androidCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-androidCompiler" }
+
+# Koin
+koin = { module = "io.insert-koin:koin-android", version.ref="koin"}
 
 # Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }

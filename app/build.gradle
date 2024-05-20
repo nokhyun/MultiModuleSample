@@ -141,4 +141,7 @@ dependencies {
     implementation(Google.EXOPLAYER_CORE)
     implementation(Google.EXOPLAYER_DASH)
     implementation(Google.EXOPLAYER_UI)
+
+    // Koin
+    implementation(libs.koin)
 }
