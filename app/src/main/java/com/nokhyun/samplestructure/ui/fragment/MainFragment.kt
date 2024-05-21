@@ -1,7 +1,6 @@
 package com.nokhyun.samplestructure.ui.fragment
 
 import android.view.View
-import android.view.WindowManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nokhyun.samplestructure.BR
@@ -11,9 +10,11 @@ import com.nokhyun.samplestructure.ui.fragment.viewmodel.MainViewModel
 import com.nokhyun.samplestructure.ui.fragment.viewmodel.NavigationPoint
 import com.nokhyun.samplestructure.utils.launchStarted
 import com.nokhyun.samplestructure.utils.safeNavigate
+import dagger.hilt.android.lifecycle.withCreationCallback
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Navigation MainFragment

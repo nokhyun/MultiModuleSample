@@ -67,6 +67,7 @@ import com.nokhyun.samplestructure.viewmodel.BaseViewModel
 import com.nokhyun.samplestructure.viewmodel.MainViewModel
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.withCreationCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -99,7 +100,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private lateinit var connectivityObserver: ConnectivityObserver
 
-    private val _mainViewModel: MainViewModel by viewModels()
+    private val _mainViewModel: MainViewModel by viewModels(
+        extrasProducer = {
+            defaultViewModelCreationExtras.withCreationCallback<MainViewModel.Factory> { factory: MainViewModel.Factory ->
+                factory.create(runtimeArg = 1)
+            }
+        }
+    )
 
     private val selectedAdapter by lazy {
         SelectAdapter(this)
@@ -171,7 +178,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun init() {
         onBackPressedDispatcher.addCallback(owner = this@MainActivity) { finish() }
 
-        Timber.e("foodDelegate: $foodDelegate")
+        Timber.e("foodDelegate: $foodDelegate :: _mainViewModel.runtimeArg: ${_mainViewModel.runtimeArg}")
         foodDelegate = 1
 
         binding.setVariable(BR.view, this)
@@ -316,10 +323,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 //        }
 //
-
-        lifecycleScope.launchWhenCreated {
-            _mainViewModel.getRepoList()
-        }
 
         showDialog()
 

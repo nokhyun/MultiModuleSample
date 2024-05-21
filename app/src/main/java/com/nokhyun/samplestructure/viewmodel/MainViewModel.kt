@@ -11,18 +11,22 @@ import com.nokhyun.domain.usecase.GetGithubListUseCase
 import com.nokhyun.samplestructure.delegate.FoodDelegate
 import com.nokhyun.samplestructure.delegate.FoodDelegateImpl
 import com.nokhyun.samplestructure.model.FoodModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  * Created by Nokhyun90 on 2022-02-24
  * */
-@HiltViewModel
-class MainViewModel @Inject constructor(
+// TODO Fragment 체크필요할듯
+@HiltViewModel(assistedFactory = MainViewModel.Factory::class)
+class MainViewModel @AssistedInject constructor(
+    @Assisted val runtimeArg: Int,
     private val _savedStateHandle: SavedStateHandle,
     private val _getGithubListUseCase: GetGithubListUseCase,
     _foodDelegate: FoodDelegateImpl
@@ -37,6 +41,10 @@ class MainViewModel @Inject constructor(
         _foodDelegate.setFoodModel(FoodModel(name = "apple"))
 
         _keyword.value = "스트"
+
+        viewModelScope.launch {
+            if (runtimeArg == 1) getRepoList()
+        }
     }
 
     /* StateFlow */
@@ -175,6 +183,11 @@ class MainViewModel @Inject constructor(
 
     private fun log(msg: String) {
         Log.e(javaClass.simpleName, msg)
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(runtimeArg: Int): MainViewModel
     }
 
     companion object {
