@@ -9,6 +9,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Build
 import android.text.Editable
 import android.text.Spannable
@@ -32,6 +33,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.view.children
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LiveData
@@ -184,6 +186,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.setVariable(BR.view, this)
         binding.setVariable(BR.viewModel, _mainViewModel)
         binding.lifecycleOwner = this
+
+        binding.btnUi.doOnLayout {
+            val r = Rect()
+            binding.btnUi.getGlobalVisibleRect(r)
+            Timber.e("rect width: ${r.width()}} :: rect height: ${r.height()} :: width: ${binding.btnUi.measuredWidth} :: height: ${binding.btnUi.measuredHeight}")
+        }
 
         // adapter
         binding.rvSelected.apply {
