@@ -17,236 +17,326 @@
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clMain"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_top"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.activity.MainActivity">
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:text="Top"
+            android:textSize="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnTest"
-                android:layout_width="wrap_content"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_top">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="laskdjasljdk"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:backgroundTint="@android:color/transparent"
+                android:outlineProvider="none">
 
-            <TextView
-                android:id="@+id/test"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello World!"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnGallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> view.gallery()}"
-                android:text="Gallery"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnTest" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivImg"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnFigmaSample"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> view.figmaSample()}"
-                android:text="Figma Sample"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnGallery" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCalendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> view.calendar()}"
-                android:text="Calendar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnFigmaSample" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnUi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ui"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnCalendar" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnNavigation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Navigation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnUi" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilTest"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                app:boxStrokeColor="@color/black"
-                app:boxStrokeErrorColor="?colorError"
-                app:boxStrokeWidth="1dp"
-                app:endIconDrawable="@drawable/bg_circle_gray"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                app:hintAnimationEnabled="false"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnNavigation">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTest"
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="name"
-                    android:hint="TextInputEditText Sample"
-                    android:text="TextInputEditText Sample" />
+                    android:layout_height="180dp"
+                    app:contentScrim="@color/teal_200"
+                    app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        app:layout_collapseMode="parallax">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tilTest2"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/purple_500"
+                            android:gravity="center"
+                            android:text="Scroll Hide Text"
+                            android:textColor="@android:color/black"
+                            android:textSize="24dp" />
+                    </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_gravity="bottom"
+                        android:background="#ffff00"
+                        app:contentInsetStart="0dp"
+                        app:layout_collapseMode="pin">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilTest2"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@color/purple_500"
+                                android:gravity="center"
+                                android:text="Pin Mode"
+                                android:textSize="24dp" />
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp">
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tab1" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tab2" />
+                            </com.google.android.material.tabs.TabLayout>
+                        </LinearLayout>
+                    </com.google.android.material.appbar.MaterialToolbar>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                app:boxStrokeColor="@color/black"
-                app:boxStrokeWidth="2dp"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tilTest">
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etNumber"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clMain"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="name"
-                    android:hint="TextInputEditText Sample2"
-                    android:inputType="numberDecimal"
-                    android:maxLength="5" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    tools:context=".ui.activity.MainActivity">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/btnDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/stroke_double"
-                android:text="위치트래킹 시작"
-                android:gravity="end"
-                android:textColor="@android:color/black"
-                app:chipEndPadding="8dp"
-                app:chipMinTouchTargetSize="0dp"
-                app:chipStartPadding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tilTest2" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnTest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="laskdjasljdk"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvChangeColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="위치트래킹 정지"
-                app:keyword="@{viewModel.keyword}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnDialog" />
+                    <TextView
+                        android:id="@+id/test"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hello World!"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnPermission"
-                android:layout_width="80dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/stroke_single"
-                android:padding="8dp"
-                android:text="권한체크"
-                android:textColor="@android:color/black"
-                app:layout_constraintBottom_toTopOf="@id/fl_stroke"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvChangeColor" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> view.gallery()}"
+                        android:text="Gallery"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnTest" />
 
-            <FrameLayout
-                android:id="@+id/fl_stroke"
-                android:layout_width="86dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/transparent"
-                android:outlineProvider="none"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnPermission">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivImg"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnStroke"
-                    android:layout_width="80dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/stroke_single"
-                    android:padding="8dp"
-                    android:text="STOKE"
-                    android:textColor="@android:color/black" />
-            </FrameLayout>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnFigmaSample"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> view.figmaSample()}"
+                        android:text="Figma Sample"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnGallery" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSelected"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fl_stroke" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnCalendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> view.calendar()}"
+                        android:text="Calendar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnFigmaSample" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnUi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ui"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnCalendar" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnNavigation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Navigation"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnUi" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilTest"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="@color/black"
+                        app:boxStrokeErrorColor="?colorError"
+                        app:boxStrokeWidth="1dp"
+                        app:endIconDrawable="@drawable/bg_circle_gray"
+                        app:endIconMode="clear_text"
+                        app:errorEnabled="true"
+                        app:errorIconDrawable="@null"
+                        app:hintAnimationEnabled="false"
+                        app:hintEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnNavigation">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="name"
+                            android:hint="TextInputEditText Sample"
+                            android:text="TextInputEditText Sample" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tilTest2"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="2dp">
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilTest2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="@color/black"
+                        app:boxStrokeWidth="2dp"
+                        app:hintEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tilTest">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="name"
+                            android:hint="TextInputEditText Sample2"
+                            android:inputType="numberDecimal"
+                            android:maxLength="5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/btnDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/stroke_double"
+                        android:gravity="end"
+                        android:text="위치트래킹 시작"
+                        android:textColor="@android:color/black"
+                        app:chipEndPadding="8dp"
+                        app:chipMinTouchTargetSize="0dp"
+                        app:chipStartPadding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tilTest2" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvChangeColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="위치트래킹 정지"
+                        app:keyword="@{viewModel.keyword}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnDialog" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnPermission"
+                        android:layout_width="80dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/stroke_single"
+                        android:padding="8dp"
+                        android:text="권한체크"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintBottom_toTopOf="@id/fl_stroke"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvChangeColor" />
+
+                    <FrameLayout
+                        android:id="@+id/fl_stroke"
+                        android:layout_width="86dp"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@android:color/transparent"
+                        android:outlineProvider="none"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btnPermission">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnStroke"
+                            android:layout_width="80dp"
+                            android:layout_height="36dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/stroke_single"
+                            android:padding="8dp"
+                            android:text="STOKE"
+                            android:textColor="@android:color/black" />
+                    </FrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSelected"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/fl_stroke" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
