@@ -1,7 +1,14 @@
 package com.nokhyun.samplestructure.ui.activity
 
+//import com.nokhyun.samplestructure.ui.common.IndentLeadingMarginSpan
+import android.content.Context
 import android.os.Bundle
+import android.text.Layout
 import android.text.SpannableStringBuilder
+import android.text.StaticLayout
+import android.text.TextPaint
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -9,17 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.chip.Chip
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityUiBinding
-//import com.nokhyun.samplestructure.ui.common.IndentLeadingMarginSpan
 import com.nokhyun.samplestructure.viewmodel.UIViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -57,6 +59,78 @@ class UiActivity : AppCompatActivity() {
         }
 
 //        Timber.e("uiViewModel.getFood: ${uiViewModel.getFood}")
+        widthCompare()
+    }
+
+    private fun widthCompare() {
+        Timber.e("widthCompare")
+//        val txt = "헬로우"
+        val txt = "안녕"
+        val textSize = 16f
+        val typeface = resources.getFont(com.google.android.exoplayer2.ui.R.font.roboto_medium_numbers)
+
+        // Chip 생성 및 설정
+        val chip = Chip(this).apply {
+            this.textSize = textSize
+            this.typeface = typeface
+            this.text = txt
+            // 필요에 따라 추가적인 간격 설정
+            // 예: setPadding(16, 16, 16, 16) // 패딩 값 설정
+        }
+
+        // TextPaint를 사용하여 폰트 및 텍스트 크기 설정
+        val paint = TextPaint().apply {
+            this.textSize = textSize
+            this.typeface = typeface
+        }
+
+        // TextPaint.measureText()를 호출할 때 Chip의 패딩 값을 고려하여 텍스트의 폭 측정
+        Timber.e("chip.chipStartPadding: ${chip.chipStartPadding} :: chip.paddingStart: ${chip.paddingStart}")
+        val textWidth = paint.measureText(txt) + chip.chipStartPadding + chip.chipEndPadding + chip.paddingStart + chip.paddingEnd
+
+        val dummyViewGroup = LinearLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        }
+
+        // Chip을 LinearLayout에 추가
+        dummyViewGroup.addView(chip)
+
+        // LinearLayout을 루트 뷰에 추가
+        (binding.root as ViewGroup).addView(dummyViewGroup)
+
+        // Chip의 너비를 측정하여 로그로 출력
+        chip.post {
+            val chipWidth = chip.width
+            Timber.e("chipWidth: $chipWidth")
+            Timber.e("paint: $textWidth")
+        }
+    }
+
+    private fun dpToPx(context: Context, dp: Float): Float {
+        val density = context.resources.displayMetrics.density
+        return dp * density
+    }
+
+    private fun dpToPx(context: Context, dp: Int): Int {
+        return dpToPx(context, dp.toFloat()).toInt()
+    }
+
+    private fun pxToDp(context: Context, px: Float): Float {
+        val density = context.resources.displayMetrics.density
+        return px / density
+    }
+
+    private fun pxToDp(context: Context, px: Int): Int {
+        return pxToDp(context, px.toFloat()).toInt()
+    }
+
+    private fun calculateTextWidth(text: String, paint: TextPaint): Int {
+        val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, paint.measureText(text).toInt())
+            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+            .setLineSpacing(1.0f, 1.0f)
+            .setIncludePad(false)
+            .build()
+        return staticLayout.width
     }
 }
 
