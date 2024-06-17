@@ -91,6 +91,7 @@ dependencies {
     implementation(AndroidX.WORK_MANAGER)
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
+    implementation(libs.google.flexbox)
     testImplementation(UnitTest.JUNIT)
     testImplementation(UnitTest.JUNIT5_KTX)
     androidTestImplementation(UnitTest.JUNIT_TEST)

@@ -8,6 +8,7 @@ import android.text.Layout
 import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
@@ -17,13 +18,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexLine
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.chip.Chip
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityUiBinding
+import com.nokhyun.samplestructure.ui.activity.adapter.FlexBoxModel
+import com.nokhyun.samplestructure.ui.activity.adapter.FlexBoxTestAdapter
 import com.nokhyun.samplestructure.viewmodel.UIViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.util.Timer
+import kotlin.math.min
 
 @AndroidEntryPoint
 class UiActivity : AppCompatActivity() {
@@ -61,6 +72,74 @@ class UiActivity : AppCompatActivity() {
 
 //        Timber.e("uiViewModel.getFood: ${uiViewModel.getFood}")
         widthCompare()
+        rv()
+    }
+
+    private fun rv() {
+        val wordString = "ability, able, about, above, accept, according, account, across, act, action, activity, actually, add, address, administration, admit, adult, affect, after, again, against, age, agency, agent, ago, agree, agreement, ahead, air, all, allow, almost, alone, along, already, also, although, always, American, among, amount, analysis, and, animal, another, answer, any, anyone, anything, appear, apply, approach, area, argue, arm, around, arrive, art, article, artist, as, ask, assume, at, attack, attention, attorney, audience, author, authority, available, avoid, away".split(",")
+
+        val list: List<FlexBoxModel> = mutableListOf<FlexBoxModel>().apply {
+            wordString.forEach {
+                add(FlexBoxModel(it))
+            }
+        }
+
+        binding.rvFlex.apply {
+            adapter = FlexBoxTestAdapter().apply { submitList(list) }
+            layoutManager = object : FlexboxLayoutManager(this@UiActivity) {
+                override fun getWidth(): Int {
+                    val minusValue = dpToPx(this@UiActivity, 24)
+                    return 1080 - minusValue.times(2)
+                }
+
+                override fun getLeftDecorationWidth(child: View): Int {
+                    return dpToPx(this@UiActivity, 3)
+                }
+
+                override fun getRightDecorationWidth(child: View): Int {
+                    return dpToPx(this@UiActivity, 3)
+                }
+
+//                override fun getLargestMainSize(): Int {
+//                    return 1
+//                }
+//
+//                override fun getSumOfCrossSize(): Int {
+//                    val r = super.getSumOfCrossSize()
+//                    Timber.e("getSumOfCrossSize: $r")
+//                    return 300
+//                }
+//
+//                override fun getMaxLine(): Int {
+//                    return super.getMaxLine()
+//                }
+//
+//                override fun getDecorationLengthCrossAxis(view: View?): Int {
+//                    return dpToPx(this@UiActivity, 4)
+//                }
+////
+//                override fun getDecorationLengthMainAxis(view: View?, index: Int, indexInFlexLine: Int): Int {
+//                    return dpToPx(this@UiActivity, 24)
+//                }
+
+//                override fun getDecoratedLeft(child: View): Int {
+//                    return 10
+//                }
+//
+//                override fun getDecoratedRight(child: View): Int {
+//                    return 10
+//                }
+
+                override fun setFlexLines(flexLines: MutableList<FlexLine>?) {
+                    Timber.e("flexLines: $flexLines")
+                    super.setFlexLines(flexLines)
+                }
+
+            }.apply {
+                justifyContent = JustifyContent.FLEX_START
+                flexWrap = FlexWrap.WRAP
+            }
+        }
     }
 
     private fun widthCompare() {
