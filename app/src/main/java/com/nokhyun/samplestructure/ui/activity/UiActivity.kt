@@ -18,12 +18,17 @@ import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityUiBinding
+import com.nokhyun.samplestructure.ui.activity.adapter.Item
+import com.nokhyun.samplestructure.ui.activity.adapter.StaggeredAdapter
 import com.nokhyun.samplestructure.viewmodel.UIViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class UiActivity : AppCompatActivity() {
@@ -39,6 +44,8 @@ class UiActivity : AppCompatActivity() {
             binding.layoutCustomRadio.radioButton3.id
         )
     }
+
+    private val staggeredAdapter by lazy { StaggeredAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +71,128 @@ class UiActivity : AppCompatActivity() {
         rv()
     }
 
+    val items: List<Item>
+        get() {
+            // 1부터 1000 사이의 랜덤 값 25개 생성
+            val height = MutableList(25) { Random.nextInt(200, 1001) }
+//        val height = mutableListOf(628, 968, 538, 983, 630, 218, 977, 317, 949, 892, 241, 232, 437, 715, 810, 995, 847, 453, 743, 523, 794, 880, 765, 905, 576)
+//        val height = mutableListOf(628, 968, 538, 983, 630, 218, 977, 317)
+//            val height = mutableListOf(648, 444, 358, 699, 997, 543, 706, 871, 680, 718, 931, 286, 510, 769, 471, 629, 461, 617, 461, 567, 231, 568, 399, 347, 817)
+
+            binding.tvList.text = height.toString()
+            println("Original list: $height")
+            val totalSum = height.sum()
+            // 모든 짝수 인덱스에 대해 검사 및 교환
+//        for (i in 2 until height.size step 2) {
+//            // 현재 짝수 인덱스 값을 제외한 나머지 값들의 합
+//            val remainingSum = totalSum - height[i]
+//
+//            if (height[i] > remainingSum) {
+//                // i번 인덱스와 1번 인덱스의 값을 서로 교환
+//                height[i] = height[1].also { height[1] = height[i] }
+//            }
+//        }
+//
+//        for (i in 0 until height.size - 1 step 2) {
+//            // i 인덱스와 i+1 인덱스의 값을 비교하여 i가 더 크면 교환
+//            if (height[i] > height[i + 1]) {
+//                // i번 인덱스와 i+1번 인덱스의 값을 서로 교환
+//                height[i] = height[i + 1].also { height[i + 1] = height[i] }
+//            }
+//        }
+
+//        for (i in 0 until height.size - 1) {
+//            // 짝수 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 비교하여 값이 크면 위치를 교환
+//            if (i % 2 == 0 && height[i] > height[i + 1]) {
+//                // 짝수 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 교환
+//                val temp = height[i]
+//                height[i] = height[i + 1]
+//                height[i + 1] = temp
+//            }
+//        }
+
+            var i = 0 // 시작 인덱스
+
+            while (i < height.size - 1) {
+                // 현재 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 비교하여 값이 크면 위치를 교환
+                if (i % 2 == 0 && height[i] > height[i + 1]) {
+                    // 현재 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 교환
+                    val temp = height[i]
+                    height[i] = height[i + 1]
+                    height[i + 1] = temp
+
+                    // 스위칭 후 다음 값부터 다시 비교하기 위해 인덱스 증가
+                    i += 2
+                } else {
+                    // 다음 값부터 다시 비교하기 위해 인덱스 증가
+                    i++
+                }
+            }
+
+            println("result list: $height")
+            return height.map { Item(height = it) }
+        }
+
     private fun rv() {
+        // staggered
+        binding.rvFlex.apply {
+            setHasFixedSize(true)
+            adapter = staggeredAdapter.apply {
+                submitList(items)
+            }
+            layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL).apply {
+                gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+            }
+//            layoutManager = object : StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL) {
+//                override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+//                    // 호출할 때마다 아이템들의 위치를 다시 설정
+//                    removeAllViews()
+//
+//                    // 현재 화면에 보여지는 아이템들의 개수
+//                    val itemCount = itemCount
+//                    val columnCount = spanCount
+//
+//                    // 홀수 인덱스는 왼쪽, 짝수 인덱스는 오른쪽에 배치
+//                    var leftColumn = 0
+//                    var rightColumn = 1
+//
+//                    for (i in 0 until itemCount) {
+//                        // 아이템의 높이 가져오기
+//                        val height = recycler?.getViewForPosition(i)?.height ?: 0
+//
+//                        // 높이가 홀수 인덱스보다 클 경우, 오른쪽에 배치
+//                        if (height > getColumnHeight(leftColumn) + getColumnHeight(rightColumn)) {
+//                            layoutDecoratedWithMargins(
+//                                getChildAt(i)!!, width / 2, getColumnHeight(leftColumn),
+//                                width, getColumnHeight(leftColumn) + height
+//                            )
+//                            rightColumn += 2
+//                        } else {
+//                            // 그렇지 않으면 왼쪽에 배치
+//                            if(children.count() > 0) {
+//                                layoutDecoratedWithMargins(
+//                                    getChildAt(i)!!, 0, getColumnHeight(rightColumn),
+//                                    width / 2, getColumnHeight(rightColumn) + height
+//                                )
+//                                leftColumn += 2
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                private fun getColumnHeight(column: Int): Int {
+//                    var columnHeight = 0
+//                    for (i in 0 until childCount) {
+//                        val view = getChildAt(i)
+//                        columnHeight += view?.height?.plus((view.layoutParams as RecyclerView.LayoutParams).topMargin) ?: 0
+//                    }
+//                    return columnHeight
+//                }
+//
+//            }
+            itemAnimator = null
+        }
+
 //        val wordString = "ability, able, about, above, accept, according, account, across, act, action, activity, actually, add, address, administration, admit, adult, affect, after, again, against, age, agency, agent, ago, agree, agreement, ahead, air, all, allow, almost, alone, along, already, also, although, always, American, among, amount, analysis, and, animal, another, answer, any, anyone, anything, appear, apply, approach, area, argue, arm, around, arrive, art, article, artist, as, ask, assume, at, attack, attention, attorney, audience, author, authority, available, avoid, away".split(",")
 //
 //        val list: List<FlexBoxModel> = mutableListOf<FlexBoxModel>().apply {
@@ -140,9 +268,10 @@ class UiActivity : AppCompatActivity() {
         }.measureText(text).toInt()
         // 컴포넌트 width 랑 비교할 땐 어느정도 보정 값 필요. (padding or margin 값 등 변수가 있을 수 있음)
         binding.checkbox1.doOnLayout {
-            Timber.e("paintWidth: ${paintWidth + 26.dpToPx()} ::" +
-                    " componentWidth: ${it.apply { measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED) }.measuredWidth} ::" +
-                    " componentTextWidth: ${TextPaint().apply { textSize = 12.dpToPx().toFloat() }.measureText((it as TextView).text.toString())}"
+            Timber.e(
+                "paintWidth: ${paintWidth + 26.dpToPx()} ::" +
+                        " componentWidth: ${it.apply { measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED) }.measuredWidth} ::" +
+                        " componentTextWidth: ${TextPaint().apply { textSize = 12.dpToPx().toFloat() }.measureText((it as TextView).text.toString())}"
             )
         }
     }
