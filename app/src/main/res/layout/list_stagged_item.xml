@@ -4,16 +4,24 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/black">
+        app:strokeColor="@color/black"
+        app:strokeWidth="1dp">
 
         <TextView
             android:id="@+id/tv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:visibility="gone" />
+
+        <com.nokhyun.samplestructure.ui.activity.adapter.DynamicHeightImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
     </com.google.android.material.card.MaterialCardView>
 </layout>

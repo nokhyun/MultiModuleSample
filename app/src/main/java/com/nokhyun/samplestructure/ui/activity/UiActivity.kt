@@ -19,6 +19,7 @@ import androidx.core.view.doOnLayout
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
@@ -49,9 +50,10 @@ class UiActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityUiBinding?>(this, R.layout.activity_ui).apply {
-            setVariable(BR.view, uiViewModel)
-        }
+        binding =
+            DataBindingUtil.setContentView<ActivityUiBinding?>(this, R.layout.activity_ui).apply {
+                setVariable(BR.view, uiViewModel)
+            }
         binding.layoutCustomRadio.radioGroup.children.zip(ids.asSequence()) { view, id ->
             (view as RadioButton).id = ids[id]
         }.also {
@@ -62,9 +64,10 @@ class UiActivity : AppCompatActivity() {
             Timber.e("text: ${findViewById<RadioButton>(checkedId).text} :: checkedId: $checkedId")
         }
 
-        binding.tvMargin.text = SpannableStringBuilder(resources.getString(R.string.activity_ui_text)).apply {
+        binding.tvMargin.text =
+            SpannableStringBuilder(resources.getString(R.string.activity_ui_text)).apply {
 //            setSpan(IndentLeadingMarginSpan(), 0, length, 0)
-        }
+            }
 
 //        Timber.e("uiViewModel.getFood: ${uiViewModel.getFood}")
         widthCompare()
@@ -74,7 +77,85 @@ class UiActivity : AppCompatActivity() {
     val items: List<Item>
         get() {
             // 1부터 1000 사이의 랜덤 값 25개 생성
-            val height = MutableList(25) { Random.nextInt(200, 1001) }
+            val height = MutableList(70) { Random.nextInt(200, 1001) }
+            val images = listOf(
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/04/21/14/13/pelican-8710717_640.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/04/21/14/13/pelican-8710717_640.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/07/31/17/12/water-2559064_640.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/07/31/17/12/water-2559064_640.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/07/31/17/12/water-2559064_640.jpg",
+                "https://cdn.pixabay.com/photo/2024/07/07/07/30/bird-8878566_1280.jpg",
+                "https://cdn.pixabay.com/photo/2022/02/11/23/09/san-francisco-7008147_1280.jpg",
+                "https://cdn.pixabay.com/photo/2013/09/03/19/18/tennis-178696_1280.jpg",
+                "https://cdn.pixabay.com/photo/2018/07/28/14/30/soccer-3568168_1280.jpg",
+                "https://cdn.pixabay.com/photo/2016/10/16/07/29/the-eiffel-tower-1744574_1280.jpg",
+                "https://cdn.pixabay.com/photo/2017/08/06/00/02/court-2586882_1280.jpg",
+            ).shuffled()
 //        val height = mutableListOf(628, 968, 538, 983, 630, 218, 977, 317, 949, 892, 241, 232, 437, 715, 810, 995, 847, 453, 743, 523, 794, 880, 765, 905, 576)
 //        val height = mutableListOf(628, 968, 538, 983, 630, 218, 977, 317)
 //            val height = mutableListOf(648, 444, 358, 699, 997, 543, 706, 871, 680, 718, 931, 286, 510, 769, 471, 629, 461, 617, 461, 567, 231, 568, 399, 347, 817)
@@ -111,26 +192,31 @@ class UiActivity : AppCompatActivity() {
 //            }
 //        }
 
-            var i = 0 // 시작 인덱스
-
-            while (i < height.size - 1) {
-                // 현재 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 비교하여 값이 크면 위치를 교환
-                if (i % 2 == 0 && height[i] > height[i + 1]) {
-                    // 현재 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 교환
-                    val temp = height[i]
-                    height[i] = height[i + 1]
-                    height[i + 1] = temp
-
-                    // 스위칭 후 다음 값부터 다시 비교하기 위해 인덱스 증가
-                    i += 2
-                } else {
-                    // 다음 값부터 다시 비교하기 위해 인덱스 증가
-                    i++
-                }
-            }
+//            var i = 0 // 시작 인덱스
+//
+//            while (i < height.size - 1) {
+//                // 현재 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 비교하여 값이 크면 위치를 교환
+//                if (i % 2 == 0 && height[i] > height[i + 1]) {
+//                    // 현재 인덱스(i)와 그 다음 홀수 인덱스(i+1)의 값을 교환
+//                    val temp = height[i]
+//                    height[i] = height[i + 1]
+//                    height[i + 1] = temp
+//
+//                    // 스위칭 후 다음 값부터 다시 비교하기 위해 인덱스 증가
+//                    i += 2
+//                } else {
+//                    // 다음 값부터 다시 비교하기 위해 인덱스 증가
+//                    i++
+//                }
+//            }
 
             println("result list: $height")
-            return height.map { Item(height = it) }
+            return height.zip(images) { height, path ->
+                Item(
+                    height = height,
+                    url = path
+                )
+            }
         }
 
     private fun rv() {
@@ -191,6 +277,14 @@ class UiActivity : AppCompatActivity() {
 //
 //            }
             itemAnimator = null
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        recyclerView.invalidateItemDecorations()
+                    }
+                }})
         }
 
 //        val wordString = "ability, able, about, above, accept, according, account, across, act, action, activity, actually, add, address, administration, admit, adult, affect, after, again, against, age, agency, agent, ago, agree, agreement, ahead, air, all, allow, almost, alone, along, already, also, although, always, American, among, amount, analysis, and, animal, another, answer, any, anyone, anything, appear, apply, approach, area, argue, arm, around, arrive, art, article, artist, as, ask, assume, at, attack, attention, attorney, audience, author, authority, available, avoid, away".split(",")
@@ -270,8 +364,19 @@ class UiActivity : AppCompatActivity() {
         binding.checkbox1.doOnLayout {
             Timber.e(
                 "paintWidth: ${paintWidth + 26.dpToPx()} ::" +
-                        " componentWidth: ${it.apply { measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED) }.measuredWidth} ::" +
-                        " componentTextWidth: ${TextPaint().apply { textSize = 12.dpToPx().toFloat() }.measureText((it as TextView).text.toString())}"
+                        " componentWidth: ${
+                            it.apply {
+                                measure(
+                                    View.MeasureSpec.UNSPECIFIED,
+                                    View.MeasureSpec.UNSPECIFIED
+                                )
+                            }.measuredWidth
+                        } ::" +
+                        " componentTextWidth: ${
+                            TextPaint().apply {
+                                textSize = 12.dpToPx().toFloat()
+                            }.measureText((it as TextView).text.toString())
+                        }"
             )
         }
     }
@@ -302,7 +407,13 @@ class UiActivity : AppCompatActivity() {
     }
 
     private fun calculateTextWidth(text: String, paint: TextPaint): Int {
-        val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, paint.measureText(text).toInt())
+        val staticLayout = StaticLayout.Builder.obtain(
+            text,
+            0,
+            text.length,
+            paint,
+            paint.measureText(text).toInt()
+        )
             .setAlignment(Layout.Alignment.ALIGN_NORMAL)
             .setLineSpacing(1.0f, 1.0f)
             .setIncludePad(false)
