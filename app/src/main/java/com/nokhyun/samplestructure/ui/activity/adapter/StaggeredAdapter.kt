@@ -63,10 +63,10 @@ class StaggeredAdapter :
                         resource: Bitmap,
                         transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
                     ) {
-                        val width = resource.width
-                        val height = resource.height
+//                        val width = resource.width
+//                        val height = resource.height
 //                        val ratio = height / width
-                        Timber.e("width: $width :: height: $height")
+//                        Timber.e("width: $width :: height: $height")
                         binding.image.setImageBitmap(resource)
                     }
 
@@ -104,7 +104,7 @@ class DynamicHeightImageView : AppCompatImageView {
             val width = measuredWidth
             val height = (whRatio * width).toInt()
             Timber.e("width: $width :: height: $height")
-            setMeasuredDimension(widthMeasureSpec, height)
+            setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
         }
     }
 }

@@ -17,11 +17,10 @@
             android:textSize="24dp"
             android:visibility="gone" />
 
-        <com.nokhyun.samplestructure.ui.activity.adapter.DynamicHeightImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter" />
+            android:adjustViewBounds="true" />
     </com.google.android.material.card.MaterialCardView>
 </layout>
