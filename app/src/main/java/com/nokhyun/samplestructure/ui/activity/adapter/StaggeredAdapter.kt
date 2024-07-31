@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -63,11 +64,15 @@ class StaggeredAdapter :
                         resource: Bitmap,
                         transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
                     ) {
-//                        val width = resource.width
-//                        val height = resource.height
-//                        val ratio = height / width
-//                        Timber.e("width: $width :: height: $height")
+                        val width = resource.width
+                        val height = resource.height
+                        val ratio = height / width
                         binding.image.setImageBitmap(resource)
+
+                        val set = ConstraintSet()
+                        set.clone(binding.clMain)
+                        set.setDimensionRatio(binding.image.id, "$width:$height")
+                        set.applyTo(binding.clMain)
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) {
