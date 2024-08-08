@@ -18,6 +18,7 @@ import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -28,6 +29,8 @@ import com.nokhyun.samplestructure.ui.activity.adapter.Item
 import com.nokhyun.samplestructure.ui.activity.adapter.StaggeredAdapter
 import com.nokhyun.samplestructure.viewmodel.UIViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.random.Random
 

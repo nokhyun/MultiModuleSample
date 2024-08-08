@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -34,7 +35,6 @@ class SkeletonLayout : LinearLayout {
         val layoutRes = typedArray.getResourceId(R.styleable.SkeletonLayout_layoutRes, -1)
         val skeletonView = createSkeleton(context, layoutRes)
 
-        // TODO 다른식으로 처리하여 걷어낼 수 있을 지 확인필요함.
         addView(skeletonView)
 
         deviceHeight = getDeviceHeight(context)
@@ -47,24 +47,44 @@ class SkeletonLayout : LinearLayout {
         getChildAt(0).doOnPreDraw {
             val divResult = deviceHeight?.div(it.measuredHeight)
 
-            Timber.e("[init] divResult: $divResult")
             for (i in 0 until (divResult ?: 0)) {
                 addView(createSkeleton(context, layoutRes))
             }
         }
     }
 
-    // TODO 해당 부분을 Factory??, inner class?? 둘다 조사해보고 적합한걸로 적용.
-    private fun createSkeleton(context: Context, @LayoutRes layoutRes: Int) = LayoutInflater.from(context).inflate(layoutRes, null)
+
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+
+        exploreViewGroup(this).also {
+            removeAllViews()
+        }
+    }
+
+    private fun createSkeleton(context: Context, @LayoutRes layoutRes: Int) =
+        LayoutInflater.from(context).inflate(layoutRes, null)
+
     private fun getDeviceHeight(context: Context): Int {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val windowMetrics = windowManager.currentWindowMetrics
-            val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            val insets =
+                windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
             windowMetrics.bounds.height() - insets.bottom - insets.top
         } else {
             windowManager.defaultDisplay.height
+        }
+    }
+
+    private fun exploreViewGroup(viewGroup: ViewGroup) {
+        val childCount = viewGroup.childCount
+        for (i in 0 until childCount) {
+            when (val childView = viewGroup.getChildAt(i)) {
+                is ViewGroup -> exploreViewGroup(childView)
+                is ShimmerView -> childView.stop()
+            }
         }
     }
 }

@@ -6,6 +6,7 @@
         android:layout_height="match_parent">
 
         <com.nokhyun.samplestructure.ui.common.SkeletonLayout
+            android:id="@+id/skeleton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutRes="@layout/list_item_skeleton_default"
