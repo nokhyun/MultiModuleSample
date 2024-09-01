@@ -24,7 +24,7 @@ class FlexBoxTestAdapter : ListAdapter<FlexBoxModel, FlexBoxTestViewHolder>(obje
 
     override fun onBindViewHolder(holder: FlexBoxTestViewHolder, position: Int) {
         val lp = holder.itemView.layoutParams as? FlexboxLayoutManager.LayoutParams
-        holder.binding.tv.text = getItem(position).name
+        holder.binding.tv.setText(getItem(position).name)
         val totalWidth = 900
 //
         val width = (holder.binding.tv.paint.measureText(getItem(position).name) + 28)

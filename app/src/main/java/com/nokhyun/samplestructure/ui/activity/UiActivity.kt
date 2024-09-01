@@ -22,9 +22,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import com.google.android.material.internal.ViewUtils.dpToPx
 import com.nokhyun.samplestructure.BR
 import com.nokhyun.samplestructure.R
 import com.nokhyun.samplestructure.databinding.ActivityUiBinding
+import com.nokhyun.samplestructure.ui.activity.adapter.FlexBoxModel
+import com.nokhyun.samplestructure.ui.activity.adapter.FlexBoxTestAdapter
 import com.nokhyun.samplestructure.ui.activity.adapter.Item
 import com.nokhyun.samplestructure.ui.activity.adapter.StaggeredAdapter
 import com.nokhyun.samplestructure.viewmodel.UIViewModel
@@ -332,15 +338,18 @@ class UiActivity : AppCompatActivity() {
 
 //        val wordString = "ability, able, about, above, accept, according, account, across, act, action, activity, actually, add, address, administration, admit, adult, affect, after, again, against, age, agency, agent, ago, agree, agreement, ahead, air, all, allow, almost, alone, along, already, also, although, always, American, among, amount, analysis, and, animal, another, answer, any, anyone, anything, appear, apply, approach, area, argue, arm, around, arrive, art, article, artist, as, ask, assume, at, attack, attention, attorney, audience, author, authority, available, avoid, away".split(",")
 //
-//        val list: List<FlexBoxModel> = mutableListOf<FlexBoxModel>().apply {
+        val list: List<FlexBoxModel> = mutableListOf<FlexBoxModel>().apply {
 //            wordString.forEach {
 //                add(FlexBoxModel(it))
 //            }
-//        }
-//
-//        binding.rvFlex.apply {
-//            adapter = FlexBoxTestAdapter().apply { submitList(list) }
-//            layoutManager = object : FlexboxLayoutManager(this@UiActivity) {
+
+            add(FlexBoxModel("asdkljsadlkjaskldjaskldjaksldjklasjdklsajdklasjdkasldjkasldjklasdjkasldjaksldjksladjaskldjkalsdjkl"))
+            add(FlexBoxModel("Hello"))
+        }
+
+        binding.rvFlex.apply {
+            adapter = FlexBoxTestAdapter().apply { submitList(list)}
+            layoutManager = object : FlexboxLayoutManager(this@UiActivity) {
 //                override fun getWidth(): Int {
 //                    val minusValue = dpToPx(this@UiActivity, 24)
 //                    return 1080 - minusValue.times(2)
@@ -388,12 +397,12 @@ class UiActivity : AppCompatActivity() {
 //                    Timber.e("flexLines: $flexLines")
 //                    super.setFlexLines(flexLines)
 //                }
-//
-//            }.apply {
-//                justifyContent = JustifyContent.FLEX_START
-//                flexWrap = FlexWrap.WRAP
-//            }
-//        }
+
+            }.apply {
+                justifyContent = JustifyContent.FLEX_START
+                flexWrap = FlexWrap.WRAP
+            }
+        }
     }
 
     private fun widthCompare() {

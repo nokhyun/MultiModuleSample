@@ -2,13 +2,18 @@ package com.nokhyun.samplestructure.utils
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -27,8 +32,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import com.nokhyun.samplestructure.R
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
@@ -164,3 +176,53 @@ fun Context.isCheckSelfPermissions(permissions: Array<String>): Boolean = permis
     .map { isCheckSelfPermission(it) }
     .toList()
     .all { it }
+
+suspend fun downloadImageAndSave(context: Context, imageUrl: String, fileName: String) = withContext(Dispatchers.IO){
+    try {
+        val url = URL(imageUrl)
+        val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+        connection.doInput = true
+        connection.connect()
+        val inputStream: InputStream = connection.inputStream
+
+        val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES.plus("/download"))
+                put(MediaStore.Images.Media.IS_PENDING, 1) // Pending 상태로 설정
+            }
+
+            val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            Timber.e("uri: $uri")
+            uri?.let {
+                context.contentResolver.openOutputStream(it)?.use { outputStream ->
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                }
+                values.clear()
+                values.put(MediaStore.Images.Media.IS_PENDING, 0) // Pending 상태 해제
+                context.contentResolver.update(uri, values, null, null)
+                Timber.e("DownloadImage Image saved successfully at $uri")
+            }
+
+        } else {
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadsDir.exists()) {
+                downloadsDir.mkdirs()
+            }
+
+            val file = File(downloadsDir, fileName)
+
+            FileOutputStream(file).use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            }
+
+            Timber.e("DownloadImage Image saved successfully at ${file.absolutePath}")
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        Timber.e("DownloadImageError saving image: ${e.message}")
+    }
+}

@@ -54,6 +54,7 @@ import com.nokhyun.samplestructure.observe.ConnectivityObserver
 import com.nokhyun.samplestructure.observe.NetworkConnectivityObserver
 import com.nokhyun.samplestructure.service.LocationService
 import com.nokhyun.samplestructure.utils.Const.RequestCode.REQUEST_CODE_READ_EXTERNAL_STORAGE
+import com.nokhyun.samplestructure.utils.downloadImageAndSave
 import com.nokhyun.samplestructure.utils.dp
 import com.nokhyun.samplestructure.utils.goActivity
 import com.nokhyun.samplestructure.utils.goAppSetting
@@ -122,7 +123,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private val _selectedStateFlow: MutableStateFlow<List<SelectedUiState>?> = MutableStateFlow(null)
+    private val _selectedStateFlow: MutableStateFlow<List<SelectedUiState>?> =
+        MutableStateFlow(null)
     val selectedStateFlow: StateFlow<List<SelectedUiState>?> = _selectedStateFlow.asStateFlow()
 
     // 기존 데이터 저장
@@ -137,7 +139,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             Timber.e("selected: $body")
 
             // copy 로 생성하거나 아예 새로 생성하여 처리 (deep copy)
-            val copyValue = SelectedUiState.Body(body.bodyValue.copy(isSelected = !body.bodyValue.isSelected))
+            val copyValue =
+                SelectedUiState.Body(body.bodyValue.copy(isSelected = !body.bodyValue.isSelected))
             // 물론 이것도 가능함.
 //        val copyValue = SelectedUiState.Body(BodyValue(text = body.bodyValue.text, isSelected = !body.bodyValue.isSelected))
 //        val temp = tempList.toMutableList()
@@ -170,7 +173,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             .let {
                 if (it.isEmpty()) return@let
 
-                getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(binding.root.windowToken, 0)
+                getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(
+                    binding.root.windowToken,
+                    0
+                )
                 binding.root.clearFocus()
             }
 
@@ -191,6 +197,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             val r = Rect()
             binding.btnUi.getGlobalVisibleRect(r)
             Timber.e("rect width: ${r.width()}} :: rect height: ${r.height()} :: width: ${binding.btnUi.measuredWidth} :: height: ${binding.btnUi.measuredHeight}")
+        }
+
+        // download
+        binding.btnDownload.setOnClickListener {
+            val imageUrl = "url"
+            val fileName = "hands.png"
+            lifecycleScope.launch {
+                downloadImageAndSave(context = this@MainActivity, imageUrl = imageUrl, fileName = fileName)
+            }
         }
 
         // adapter
@@ -232,7 +247,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //            }
 
             when {
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED -> {
                     Timber.e("체크 권한 있음")
                 }
 
@@ -249,7 +267,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     Timber.e("권한 요청")
                     ActivityCompat.requestPermissions(
                         this, arrayOf(
-                            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
                         ), 1001
                     )
                 }
@@ -265,7 +284,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // TextWatcher
         findViewById<EditText>(R.id.etNumber).apply {
             addTextChangedListener {
-                val isMatcher = Pattern.compile("^[0-9]{2,3}(\\.[0-9])?\$").matcher(it.toString()).find()
+                val isMatcher =
+                    Pattern.compile("^[0-9]{2,3}(\\.[0-9])?\$").matcher(it.toString()).find()
                 log("isMatcher: $isMatcher")
             }
         }
@@ -515,7 +535,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         LocalDateTime.now().let { currentDate ->
             log("localDateTime: $currentDate")
 //            log("localDateTime result: ${LocalDateTime.of(currentDate.year, currentDate.month, currentDate.dayOfMonth, 10, 0).isBefore(currentDate)}")
-            log("localDateTime result: ${currentDate.isBefore(LocalDateTime.of(currentDate.year, currentDate.month, currentDate.dayOfMonth, 23, 35))}")
+            log(
+                "localDateTime result: ${
+                    currentDate.isBefore(
+                        LocalDateTime.of(
+                            currentDate.year,
+                            currentDate.month,
+                            currentDate.dayOfMonth,
+                            23,
+                            35
+                        )
+                    )
+                }"
+            )
         }
     }
 
@@ -533,14 +565,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private val _requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-        activityResult?.let { result ->
-            if (result.resultCode == RESULT_OK && result.data != null) {
-                // todo
-                Timber.e("result: ${result.data}")
+    private val _requestActivity: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            activityResult?.let { result ->
+                if (result.resultCode == RESULT_OK && result.data != null) {
+                    // todo
+                    Timber.e("result: ${result.data}")
+                }
             }
         }
-    }
 
     fun gallery() {
         when {
@@ -548,9 +581,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 goActivity(GalleryActivity::class.java)
             }
 
-            (isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU) && isCheckSelfPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_VISUAL_USER_SELECTED))) ||
-                    (isOverDeviceVersion(Build.VERSION_CODES.S_V2) && isCheckSelfPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))) ||
-                    isCheckSelfPermissions(arrayOf(READ_EXTERNAL_STORAGE)) -> goActivity(GalleryActivity::class.java)
+            (isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU) && isCheckSelfPermissions(
+                arrayOf(
+                    READ_MEDIA_IMAGES,
+                    READ_MEDIA_VIDEO,
+                    READ_MEDIA_VISUAL_USER_SELECTED
+                )
+            )) ||
+                    (isOverDeviceVersion(Build.VERSION_CODES.S_V2) && isCheckSelfPermissions(
+                        arrayOf(
+                            READ_MEDIA_IMAGES,
+                            READ_MEDIA_VIDEO
+                        )
+                    )) ||
+                    isCheckSelfPermissions(arrayOf(READ_EXTERNAL_STORAGE)) -> goActivity(
+                GalleryActivity::class.java
+            )
 
             shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) -> {
                 // todo 권한 알림 Popup
@@ -560,15 +606,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 Timber.e("requestPermissions")
                 when {
                     isOverDeviceVersion(Build.VERSION_CODES.TIRAMISU) -> {
-                        requestPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_VISUAL_USER_SELECTED), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+                        requestPermissions(
+                            arrayOf(
+                                READ_MEDIA_IMAGES,
+                                READ_MEDIA_VIDEO,
+                                READ_MEDIA_VISUAL_USER_SELECTED
+                            ), REQUEST_CODE_READ_EXTERNAL_STORAGE
+                        )
                     }
 
                     isOverDeviceVersion(Build.VERSION_CODES.S_V2) -> {
-                        requestPermissions(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+                        requestPermissions(
+                            arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO),
+                            REQUEST_CODE_READ_EXTERNAL_STORAGE
+                        )
                     }
 
                     else -> {
-                        requestPermissions(arrayOf(READ_EXTERNAL_STORAGE), REQUEST_CODE_READ_EXTERNAL_STORAGE)
+                        requestPermissions(
+                            arrayOf(READ_EXTERNAL_STORAGE),
+                            REQUEST_CODE_READ_EXTERNAL_STORAGE
+                        )
                     }
                 }
             }
@@ -620,12 +678,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
-                    binding.flStroke.background = ContextCompat.getDrawable(this, R.drawable.stroke_double)
+                    binding.flStroke.background =
+                        ContextCompat.getDrawable(this, R.drawable.stroke_double)
                 }
 
                 MotionEvent.ACTION_UP -> {
                     v.background = ContextCompat.getDrawable(this, R.drawable.stroke_single)
-                    binding.flStroke.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+                    binding.flStroke.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this,
+                            android.R.color.transparent
+                        )
+                    )
                 }
             }
 
